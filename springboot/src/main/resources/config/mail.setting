@@ -2,5 +2,5 @@ host = smtp.163.com
 port = 25
 from = Roud<roud123@163.com>
 user = roud123@163.com
-pass = GCKXQYNKNCVHAGST
+pass = here please enter your password
 startttlsEnable = true
