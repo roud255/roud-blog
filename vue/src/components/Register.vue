@@ -1,7 +1,7 @@
 <template>
     <div class="reg reg-header">
         <h3 class="text">欢迎注册</h3>
-        <p class="text">已有账号？<a href="#">登录</a></p>
+        <p class="text">已有账号？<router-link to="/index/login">登录</router-link></p>
     </div>
     <el-form :model="reg_form" label-width="80px" style="margin-top: 30px" :rules="rules" ref="reg_form">
         <el-form-item label="用户名" size="large" prop="nickname">
@@ -27,7 +27,7 @@
         </el-form-item>
         <p class="emptyLine"></p>
         <el-form-item label-width="5%">
-            <el-button type="primary" @click="onSubmit" style="width: 350px;height: 50px;font-size: 16px;font-weight: 700;cursor: pointer;color: #fff;border: none;border-radius: 25px;background: #3f89ec;">注册</el-button>
+            <el-button type="submitbtn" @click="onSubmit">注册</el-button>
         </el-form-item>
         <el-checkbox v-model="notice" label="" size="large" style="margin-left: 50px;">
             <p style="display: inline-block;font-size: 12px;">阅读并接受<a href="#" class="notice_a">《用户协议》</a>及<a href="#" class="notice_a">《隐私权保护声明》</a></p>
@@ -44,6 +44,7 @@
 
         data(){
             return{
+                notice : false,
                 reg_form : {
                 },
                 rules: {
@@ -53,16 +54,16 @@
                         { pattern:/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g, message: "请输入正确的邮箱", trigger: "blur"}
                     ],
                     nickname:[
-                        { required: true, message: "昵称由4-8位字母、数字或下划线组成", trigger: "blur" },
-                        { pattern:/^\w{4,8}$/g, message: "请输入正确的昵称", trigger: "blur"}
+                        { required: true, message: "请输入昵称", trigger: "blur" },
+                        { pattern:/^\w{4,8}$/g, message: "昵称由4-8位字母、数字或下划线组成", trigger: "blur"}
                     ],
                     password:[
-                        { required: true, message: "密码必须包含大小写字母和数字的组合，不能使用特殊字符", trigger: "blur" },
-                        { pattern:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}$/g, message: "请输入正确的密码", trigger: "blur"}
+                        { required: true, message: "请输入密码", trigger: "blur" },
+                        { pattern:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}$/g, message: "密码必须包含大小写字母和数字的组合，不能使用特殊字符", trigger: "blur"}
                     ],
                     vertifycode:[
-                        { required: true, message: "验证码为4位数字的组合", trigger: "blur" },
-                        { pattern:/^\d{4}$/g, message: "请输入正确的验证码", trigger: "blur"}
+                        { required: true, message: "请输入验证码", trigger: "blur" },
+                        { pattern:/^\d{4}$/g, message: "验证码为4位数字的组合", trigger: "blur"}
                     ],
                 },
                 checkCodeBtn : {
@@ -159,7 +160,21 @@
 
                 }
 
-            }
+            },
+            onSubmit(){
+                this.$refs['reg_form'].validate(valid => {
+                    if (valid) {
+                        if(this.notice){
+                            this.showSuccessMessage("提交成功")
+                        }else {
+                            this.showWarningMessage("请阅读并勾选下方协议");
+                        }
+                    } else {
+                        this.showFailMessage("提交失败");
+                    }
+                });
+            },
+
         }
     }
 </script>

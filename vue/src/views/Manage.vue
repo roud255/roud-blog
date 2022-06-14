@@ -9,7 +9,7 @@
                     <Aside/>
                 </el-aside>
                 <el-main>
-                    <Main/>
+                    <router-view></router-view>
                 </el-main>
             </el-container>
         </el-container>
@@ -22,7 +22,7 @@
     import Main from "../components/UserManage";
 
     export default {
-        name:"Layout",
+        name:"Manage",
         components:{
             Header,
             Aside,

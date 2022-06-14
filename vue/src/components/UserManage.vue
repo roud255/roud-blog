@@ -18,7 +18,7 @@
 
     <div style="margin-bottom: 10px">
         <el-table :data="tableData" border height="67vh" style="width: 100%">
-            <el-table-column type="index" :index="indexMethod" label="序号" width="60" />
+            <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="id" label="ID" width="180" />
             <el-table-column prop="nickname" label="昵称" width="180" />
             <el-table-column prop="phonenumber" label="邮箱" width="180"/>
@@ -111,12 +111,12 @@
                         { pattern:/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g, message: "请输入正确的邮箱", trigger: "blur"}
                     ],
                     nickname:[
-                        { required: true, message: "昵称由4-8位字母、数字或下划线组成", trigger: "blur" },
-                        { pattern:/^\w{4,8}$/g, message: "请输入正确的昵称", trigger: "blur"}
+                        { required: true, message: "请输入昵称", trigger: "blur" },
+                        { pattern:/^\w{4,8}$/g, message: "昵称由4-8位字母、数字或下划线组成", trigger: "blur"}
                     ],
                     password:[
-                        { required: true, message: "密码必须包含大小写字母和数字的组合，不能使用特殊字符", trigger: "blur" },
-                        { pattern:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}$/g, message: "请输入正确的密码", trigger: "blur"}
+                        { required: true, message: "请输入密码", trigger: "blur" },
+                        { pattern:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,12}$/g, message: "密码必须包含大小写字母和数字的组合，不能使用特殊字符", trigger: "blur"}
                     ],
                     type:[
                         { required: true, message: "必填", trigger: 'change',},

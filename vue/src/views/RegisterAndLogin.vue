@@ -12,19 +12,21 @@
                     border-radius: 16px;
                     overflow: hidden;
                     padding: 50px 50px;">
-            <Register/>
+            <router-view></router-view>
         </div>
     </div>
 
 </template>
 
 <script>
-    import Register from "../components/Register";
+    // import Register from "../components/Register";
+    // import Login from "../components/Login";
 
     export default {
         name: "RegisterAndLogin",
         components:{
-          Register
+            // Login,
+            // Register
         }
     }
 
