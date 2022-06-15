@@ -52,11 +52,11 @@
     width: 480px;
     height: 10px;
 }
-#login-verifyCodeImg {
-    width: 108px;
-    height: 36px;
-    vertical-align: middle;
-}
+/*#login-verifyCodeImg {*/
+/*    width: 108px;*/
+/*    height: 36px;*/
+/*    vertical-align: middle;*/
+/*}*/
 .el-button--submitbtn{
     width: 350px !important;height: 50px !important;font-size: 16px !important;font-weight: 700 !important;cursor: pointer !important;color: #fff !important;border: none !important;border-radius: 25px !important;background: #3f89ec !important;
 }

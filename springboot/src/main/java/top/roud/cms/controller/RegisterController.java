@@ -1,9 +1,10 @@
 package top.roud.cms.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
-import top.roud.cms.entity.EmailUser;
 import top.roud.cms.service.impl.UserServiceImpl;
 import top.roud.cms.utils.MailUtil;
 
@@ -24,9 +25,10 @@ public class RegisterController {
     @Resource
     private UserServiceImpl userService;
     @PostMapping("/code")
-    public Result getCode(@RequestBody EmailUser emailUser){
-        String email = emailUser.getEmail();
-        String userVertifyCode = (emailUser.getUserVertifyCode()).toUpperCase();
+    public Result getCode(@RequestBody String info){
+        JSONObject jsonObject = JSON.parseObject(info);
+        String email = jsonObject.getString("email");
+        String userVertifyCode = jsonObject.getString("userVertifyCode");
         String serverVertifyCode = MailUtil.getServerVertifyCode(email);
         if(!StrUtil.equals(serverVertifyCode, userVertifyCode)){
             return Result.failure(6101, "异常请求");

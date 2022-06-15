@@ -8,4 +8,5 @@ public interface UserService {
     public Result findPage(Integer pageNum, Integer pageSize, String search);
     public Result updateById(User user);
     public Result delById(Long id);
+    public User findUserByPhonenumberAndPassword(String phonenumber, String password);
 }

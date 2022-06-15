@@ -19,7 +19,15 @@
         <p class="emptyLine"></p>
         <el-form-item label="验证码" size="large" prop="vertifycode">
             <el-input v-model="login_form.vertifycode" placeholder="请输入图片验证码" style="width: 180px; margin-right: 10px;"/>
-            <img name="verifyCode" id="login-verifyCodeImg" src="../assets/img/code.jpg?t=1655217186584">
+<!--            <img name="verifyCode" id="login-verifyCodeImg" src=>-->
+            <el-image
+                    :src="imageUrl"
+                    style="width: 108px;height: 36px;vertical-align: middle;float:right;cursor: pointer;"
+                    fit="cover"
+                    @click="loadImage"
+                    alt="验证码"
+                    title="验证码"
+            ></el-image>
         </el-form-item>
         <p class="emptyLine" style="height: 61px"></p>
         <el-form-item label-width="5%">
@@ -40,6 +48,7 @@
 
         data(){
             return{
+                imageUrl : '/api/login',
                 notice: false,
                 login_form : {
                 },
@@ -105,7 +114,13 @@
                 this.$refs['login_form'].validate(valid => {
                     if (valid) {
                         if(this.notice){
-                            this.showSuccessMessage("提交成功")
+                            request.post("/login",this.login_form).then(res =>{
+                                if(res.code!="1"){
+                                    this.showWarningMessage(res.msg);
+                                }else {
+                                    this.showSuccessMessage("成功");
+                                }
+                            });
                         }else {
                             this.showWarningMessage("请阅读并勾选下方协议");
                         }
@@ -113,11 +128,13 @@
                         this.showFailMessage("提交失败");
                     }
                 });
-            }
+            },
+            loadImage(){
+                this.imageUrl = "/api/login?t="+Date.now();
+            },
         }
     }
 </script>
-
 <style scoped>
     @import '../assets/css/reg_login.css';
 

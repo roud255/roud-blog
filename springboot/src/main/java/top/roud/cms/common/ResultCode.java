@@ -43,7 +43,9 @@ public enum ResultCode {
 	
 	/* 权限错误：70001-79999 */
 	PERMISSION_NO_ACCESS(70001, "无访问权限"),
-	TOKEN_NULL(80001,"token为空，无法登录");
+	TOKEN_NULL(80001,"token为空，无法登录"),
+	CAPTCHA_TIMEOUT(80007,"图片验证码过期，请点击刷新图片验证码"),
+	CAPTCHA_ERROR(80008,"验证码错误");
 
 	private Integer code;
 
