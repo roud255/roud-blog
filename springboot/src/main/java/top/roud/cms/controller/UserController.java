@@ -6,6 +6,9 @@ import top.roud.cms.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Optional;
+
+import static top.roud.cms.common.ResultCode.EMAIL_HAS_EXISTED;
 
 /**
  * @ClassName: UserController
@@ -21,6 +24,11 @@ public class UserController {
     private UserServiceImpl userService;
     @PostMapping
     public Result save(@RequestBody User user){
+        User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
+        Optional<User> op = Optional.ofNullable(userByPhonenumber);
+        if(op.isPresent()){
+            return Result.failure(EMAIL_HAS_EXISTED);
+        }
         return userService.save(user);
     }
     @GetMapping
@@ -32,7 +40,7 @@ public class UserController {
         return userService.updateById(user);
     }
     @DeleteMapping("/{id}")
-    public Result delbyid(@PathVariable Long id){
+    public Result delById(@PathVariable Long id){
         return userService.delById(id);
     }
 }

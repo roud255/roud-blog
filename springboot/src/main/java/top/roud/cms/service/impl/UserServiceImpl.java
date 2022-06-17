@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectUserByPhonenumberAndPassword(phonenumber, password);
     }
 
+    @Override
+    public User findUserByPhonenumber(String phonenumber) {
+        return userMapper.selectUserByPhonenumber(phonenumber);
+    }
+
 }

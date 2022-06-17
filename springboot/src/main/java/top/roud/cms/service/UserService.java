@@ -9,4 +9,5 @@ public interface UserService {
     public Result updateById(User user);
     public Result delById(Long id);
     public User findUserByPhonenumberAndPassword(String phonenumber, String password);
+    public User findUserByPhonenumber(String phonenumber);
 }

@@ -5,4 +5,7 @@
     <select id="selectUserByPhonenumberAndPassword" resultType="User">
         select id,nickname,phonenumber,password,registertime,type,power from sv_user where phonenumber = #{phonenumber} and password = #{password}
     </select>
+    <select id="selectUserByPhonenumber" resultType="User">
+        select id,nickname,phonenumber,password,registertime,type,power from sv_user where phonenumber = #{phonenumber}
+    </select>
 </mapper>

@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.Optional;
@@ -48,7 +49,9 @@ public class LoginController {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", new Date().getTime());
             String str = getCode();
-            redisUtil.set("captcha",str,60);
+            HttpSession session = request.getSession();
+            String sessionId = session.getId();
+            redisUtil.set("session-id:"+sessionId+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
             ServletOutputStream out = response.getOutputStream();
             ImageIO.write(img, "JPG", out);
@@ -60,12 +63,14 @@ public class LoginController {
         }
     }
     @PostMapping
-    public Result login(@RequestBody String info){
+    public Result login(HttpServletRequest request,@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);
         String phonenumber = jsonObject.getString("email");
         String password = jsonObject.getString("password");
         String captcha = jsonObject.getString("vertifycode");
-        String captcha_sys = redisUtil.get("captcha");
+        HttpSession session = request.getSession();
+        String sessionId = session.getId();
+        String captcha_sys = redisUtil.get("session-id:"+sessionId+"-captcha");
         if(captcha_sys==null){
             return Result.failure(CAPTCHA_TIMEOUT);
         }

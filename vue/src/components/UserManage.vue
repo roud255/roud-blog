@@ -211,9 +211,11 @@
                             this.form["id"] = (new Date()).getTime();
                             this.form["registertime"] = this.getCurrentTime();
                             request.post("/user", this.form).then(res =>{
-                                ElMessage.success({
-                                    message: res.msg,
-                                });
+                                if(res.code=="1"){
+                                    this.showSuccessMessage(res.msg);
+                                }else{
+                                    this.showFailMessage(res.msg);
+                                }
                             });
                             this.dialogVisible = false;
                             this.form = {};

@@ -165,7 +165,13 @@
                 this.$refs['reg_form'].validate(valid => {
                     if (valid) {
                         if(this.notice){
-                            this.showSuccessMessage("提交成功")
+                            request.post("/reg/do",this.reg_form).then(res =>{
+                                if(res.code=="1"){
+                                    this.showSuccessMessage(res.msg);
+                                }else{
+                                    this.showFailMessage(res.msg);
+                                }
+                            });
                         }else {
                             this.showWarningMessage("请阅读并勾选下方协议");
                         }

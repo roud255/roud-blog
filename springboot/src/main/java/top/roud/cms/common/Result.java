@@ -50,6 +50,15 @@ public class Result implements Serializable {
 		result.setData(data);
 		return result;
 	}
+
+	/**
+	 * 操作成功，自定义ResultCode
+	 */
+	public static Result success(ResultCode resultCode) {
+		Result result = new Result();
+		result.setResultCode(resultCode);
+		return result;
+	}
 	
 	/**
 	 * 操作失败，没有返回的数据

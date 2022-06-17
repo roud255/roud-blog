@@ -12,4 +12,5 @@ import top.roud.cms.entity.User;
  */
 public interface UserMapper extends BaseMapper<User> {
     User selectUserByPhonenumberAndPassword(String phonenumber, String password);
+    User selectUserByPhonenumber(String phonenumber);
 }
