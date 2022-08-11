@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Manage from "@/views/Manage";
 import RegisterAndLogin from "@/views/RegisterAndLogin";
+import Index from "@/components/Index";
 
 const routes = [
     {
@@ -32,6 +33,23 @@ const routes = [
                 component: ()=>import("@/components/Login")
             },
         ]
+    },
+    {
+        path: '/test',
+        name: 'Index',
+        component: Index,
+        // children: [
+        //     {
+        //         path: 'register',
+        //         name: 'Register',
+        //         component: ()=>import("@/components/Register")
+        //     },
+        //     {
+        //         path: 'login',
+        //         name: 'Login',
+        //         component: ()=>import("@/components/Login")
+        //     },
+        // ]
     },
   // {
   //   path: '/about',

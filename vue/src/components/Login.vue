@@ -125,7 +125,7 @@
                             this.showWarningMessage("请阅读并勾选下方协议");
                         }
                     } else {
-                        this.showFailMessage("提交失败");
+                        this.showFailMessage("提交失败，请正确填写各项信息");
                     }
                 });
             },

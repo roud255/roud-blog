@@ -14,19 +14,16 @@
                     padding: 50px 50px;">
             <router-view></router-view>
         </div>
+        <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>
     </div>
 
 </template>
 
 <script>
-    // import Register from "../components/Register";
-    // import Login from "../components/Login";
 
     export default {
         name: "RegisterAndLogin",
         components:{
-            // Login,
-            // Register
         }
     }
 
