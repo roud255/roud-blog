@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Manage from "@/views/Manage";
 import RegisterAndLogin from "@/views/RegisterAndLogin";
 import Index from "@/components/Index";
+import Editor from "@/views/Editor";
 
 const routes = [
     {
@@ -50,6 +51,18 @@ const routes = [
         //         component: ()=>import("@/components/Login")
         //     },
         // ]
+    },
+    {
+        path: '/edit',
+        name: 'Editor',
+        component: Editor,
+        children: [
+            {
+                path: 'i',
+                name: 'insert',
+                component: ()=>import("@/components/InsertEditor")
+            }
+        ]
     },
   // {
   //   path: '/about',
