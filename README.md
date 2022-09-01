@@ -1,6 +1,38 @@
+项目正在不断完善中
+### 涉及技术
+Springboot
+Vue3
+Element-plus
+Redis
+MybatisPlus
+后续引入：
+mq
+
+### 项目配置
+1、邮箱
+在src...resources下有config目录，目录下有mail.setting配置文件，注意将邮箱配置成自己的，以免报错
+
+### 页面路由
+
+> 注意将端口号改成自己配置的端口号，一般默认 8080
+
 #登录页
 >http://localhost:8081/index/login
 
+#注册页
+>http://localhost:8081/index/login
+
+#后台管理用户管理页面
+>http://localhost:8081/user
+
+#后台管理用户管理页面
+>http://localhost:8081/user
+
+#博客首页
+>http://localhost:8081/test
+
+#博客编辑页
+>http://localhost:8081/edit/i
 
 # springboot-vue-demo
 
