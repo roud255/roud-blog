@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.roud.cms.mapper.ArticleMapper">
+
+    <select id="selectArticleByTag" resultType="Article">
+        select * from sv_article_tag sv_at,sv_article sv_a where sv_at.article_id=sv_a.id and sv_at.tag_id=#{tagId}
+    </select>
+</mapper>

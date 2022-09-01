@@ -1,6 +1,6 @@
 host = smtp.163.com
 port = 25
-from = xxx<enter your email>
-user = 此处输入你的邮箱enter your email 
-pass = 此处输入你的邮箱密码enter your email's password here
+from = Roud<roud123@163.com>
+user = roud123@163.com
+pass = GCKXQYNKNCVHAGST
 startttlsEnable = true

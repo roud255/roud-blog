@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar height="100vh">
-        <div style="height:100%;padding: 30px 30px;">
+        <div style="position: relative; height:100%; min-width:850px; padding: 30px 30px;">
             <h1 style="margin:20px 0;font-size: 32px;font-weight: 100">Roud后台编辑系统</h1>
             <el-form
                 ref="form"
@@ -13,15 +13,19 @@
                 <el-form-item label="署名">
                     <el-input v-model="form.author" />
                 </el-form-item>
+                <el-form-item label="摘要">
+                    <el-input v-model="form.description" />
+                </el-form-item>
+                <el-form-item label="封面">
+                    <el-input v-model="form.cover" />
+                </el-form-item>
                 <el-form-item label="时间">
-                    <el-date-picker
-                            v-model="form.publishtime"
-                            type="datetime"
-                            placeholder="选择日期和时间"
-                    />
+                    <el-date-picker v-model="form.publishtime" type="datetime" placeholder="选择日期和时间"/>
                 </el-form-item>
 
-                <v-md-editor v-model="text" height="400px"></v-md-editor>
+                <el-form-item label="内容" style="margin: 20px 0">
+                    <v-md-editor v-model="form.postBody" height="400px"></v-md-editor>
+                </el-form-item>
 
               <!--添加标签-->
               <el-form-item label="标签" style="margin: 20px 0">
@@ -32,16 +36,17 @@
                     closable
                     :disable-transitions="false"
                     @close="handleClose(tag)"
+                    v-model="form.tags"
                 >
                   {{ tag }}
                 </el-tag>
                 <el-input
+                    class="input-new-tag"
                     v-if="inputVisible"
-                    ref="InputRef"
                     v-model="inputValue"
-                    class="ml-1 w-20"
+                    ref="saveTagInput"
                     size="small"
-                    @keyup.enter="handleInputConfirm"
+                    @keyup.enter.native="handleInputConfirm"
                     @blur="handleInputConfirm"
                 />
                 <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
@@ -59,35 +64,105 @@
                     </el-form>
                 </div>
             </el-form>
-
+            <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>
         </div>
     </el-scrollbar>
 </template>
-
+<style>
+    .el-tag + .el-tag {
+        margin-left: 10px;
+    }
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+    .copyright{
+        position: absolute;
+        bottom: 2%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #63aeff;
+        font-size: 12px;
+        font-weight: 100;
+    }
+    .copyright:hover{
+        color: #476bff;
+    }
+</style>
 <script>
+    import {ElMessage} from "element-plus";
+    import request from "../utils/request";
     export default {
         name:"InsertEditor",
         data() {
             return {
-                text: '',
                 form: {},
-                dynamicTags: ['入门', '基础', '进阶'],
+                dynamicTags: [],
                 inputVisible: false,
                 inputValue: '',
                 labelPosition:'top',
             };
         },
         methods:{
-          handleInputConfirm(){
-            if (this.inputValue.value) {
-              this.dynamicTags.value.push(inputValue.value)
+            showSuccessMessage(msg){
+                ElMessage.success({
+                    message: msg,
+                });
+            },
+            showFailMessage(msg){
+                ElMessage.error({
+                    message: msg,
+                });
+            },
+            showWarningMessage(msg){
+                ElMessage.warning({
+                    message: msg,
+                });
+            },
+            handleInputConfirm() {
+                let inputValue = this.inputValue;
+                if (inputValue) {
+                    this.dynamicTags.push(inputValue);
+                }
+                this.inputVisible = false;
+                this.inputValue = '';
+            },
+            showInput() {
+                this.inputVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.saveTagInput.$refs.input.focus();
+                });
+            },
+            handleClose(tag) {
+                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+            },
+            onSubmit(){
+                this.form.tags = this.dynamicTags;
+                if(
+                    this.form.title==null||this.form.title.trim(" ")==""
+                    ||this.form.author==null||this.form.author.trim(" ")==""
+                    ||this.form.description==null||this.form.description.trim(" ")==""
+                    ||this.form.cover==null||this.form.cover.trim(" ")==""
+                    ||this.form.publishtime==null
+                    ||this.form.postbody==null||this.form.postbody.trim(" ")==""
+                    ||this.form.tags.length==0
+                ){
+                    this.showWarningMessage("请完整填写各输入框项")
+                }else{
+                    request.post("/edit/posts", this.form).then(res => {
+                        this.showSuccessMessage("成功");
+                    });
+
+                }
             }
-            this.inputVisible.value = false
-            this.inputValue.value = ''
-          },
-          handleClose(tag: string)=>{
-            this.dynamicTags.value.splice(this.dynamicTags.value.indexOf(tag), 1)
-          }
         }
     };
 </script>
