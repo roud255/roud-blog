@@ -23,6 +23,33 @@
 
                 <v-md-editor v-model="text" height="400px"></v-md-editor>
 
+              <!--添加标签-->
+              <el-form-item label="标签" style="margin: 20px 0">
+                <el-tag
+                    v-for="tag in dynamicTags"
+                    :key="tag"
+                    class="mx-1"
+                    closable
+                    :disable-transitions="false"
+                    @close="handleClose(tag)"
+                >
+                  {{ tag }}
+                </el-tag>
+                <el-input
+                    v-if="inputVisible"
+                    ref="InputRef"
+                    v-model="inputValue"
+                    class="ml-1 w-20"
+                    size="small"
+                    @keyup.enter="handleInputConfirm"
+                    @blur="handleInputConfirm"
+                />
+                <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
+                  + New Tag
+                </el-button>
+              </el-form-item>
+
+
                 <div style="text-align: -webkit-center">
                     <el-form ref="ruleForm" style="width: max-content">
                         <el-form-item style="margin: 20px 0">
@@ -31,7 +58,6 @@
                         </el-form-item>
                     </el-form>
                 </div>
-
             </el-form>
 
         </div>
@@ -45,8 +71,23 @@
             return {
                 text: '',
                 form: {},
+                dynamicTags: ['入门', '基础', '进阶'],
+                inputVisible: false,
+                inputValue: '',
                 labelPosition:'top',
             };
         },
+        methods:{
+          handleInputConfirm(){
+            if (this.inputValue.value) {
+              this.dynamicTags.value.push(inputValue.value)
+            }
+            this.inputVisible.value = false
+            this.inputValue.value = ''
+          },
+          handleClose(tag: string)=>{
+            this.dynamicTags.value.splice(this.dynamicTags.value.indexOf(tag), 1)
+          }
+        }
     };
 </script>
