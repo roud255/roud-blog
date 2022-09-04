@@ -11,11 +11,49 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 31/08/2022 23:33:29
+ Date: 01/09/2022 23:28:29
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sv_article
+-- ----------------------------
+DROP TABLE IF EXISTS `sv_article`;
+CREATE TABLE `sv_article`  (
+  `id` bigint(20) NULL DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `cover` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `postbody` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `publishtime` datetime(0) NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sv_article_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `sv_article_tag`;
+CREATE TABLE `sv_article_tag`  (
+  `id` bigint(20) NOT NULL,
+  `article_id` bigint(20) NULL DEFAULT NULL,
+  `tag_id` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for sv_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `sv_comment`;
+CREATE TABLE `sv_comment`  (
+  `id` bigint(20) NOT NULL,
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `publishtime` datetime(0) NULL DEFAULT NULL,
+  `comment_id` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sv_product
@@ -65,6 +103,18 @@ INSERT INTO `sv_product` VALUES (22, '海天 酱油 生抽酱油 中华老字号
 INSERT INTO `sv_product` VALUES (23, '海天 醋 醇酿香醋 凉拌饺子食用醋 中华老字号', 18, '广东 广州', '2022-01-28 08:28:00', 'BF00023', '新鲜美味', 5, './static/img/product/cu.png', './static/img/product/introduction/cu.png');
 INSERT INTO `sv_product` VALUES (24, '双汇王中王 袋装 速食香肠', 60, '河南 南阳', '2022-01-28 08:28:00', 'BF00024', '新鲜美味', 5, './static/img/product/huotuichang.png', './static/img/product/introduction/huotuichang.png');
 INSERT INTO `sv_product` VALUES (25, '中盐 加碘精制盐 食盐 500g 中盐出品', 3.3, '上海', '2022-01-28 08:28:00', 'BF00025', '物美价廉', 5, './static/img/product/yan.png', './static/img/product/introduction/yan.png');
+
+-- ----------------------------
+-- Table structure for sv_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `sv_tag`;
+CREATE TABLE `sv_tag`  (
+  `id` bigint(20) NOT NULL,
+  `tagname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `addtime` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sv_user
