@@ -12,7 +12,7 @@
                         :infinite-scroll-disabled="disabled"
                 >
                     <li v-for="(item,count) in t_data" :key="count" class="list-item">
-                        <div class="common-layout" style="width: 100%; height: 100%">
+                        <div class="common-layout" style="width: 100%; height: 100%" @click="forward(item.id)">
                             <el-container style="width: 100%; height: 100%">
                                 <el-aside  style="width: 210px; overflow: hidden;">
                                     <el-image :src="item.cover" class="roud-cover"/>
@@ -65,6 +65,9 @@
             }
         },
         methods:{
+            forward(id){
+                this.$router.push('/article/show?id='+id.toString());
+            },
             inital(){
                 request.get("/aat/page",{params:{
                         num : 1,
