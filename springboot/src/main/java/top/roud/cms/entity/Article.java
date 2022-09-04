@@ -2,7 +2,9 @@ package top.roud.cms.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 @TableName("sv_article")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Article {
     private Long id;
     private String title;

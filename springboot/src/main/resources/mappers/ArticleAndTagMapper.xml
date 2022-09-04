@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.roud.cms.mapper.ArticleAndTagMapper">
+    <insert id="insertArticle" parameterType="top.roud.cms.entity.Article">
+        insert into sv_article(id,title,author,description,cover,postbody,publishtime) values
+        (#{id},#{title},#{author},#{description},#{cover},#{postbody},#{publishtime})
+    </insert>
+
+    <insert id="insertTag" parameterType="top.roud.cms.entity.Tag">
+        insert into sv_tag(id,tagname,description,addtime) values
+        (#{id},#{tagname},#{description},#{addtime})
+    </insert>
+
+    <select id="getArticleById" parameterType="long" resultType="top.roud.cms.entity.Article">select id,title,author,description,cover,postbody,publishtime from sv_article where id=#{id}</select>
+
+    <select id="getTagById" parameterType="long" resultType="top.roud.cms.entity.Tag">select id,tagname,description,addtime from sv_tag where id=#{id}
+     </select>
+
+    <select id="getTagByName" parameterType="String" resultType="top.roud.cms.entity.Tag">select id,tagname,description,addtime from sv_tag where tagname=#{name}</select>
+
+    <select id="getAllTags" resultType="top.roud.cms.entity.Tag">select id,tagname,description,addtime from sv_tag</select>
+
+    <insert id="insertArticleAndTag">insert into sv_article_tag(id, article_id, tag_id) values (#{param1},#{param2},#{param3})</insert>
+
+    <resultMap id="ArticleResult" type="top.roud.cms.entity.Article">
+        <id property="id" column="aid"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="description" column="description"/>
+        <result property="cover" column="cover"/>
+        <result property="postbody" column="postbody"/>
+        <result property="publishtime" column="publishtime"/>
+    </resultMap>
+
+    <resultMap id="TagResult" type="top.roud.cms.entity.Tag">
+        <id property="id" column="tid"/>
+        <result property="tagname" column="tagname"/>
+        <result property="description" column="description"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+    <resultMap id="ArticleResultWithTag" type="top.roud.cms.entity.Article" extends="ArticleResult">
+        <collection property="tags" resultMap="TagResult"></collection>
+    </resultMap>
+
+    <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
+        t.id as tid,t.tagname,t.description,t.addtime
+        from sv_article a,
+        sv_tag t,
+        sv_article_tag at
+        where a.id=#{id} and a.id=at.article_id and t.id=at.tag_id
+    </select>
+    <select id="getAllArticleWithTag" resultMap="ArticleResultWithTag">
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
+        t.id as tid,t.tagname,t.description,t.addtime
+        from sv_article a,
+        sv_tag t,
+        sv_article_tag at
+        where a.id=at.article_id and t.id=at.tag_id
+    </select>
+
+    <select id="selectPage" resultType="top.roud.cms.entity.Article">
+        select id,title,author,description,cover,postbody,publishtime from sv_article ${ew.customSqlSegment}
+    </select>
+
+    <select id="getTagByArticleId" parameterType="long" resultType="top.roud.cms.entity.Tag">
+        select id,tagname,description,addtime from sv_tag t where exists (select tag_id from sv_article_tag where article_id=#{id} and tag_id=t.id)
+    </select>
+</mapper>

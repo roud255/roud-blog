@@ -5,51 +5,43 @@
             <div class="page-header">
                 <img src="../assets/img/selfstyle.png" style="height: 60px"/>
             </div>
-            <div class="infinite-list-wrapper" style="overflow: auto">
-                <ul
+            <div class="infinite-list-wrapper" style="overflow:visible;">
+                    <ul
                         v-infinite-scroll="load"
                         class="list"
                         :infinite-scroll-disabled="disabled"
                 >
-<!--                    <li v-for="i in count" :key="i" class="list-item">-->
-<!--                        <div class="common-layout" style="width: 100%; height: 100%">-->
-<!--                            <el-container style="width: 100%; height: 100%">-->
-<!--                                <el-aside width="200px">-->
-<!--                                    <el-image :src="src" style="width: 120px; height: 120px; margin: 13px auto"/>-->
-<!--                                </el-aside>-->
-<!--                                <el-container>-->
-<!--                                    <el-header style="padding-top: 16px">-->
-<!--                                        <h5>我是一个标题</h5>-->
-<!--                                        <p id="text_author_a_time" style="margin-top:5px; color: #9B9B9B; font-size: 15px; font-weight: 300">{{author}}{{now_time}}</p>-->
-<!--                                    </el-header>-->
-<!--                                    <el-main class="el-main-text">-->
-<!--                                        <p>我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容我是测试描述内容</p>-->
-<!--                                    </el-main>-->
-<!--                                </el-container>-->
-<!--                            </el-container>-->
-<!--                        </div>-->
-<!--                    </li>-->
                     <li v-for="(item,count) in t_data" :key="count" class="list-item">
                         <div class="common-layout" style="width: 100%; height: 100%">
                             <el-container style="width: 100%; height: 100%">
-                                <el-aside width="200px">
-                                    <el-image :src="src" style="width: 120px; height: 120px; margin: 13px auto"/>
+                                <el-aside  style="width: 210px; overflow: hidden;">
+                                    <el-image :src="item.cover" class="roud-cover"/>
                                 </el-aside>
                                 <el-container>
                                     <el-header style="padding-top: 16px">
-                                        <h5>{{item.title}}</h5>
-                                        <p id="text_author_a_time" style="margin-top:5px; color: #9B9B9B; font-size: 15px; font-weight: 300">{{item.author}}{{item.time}}</p>
+                                        <h4 class="roud-title">{{item.title}}</h4>
+                                        <p id="text_author_a_time" style="margin-top:5px; color: #AAA; font-size: 15px;">{{item.author}}&nbsp;&nbsp;&nbsp;&nbsp;{{(item.publishtime).split(" ")[0]}}</p>
                                     </el-header>
                                     <el-main class="el-main-text">
                                         <p>{{item.description}}</p>
+                                        <div style="height: 25px; text-align: left">
+                                            <span style="font-size: 12px; color: #AAAAAA">&ensp;标签：</span>
+                                            <el-tag
+                                                    v-for="tag in item.tags"
+                                                    :key="tag.tagname"
+                                                    type=""
+                                                    effect="dark">
+                                                {{ tag.tagname }}
+                                            </el-tag>
+                                        </div>
                                     </el-main>
                                 </el-container>
                             </el-container>
                         </div>
                     </li>
                 </ul>
-                <p v-if="loading" style="margin: 20px 0">加载中...</p>
-                <p v-if="noMore" style="margin: 20px 0">我也是有底线的~</p>
+                <p v-if="loading" style="padding: 20px 0">加载中...</p>
+                <p v-if="noMore" style="padding: 20px 0">我也是有底线的~</p>
             </div>
         </div>
     </el-scrollbar>
@@ -57,163 +49,61 @@
 
 <script>
     import { computed, ref } from 'vue';
+    import request from "../utils/request";
     export default {
         name: "Index",
         data(){
             return{
                 loading : false,
-                src :
-                    'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-                t_data : [
-                    {
-                        title:'这是第一个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第二个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第三个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第四个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第五个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                ],
-                t_data_t :[{
-                    title:'这是第一个标题',
-                    author: 'Tom',
-                    time: '2022-7-14 14:00:00',
-                    description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                },
-                    {
-                        title:'这是第二个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第三个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第四个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第五个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第六个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },
-                    {
-                        title:'这是第七个标题',
-                        author: 'Tom',
-                        time: '2022-7-14 14:00:00',
-                        description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                    },],
+                t_data : [],
+                t_data_t : [],
+                total:5,
                 count : 5,
+                i : 2,
+                pages : 0,
+                goload: false
             }
         },
         methods:{
+            inital(){
+                request.get("/aat/page",{params:{
+                        num : 1,
+                        size : 5
+                    }}).then(res=>{
+                        this.t_data = res.data.records;
+                        this.total = res.data.total;
+                        this.pages = res.data.pages;
+                });
+            }
+            ,
             load(){
                 this.loading = true;
+                request.get("/aat/page",{params:{
+                        num : this.i,
+                        size : 5
+                    }}).then(res=>{
+                    this.t_data_t = this.t_data.concat(res.data.records);
+                });
+                if(this.i<this.pages){
+                    this.i = this.i+1;
+                }
                 setTimeout(() => {
                     this.t_data = this.t_data_t;
-                    this.t_data_t = [
-                        {
-                            title:'这是第一个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第二个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第三个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第四个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第五个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第六个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第七个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第八个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        {
-                            title:'这是第九个标题',
-                            author: 'Tom',
-                            time: '2022-7-14 14:00:00',
-                            description: '测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容',
-                        },
-                        ];
-                        this.count = this.t_data.length;
-                        this.loading = false
-                }, 1500)
+                    this.count = this.t_data.length;
+                    this.loading = false;
+                }, 2000);
             }
         },
         computed:{
             noMore:function () {
-                return this.count >= this.t_data_t.length;
+                return this.count >= this.total;
             },
             disabled:function () {
                 return this.loading || this.noMore
             }
+        },
+        created() {
+            this.inital();
         }
     }
 </script>
@@ -253,7 +143,7 @@
          /*justify-content: center;*/
          width: 50%;
          min-width: 600px;
-         height: 150px;
+         height: 160px;
          border-radius: 10px;
          margin: 0 auto;
          background: #ffffff;;
@@ -261,15 +151,15 @@
          cursor: pointer;
      }
 
-    .infinite-list-wrapper .list-item:hover {
-        color: #3f89ec;
-    }
-    .infinite-list-wrapper .list-item:hover #text_author_a_time{
-        color: #3f89ec !important;
-    }
-    .infinite-list-wrapper .list-item:hover .el-main-text p{
-        color: #3f89ec;
-    }
+    /*.infinite-list-wrapper .list-item:hover {*/
+    /*    color: #3f89ec;*/
+    /*}*/
+    /*.infinite-list-wrapper .list-item:hover #text_author_a_time{*/
+    /*    color: #3f89ec !important;*/
+    /*}*/
+    /*.infinite-list-wrapper .list-item:hover .el-main-text p{*/
+    /*    color: #3f89ec;*/
+    /*}*/
 
     /*#f4f4f4 #ffffff*/
     .infinite-list-wrapper .list-item + .list-item {
@@ -278,21 +168,37 @@
     .el-main-text{
         padding-top: 0;
         width: 100%;
-        height: 50%;
+        height: 60%;
         border: 1px solid transparent;
         text-overflow: ellipsis;
     }
     .el-main-text p{
         display: -webkit-box;
-        height: 66px;
+        height: 43px;
         color: #2d2d2d;
         line-height: 23px;
         font-size: 14px;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         overflow: hidden;
+        margin-bottom: 8px;
     }
     .list-item:hover {
         box-shadow: 0 16px 32px 0 rgba(48, 55, 66, 0.15);/* 盒子悬浮时阴影 */
+    }
+    .roud-cover{
+        width: 180px;
+        height: 120px;
+        margin: 18px auto;
+        transition: all .5s ease .1s;
+    }
+    .roud-title{
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .infinite-list-wrapper .list-item:hover .roud-cover{
+        transform: scale(1.05);
     }
 </style>

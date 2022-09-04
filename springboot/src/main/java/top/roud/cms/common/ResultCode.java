@@ -26,6 +26,7 @@ public enum ResultCode {
 	
 	/* 业务错误：30001-39999 */
 	SPECIFIED_QUESTIONED_USER_NOT_EXIST(30001, "业务逻辑出现问题"),
+	TAG_NAME_FORMAT_ERROR(30002, "标签名格式错误"),
 	
 	/* 系统错误：40001-49999 */
 	SYSTEM_INNER_ERROR(40001, "系统内部错误，请稍后重试"),

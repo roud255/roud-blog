@@ -24,7 +24,7 @@
                 </el-form-item>
 
                 <el-form-item label="内容" style="margin: 20px 0">
-                    <v-md-editor v-model="form.postBody" height="400px"></v-md-editor>
+                    <v-md-editor v-model="form.postbody" height="400px"></v-md-editor>
                 </el-form-item>
 
               <!--添加标签-->
@@ -101,7 +101,7 @@
     import {ElMessage} from "element-plus";
     import request from "../utils/request";
     export default {
-        name:"InsertEditor",
+        name:"ArticleEditor",
         data() {
             return {
                 form: {},
@@ -144,25 +144,49 @@
             handleClose(tag) {
                 this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
             },
+            loadTags(){
+                request.get("/aat/getAllTags").then(res=>{
+                    let data = res.data;
+                    let tags = [];
+                    for(var i=0;i<data.length;i++){
+                        tags[i] = data[i].tagname;
+                    }
+                    this.dynamicTags = tags;
+                })
+            }
+            ,
             onSubmit(){
                 this.form.tags = this.dynamicTags;
                 if(
                     this.form.title==null||this.form.title.trim(" ")==""
-                    ||this.form.author==null||this.form.author.trim(" ")==""
-                    ||this.form.description==null||this.form.description.trim(" ")==""
-                    ||this.form.cover==null||this.form.cover.trim(" ")==""
-                    ||this.form.publishtime==null
-                    ||this.form.postbody==null||this.form.postbody.trim(" ")==""
-                    ||this.form.tags.length==0
                 ){
-                    this.showWarningMessage("请完整填写各输入框项")
+                    this.showWarningMessage("请正确填入标题")
+                }else if(this.form.author==null||this.form.author.trim(" ")==""){
+                    this.showWarningMessage("请正确填入署名")
+                }else if(this.form.description==null||this.form.description.trim(" ")==""){
+                    this.showWarningMessage("请正确填入摘要")
+                }else if(this.form.cover==null||this.form.cover.trim(" ")==""){
+                    this.showWarningMessage("请正确填入封面链接")
+                }else if(this.form.publishtime==null){
+                    this.showWarningMessage("请正确选择时间")
+                }else if(this.form.postbody==null||this.form.postbody.trim(" ")==""){
+                    this.showWarningMessage("请正确填入内容")
+                }else if(this.form.tags.length==0){
+                    this.showWarningMessage("标签不能为空")
                 }else{
-                    request.post("/edit/posts", this.form).then(res => {
-                        this.showSuccessMessage("成功");
+                    request.post("/aat/add", this.form).then(res => {
+                        if(res.code!="1"){
+                            this.showFailMessage(res.msg);
+                        }else {
+                            this.showSuccessMessage(res.msg);
+                        }
                     });
 
                 }
             }
+        },
+        created() {
+            this.loadTags();
         }
     };
 </script>

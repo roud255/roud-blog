@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Manage from "@/views/Manage";
 import RegisterAndLogin from "@/views/RegisterAndLogin";
 import Index from "@/components/Index";
-import Editor from "@/views/Editor";
+import Editor from "@/views/Article";
 
 const routes = [
     {
@@ -53,14 +53,19 @@ const routes = [
         // ]
     },
     {
-        path: '/edit',
-        name: 'Editor',
+        path: '/article',
+        name: 'Article',
         component: Editor,
         children: [
             {
-                path: 'i',
-                name: 'insert',
-                component: ()=>import("@/components/InsertEditor")
+                path: 'edit',
+                name: 'edit',
+                component: ()=>import("@/components/ArticleEditor")
+            },
+            {
+                path: 'show',
+                name: 'show',
+                component: ()=>import("@/components/ArticleShow")
             }
         ]
     },
