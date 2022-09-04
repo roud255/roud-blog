@@ -1,9 +1,9 @@
-<link rel="stylesheet" href="../assets/css/reg_login.css">
+<link rel="stylesheet" href="src/assets/css/reg_login.css">
 <template>
     <el-scrollbar height="100vh">
         <div class="all-page">
             <div class="page-header">
-                <img src="../assets/img/selfstyle.png" style="height: 60px"/>
+                <img src="http://roud.top/img/selfstyle.png" style="height: 60px"/>
             </div>
             <div class="infinite-list-wrapper" style="overflow:visible;">
                     <ul
@@ -29,7 +29,7 @@
                                             <el-tag
                                                     v-for="tag in item.tags"
                                                     :key="tag.tagname"
-                                                    type=""
+                                                    type="tagtype"
                                                     effect="dark">
                                                 {{ tag.tagname }}
                                             </el-tag>
@@ -61,7 +61,7 @@
                 count : 5,
                 i : 2,
                 pages : 0,
-                goload: false
+                tagtype : "success",
             }
         },
         methods:{
