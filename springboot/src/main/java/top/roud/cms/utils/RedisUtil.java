@@ -17,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil {
     @Resource
-    private RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public String get(final String key) {
+    public Object get(final String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -34,10 +34,35 @@ public class RedisUtil {
         return result;
     }
 
+    public boolean set(final String key, Integer value, long timeout) {
+        boolean result = false;
+        try {
+            redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean set(final String key, String value, long timeout) {
         boolean result = false;
         try {
             redisTemplate.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean set(final String key, Integer value, long offset, int code) {
+        boolean result = false;
+        if(1001!=code){
+            return result;
+        }
+        try {
+            redisTemplate.opsForValue().set(key, value, offset);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();

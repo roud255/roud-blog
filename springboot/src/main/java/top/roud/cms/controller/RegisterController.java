@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
+import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.impl.UserServiceImpl;
 import top.roud.cms.utils.MailUtil;
@@ -32,8 +34,10 @@ public class RegisterController {
     private UserServiceImpl userService;
     @Autowired
     private RedisUtil redisUtil;
+
+    @NoRepeatRequest(seconds = 60, maxCount = 1)
     @PostMapping("/code")
-    public Result getCode(@RequestBody String info){
+    public Result getCode(@RequestBody String info) throws Exception {
         JSONObject jsonObject = JSON.parseObject(info);
         String email = jsonObject.getString("email");
         String userVertifyCode = (jsonObject.getString("userVertifyCode")).toUpperCase();
@@ -41,21 +45,17 @@ public class RegisterController {
         if(!StrUtil.equals(serverVertifyCode, userVertifyCode)){
             return Result.failure(6101, "异常请求");
         }
-        try{
-            String mailRandVertifyCode = MailUtil.getMailRandVertifyCode(4);
-            redisUtil.set(email+"vertifycode", mailRandVertifyCode,3*60);
-            String mailContent = MailUtil.getMailContent(mailRandVertifyCode);
-            MailUtil.sendVertify(email, mailContent);
-            return Result.success(SEND_VERTIFYCODE_SUCCESS);
-        }catch(Exception e){
-            return Result.failure(e.getMessage());
-        }
+        String mailRandVertifyCode = MailUtil.getMailRandVertifyCode(4);
+        redisUtil.set(email+"vertifycode", mailRandVertifyCode,3*60);
+        String mailContent = MailUtil.getMailContent(mailRandVertifyCode);
+        String s = MailUtil.sendVertify(email, mailContent);
+        return Result.success(SEND_VERTIFYCODE_SUCCESS,s);
     }
     @PostMapping("/do")
     public Result register(@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);
         String email = jsonObject.getString("email");
-        String vertifycode_sys = redisUtil.get(email+"vertifycode");
+        String vertifycode_sys = (String) redisUtil.get(email+"vertifycode");
         Optional<String> op = Optional.ofNullable(vertifycode_sys);
         if(!op.isPresent()){
             return Result.failure("无效验证码");

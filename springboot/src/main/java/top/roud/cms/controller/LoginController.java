@@ -70,7 +70,7 @@ public class LoginController {
         String captcha = jsonObject.getString("vertifycode");
         HttpSession session = request.getSession();
         String sessionId = session.getId();
-        String captcha_sys = redisUtil.get("session-id:"+sessionId+"-captcha");
+        String captcha_sys = (String) redisUtil.get("session-id:"+sessionId+"-captcha");
         if(captcha_sys==null){
             return Result.failure(CAPTCHA_TIMEOUT);
         }

@@ -24,7 +24,6 @@ public class MD5Util {
             digest = md.digest(str.getBytes("UTF-8"));
             string = new BigInteger(1,digest).toString(16);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             return Result.failure(SYSTEM_INNER_ERROR).getMsg();
         }
         return string.toUpperCase();

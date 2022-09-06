@@ -1,5 +1,4 @@
 <template>
-
     <div style="margin: 10px 0;">
         <el-button type="primary" @click="add">新增</el-button>
         <el-button type="primary" @click="load">刷新</el-button>

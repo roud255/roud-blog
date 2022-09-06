@@ -13,13 +13,66 @@ import java.util.Date;
  */
 public class MailUtil {
     public static final String CA = "-request-roud-mail-";
+    private static String CONTENT_FIRST = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <title>邮箱验证码</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "<table style=\"width: 700px;margin: 0 auto;\">\n" +
+            "    <tbody>\n" +
+            "    <tr>\n" +
+            "        <td>\n" +
+            "            <div id=\"top\" style=\"width: 700px;border-bottom: 1px solid #ccc;margin: 0 auto 30px;\">\n" +
+            "                <table style=\"font: 12px Tahoma, Arial, 宋体;height: 40px;\">\n" +
+            "                    <tbody><tr><td>\n" +
+            "                        <h1>邮箱验证码</h>\n" +
+            "                    </td></tr></tbody>\n" +
+            "                </table>\n" +
+            "            </div>\n" +
+            "\n" +
+            "            <div id=\"content\" style=\"width: 680px;padding: 0 10px;margin: 0 auto;\">\n" +
+            "                <div id=\"content_top\" style=\"line-height: 1.5;font-size: 14px;margin-bottom: 25px;color: #4d4d4d;\">\n" +
+            "                    <strong style=\"display: block;margin-bottom: 15px;\">尊敬的用户：您好！</strong>\n" +
+            "                    <strong style=\"display: block;margin-bottom: 15px;\">\n" +
+            "                        您正在进行<span style=\"color: #f60;font-size: 16px;\">注册账号</span>操作，请在验证码中输入以下验证码完成操作：\n" +
+            "                    </strong>\n" +
+            "                    <div id=\"verificationCode\" style=\"color: #f60;font-size: 48px;height: 100px;width: 680px;text-align: center;margin: 30px 0;\">\n" +
+            "                        <p id=\"codetext\" style=\"line-height: 100px\">";
+
+    private static String CONTENT_SECOND = "</p>\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "                <div id=\"content_bottom\" style=\"margin-bottom: 30px;\">\n" +
+            "                    <small style=\"display: block;margin-bottom: 20px;font-size: 12px;color: #747474;\">\n" +
+            "                        注意：此操作可能会修改您的密码、登录邮箱或绑定手机。如非本人操作，请及时登录并修改密码以保证帐户安全\n" +
+            "                        <br>（工作人员不会向你索取此验证码，请勿泄漏！)\n" +
+            "                    </small>\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "            <div id=\"bottom\" style=\"width: 700px;margin: 0 auto;\">\n" +
+            "                <div style=\"padding: 10px 10px 0;border-top: 1px solid #ccc;color: #747474;margin-bottom: 20px;line-height: 1.3em;font-size: 12px;\">\n" +
+            "                    <p>此为系统邮件，请勿回复<br>\n" +
+            "                        请保管好您的邮箱，避免账号被他人盗用\n" +
+            "                    </p>\n" +
+            "                    <p id=\"sign\" style=\"text-align: right;font-size: 16px;color: #FE4F70;\">roud.top</p>\n" +
+            "                </div>\n" +
+            "            </div>\n" +
+            "        </td>\n" +
+            "    </tr>\n" +
+            "    </tbody>\n" +
+            "</table>\n" +
+            "</body>";
+
     /**
      * 发送验证码邮件（html格式）
      * @param receiver
      * @param content
      */
-    public static void sendVertify (String receiver, String content) throws Exception{
-        cn.hutool.extra.mail.MailUtil.send(receiver,"验证码", content,true, null);
+    public static String  sendVertify (String receiver, String content){
+        String result = cn.hutool.extra.mail.MailUtil.send(receiver, "验证码", content, true, null);
+        return result;
     }
 
     /**
@@ -28,57 +81,7 @@ public class MailUtil {
      * @return
      */
     public static String getMailContent(String code){
-        String content = "<!DOCTYPE html>\n" +
-                "<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
-                "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>邮箱验证码</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<table style=\"width: 700px;margin: 0 auto;\">\n" +
-                "    <tbody>\n" +
-                "    <tr>\n" +
-                "        <td>\n" +
-                "            <div id=\"top\" style=\"width: 700px;border-bottom: 1px solid #ccc;margin: 0 auto 30px;\">\n" +
-                "                <table style=\"font: 12px Tahoma, Arial, 宋体;height: 40px;\">\n" +
-                "                    <tbody><tr><td>\n" +
-                "                        <h1>邮箱验证码</h>\n" +
-                "                    </td></tr></tbody>\n" +
-                "                </table>\n" +
-                "            </div>\n" +
-                "\n" +
-                "            <div id=\"content\" style=\"width: 680px;padding: 0 10px;margin: 0 auto;\">\n" +
-                "                <div id=\"content_top\" style=\"line-height: 1.5;font-size: 14px;margin-bottom: 25px;color: #4d4d4d;\">\n" +
-                "                    <strong style=\"display: block;margin-bottom: 15px;\">尊敬的用户：您好！</strong>\n" +
-                "                    <strong style=\"display: block;margin-bottom: 15px;\">\n" +
-                "                        您正在进行<span style=\"color: #f60;font-size: 16px;\">注册账号</span>操作，请在验证码中输入以下验证码完成操作：\n" +
-                "                    </strong>\n" +
-                "                    <div id=\"verificationCode\" style=\"color: #f60;font-size: 48px;height: 100px;width: 680px;text-align: center;margin: 30px 0;\">\n" +
-                "                        <p id=\"codetext\" style=\"line-height: 100px\">" +
-                code +
-                "</p>\n" +
-                "                    </div>\n" +
-                "                </div>\n" +
-                "                <div id=\"content_bottom\" style=\"margin-bottom: 30px;\">\n" +
-                "                    <small style=\"display: block;margin-bottom: 20px;font-size: 12px;color: #747474;\">\n" +
-                "                        注意：此操作可能会修改您的密码、登录邮箱或绑定手机。如非本人操作，请及时登录并修改密码以保证帐户安全\n" +
-                "                        <br>（工作人员不会向你索取此验证码，请勿泄漏！)\n" +
-                "                    </small>\n" +
-                "                </div>\n" +
-                "            </div>\n" +
-                "            <div id=\"bottom\" style=\"width: 700px;margin: 0 auto;\">\n" +
-                "                <div style=\"padding: 10px 10px 0;border-top: 1px solid #ccc;color: #747474;margin-bottom: 20px;line-height: 1.3em;font-size: 12px;\">\n" +
-                "                    <p>此为系统邮件，请勿回复<br>\n" +
-                "                        请保管好您的邮箱，避免账号被他人盗用\n" +
-                "                    </p>\n" +
-                "                    <p id=\"sign\" style=\"text-align: right;font-size: 16px;color: #FE4F70;\">roud.top</p>\n" +
-                "                </div>\n" +
-                "            </div>\n" +
-                "        </td>\n" +
-                "    </tr>\n" +
-                "    </tbody>\n" +
-                "</table>\n" +
-                "</body>";
+        String content = CONTENT_FIRST + code + CONTENT_SECOND;
         return content;
     }
 

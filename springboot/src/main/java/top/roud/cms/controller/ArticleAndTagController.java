@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.impl.ArticleAndTagServiceImpl;
@@ -107,6 +108,7 @@ public class ArticleAndTagController {
         return Result.success(allArticleWithTags);
     }
 
+    @NoRepeatRequest(seconds = 60,maxCount = 30)
     @GetMapping("/page")
     public Result test(Integer num, Integer size){
         Page<Article> page = articleAndTagService.findPage(num, size);

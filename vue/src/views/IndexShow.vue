@@ -94,7 +94,7 @@
                     this.t_data = this.t_data_t;
                     this.count = this.t_data.length;
                     this.loading = false;
-                }, 2000);
+                }, 1000);
             }
         },
         computed:{
@@ -112,8 +112,13 @@
 </script>
 
 <style scoped>
+    *{
+        padding: 0;
+        margin: 0;
+    }
     .page-header{
         list-style-type: none;
+        min-width: 800px;
         overflow: hidden;
         background-color: #ffffff;
         position: fixed;
