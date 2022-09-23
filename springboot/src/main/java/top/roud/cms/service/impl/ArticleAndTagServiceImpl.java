@@ -1,18 +1,21 @@
 package top.roud.cms.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
+import top.roud.cms.entity.User;
 import top.roud.cms.mapper.ArticleAndTagMapper;
 import top.roud.cms.service.ArticleAndTagService;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @ClassName: ArticleAndTagServiceImpl
@@ -75,7 +78,6 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public Page<Article> findPage(Integer pageNum, Integer pageSize) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
-//        wrapper.isNotNull("id");
         Page<Article> result = articleAndTagMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
         List<Article> records = result.getRecords();
         if(0 == records.size()){
@@ -95,7 +97,37 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     }
 
     @Override
+    public Page<Article> findPage_second(Integer pageNum, Integer pageSize, String search) {
+        LambdaQueryWrapper<Article> wrapper = Wrappers.<Article>lambdaQuery();
+        if(StrUtil.isNotBlank(search)){
+            wrapper.like(Article::getTitle, search);
+        }
+        Page<Article> result = articleAndTagMapper.selectPage(new Page<>(pageNum, pageSize), wrapper);
+        List<Article> records = result.getRecords();
+        if(0 == records.size()){
+            return result;
+        }
+        List<Article> records_new = new LinkedList<>();
+        for(Article article : records){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        result.setRecords(records_new);
+        return result;
+    }
+
+
+    @Override
     public List<Tag> getTagByArticleId(Long id) {
         return articleAndTagMapper.getTagByArticleId(id);
+    }
+
+    @Override
+    public void delArticleWithTag(Long id) {
+        articleAndTagMapper.delArticleWithTag(id);
     }
 }

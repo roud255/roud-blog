@@ -3,7 +3,47 @@
     <el-scrollbar height="100vh">
         <div class="all-page">
             <div class="page-header">
-                <img src="http://roud.top/img/selfstyle.png" style="height: 60px"/>
+                <!--                k-->
+                <el-menu
+                        :default-active="activeIndex"
+                        class="el-menu-demo"
+                        mode="horizontal"
+                        :ellipsis="false"
+                        @select="handleSelect"
+                        @keyup.enter="inital"
+                >
+                    <el-menu-item index="0">
+                        <img src="http://roud.top/img/selfstyle.png" style="height: 60px"/>
+                    </el-menu-item>
+                    <div class="flex-grow" />
+                    <el-row :gutter="20" style="margin: 0 30px">
+                        <el-input
+                                v-model="input_search"
+                                class="w-50 m-2"
+                                placeholder="想搜就搜~"
+                                prefix-icon="search"
+                                clearable
+                                style="height: 30px; margin: 15px 0;"
+                        />
+                    </el-row>
+<!--                    <el-input-->
+<!--                            placeholder="请输入内容"-->
+<!--                            prefix-icon="el-icon-search"-->
+<!--                            v-model="input_search">-->
+<!--                    </el-input>-->
+                    <el-menu-item index="2">首页</el-menu-item>
+                    <el-sub-menu index="3">
+                        <template #title>个人中心</template>
+                        <el-menu-item index="2-1">信息</el-menu-item>
+                        <el-menu-item index="2-2">设置</el-menu-item>
+                        <el-menu-item index="2-2">退出</el-menu-item>
+<!--                        <el-sub-menu index="2-4">-->
+<!--                            <template #title>登出</template>-->
+<!--                            <el-menu-item index="2-4-1">退出</el-menu-item>-->
+<!--                            <el-menu-item index="2-4-2">注销</el-menu-item>-->
+<!--                        </el-sub-menu>-->
+                    </el-sub-menu>
+                </el-menu>
             </div>
             <div class="infinite-list-wrapper" style="overflow:visible;">
                     <ul
@@ -62,6 +102,8 @@
                 i : 2,
                 pages : 0,
                 tagtype : "success",
+                activeIndex : '1',
+                input_search : '',
             }
         },
         methods:{
@@ -69,10 +111,12 @@
                 this.$router.push('/article/show?id='+id.toString());
             },
             inital(){
-                request.get("/aat/page",{params:{
+                request.get("/aat/fp",{params:{
                         num : 1,
-                        size : 5
+                        size : 5,
+                        search : this.input_search
                     }}).then(res=>{
+                        this.count = 5;
                         this.t_data = res.data.records;
                         this.total = res.data.total;
                         this.pages = res.data.pages;
@@ -83,7 +127,7 @@
                 this.loading = true;
                 request.get("/aat/page",{params:{
                         num : this.i,
-                        size : 5
+                        size : 5,
                     }}).then(res=>{
                     this.t_data_t = this.t_data.concat(res.data.records);
                 });
@@ -130,6 +174,7 @@
     }
     .all-page{
         width: 100%;
+        min-width: 600px;
         height: 100%;
         min-height: 100vh;
         background: #f4f4f4;
@@ -208,5 +253,8 @@
     }
     .infinite-list-wrapper .list-item:hover .roud-cover{
         transform: scale(1.05);
+    }
+    .flex-grow {
+        flex-grow: 1;
     }
 </style>

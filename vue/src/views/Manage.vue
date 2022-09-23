@@ -8,8 +8,8 @@
                 <el-aside width="200px">
                     <Aside/>
                 </el-aside>
-                <el-main>
-                    <router-view></router-view>
+                <el-main style="height: calc(100vh - 60px);">
+                        <router-view></router-view>
                 </el-main>
             </el-container>
         </el-container>
@@ -17,9 +17,9 @@
 </template>
 
 <script>
-    import Header from "../components/Header";
-    import Aside from "../components/Aside";
-    import Main from "../components/UserManage";
+    import Header from "../components/manage/Header";
+    import Aside from "../components/manage/Aside";
+    import Main from "../components/manage/UserManage";
 
     export default {
         name:"Manage",

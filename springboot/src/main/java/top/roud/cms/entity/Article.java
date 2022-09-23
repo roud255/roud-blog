@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Article {
+public class Article implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String title;
     private String author;
@@ -30,6 +32,6 @@ public class Article {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date publishtime;
     private List<Tag> tags;
-
+    private List<Comment> comments;
 
 }

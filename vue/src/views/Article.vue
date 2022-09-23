@@ -4,7 +4,7 @@
 
 <script>
 
-    import ArticleEditor from "../components/ArticleEditor";
+    import ArticleEditor from "../components/manage/ArticleEditor";
     import ArticleShow from "../components/ArticleShow";
 
     export default {

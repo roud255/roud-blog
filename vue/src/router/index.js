@@ -6,15 +6,26 @@ import Editor from "@/views/Article";
 
 const routes = [
     {
-      path: '/',
+      path: '/manage',
       name: 'Manage',
       component: Manage,
       children:[
           {
               path: 'user',
               name: 'UserManage',
-              component: ()=>import("@/components/UserManage")
+              component: ()=>import("@/components/manage/UserManage")
+          },
+          {
+              path: 'article',
+              name: 'ArticleManage',
+              component: ()=>import("@/components/manage/ArticleManage")
+          },
+          {
+              path: 'edit',
+              name: 'ArticleEdit',
+              component: ()=>import("@/components/manage/ArticleEditor")
           }
+
       ]
     },
 
@@ -45,11 +56,11 @@ const routes = [
         name: 'Article',
         component: Editor,
         children: [
-            {
-                path: 'edit',
-                name: 'edit',
-                component: ()=>import("@/components/ArticleEditor")
-            },
+            // {
+            //     path: 'edit',
+            //     name: 'edit',
+            //     component: ()=>import("@/components/ArticleEditor")
+            // },
             {
                 path: 'show',
                 name: 'show',

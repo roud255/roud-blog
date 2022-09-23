@@ -114,4 +114,22 @@ public class ArticleAndTagController {
         Page<Article> page = articleAndTagService.findPage(num, size);
         return Result.success(page);
     }
+
+    @GetMapping("fp")
+    public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search){
+        Page<Article> page =  articleAndTagService.findPage_second(num, size, search);
+        return Result.success(page);
+    }
+
+    @GetMapping("fps")
+    public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
+        return Result.success(page);
+    }
+
+    @DeleteMapping("/del/{id}")
+    public Result del(@PathVariable Long id){
+        articleAndTagService.delArticleWithTag(id);
+        return Result.success();
+    }
 }

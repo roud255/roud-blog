@@ -134,8 +134,8 @@
                     clearInterval(this.checkCodeBtn.timer);
                     // 定义定时器
                     request.post("/reg/code",{
-                            email: this.reg_form.email,
-                            userVertifyCode: md5(this.getUserEmailVertifyCode())
+                        email: this.reg_form.email,
+                        userVertifyCode: md5(this.getUserEmailVertifyCode())
                     }).then(res=>{
                         let resCode = res.code;
                         if(resCode=="1"){
@@ -187,5 +187,4 @@
 
 <style scoped>
     @import '../assets/css/reg_login.css';
-
 </style>

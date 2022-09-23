@@ -1,5 +1,5 @@
 <template>
-    <el-scrollbar height="100vh">
+    <el-scrollbar>
         <div style="position: relative; height:100%; min-width:850px; padding: 30px 30px;">
             <h1 style="margin:20px 0;font-size: 32px;font-weight: 100">Roud后台编辑系统</h1>
             <el-form
@@ -59,7 +59,7 @@
                     <el-form ref="ruleForm" style="width: max-content">
                         <el-form-item style="margin: 20px 0">
                             <el-button type="primary" @click="onSubmit">提交</el-button>
-                            <el-button>取消</el-button>
+                            <el-button @click="onCancel">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -99,7 +99,7 @@
 </style>
 <script>
     import {ElMessage} from "element-plus";
-    import request from "../utils/request";
+    import request from "../../utils/request";
     export default {
         name:"ArticleEditor",
         data() {
@@ -173,6 +173,8 @@
                     this.showWarningMessage("请正确填入内容")
                 }else if(this.form.tags.length==0){
                     this.showWarningMessage("标签不能为空")
+                }else if(this.form.tags.length>4){
+                    this.showWarningMessage("标签数不能大于4个且不推荐标签过长！")
                 }else{
                     request.post("/aat/add", this.form).then(res => {
                         if(res.code!="1"){
@@ -181,8 +183,11 @@
                             this.showSuccessMessage(res.msg);
                         }
                     });
-
+                    this.form={};
                 }
+            },
+            onCancel(){
+                this.form={};
             }
         },
         created() {

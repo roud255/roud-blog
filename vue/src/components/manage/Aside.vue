@@ -1,11 +1,12 @@
 <template>
     <div>
         <el-menu
-                default-active="1-1"
+                router
+                :default-active="this.$router.path"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
                 @close="handleClose"
-                style="min-height: calc(100vh - 60px); width: 200px"
+                style="height: calc(100vh - 60px); width: 200px"
         >
             <el-sub-menu index="1">
                 <template #title>
@@ -13,11 +14,28 @@
                     <span>系统管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="1-1">用户管理</el-menu-item>
+                    <el-menu-item index="user" >
+                        用户管理
+                    </el-menu-item>
                 </el-menu-item-group>
             </el-sub-menu>
 
             <el-sub-menu index="2">
+                <template #title>
+                    <el-icon><Document /></el-icon>
+                    <span>文章管理</span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item index="article">
+                        文章管理
+                    </el-menu-item>
+                    <el-menu-item index="edit">
+                        文章编辑
+                    </el-menu-item>
+                </el-menu-item-group>
+            </el-sub-menu>
+
+            <el-sub-menu index="3">
                 <template #title>
                     <el-icon><setting /></el-icon>
                     <span>系统设置</span>
@@ -31,8 +49,14 @@
 </template>
 
 <script>
+
     export default {
-        name: "Aside"
+        name: "Aside",
+        data(){
+            return{
+
+            }
+        },
     }
 </script>
 <style>

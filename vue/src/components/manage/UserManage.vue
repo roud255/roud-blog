@@ -30,7 +30,7 @@
                     <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
                         <template #reference>
-                            <el-button type="text">删除</el-button>
+                            <el-button link type="danger">删除</el-button>
                         </template>
                     </el-popconfirm>
                 </template>
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-    import request from "../utils/request";
+    import request from "../../utils/request";
     import {ElMessage } from 'element-plus'
 
     export default {
@@ -155,6 +155,21 @@
                     pageSize : this.pageSize,
                     search : this.search
                 }}).then(res =>{
+                    if(res.code=="80002"){
+                        this.showFailMessage(res.msg);
+                        let t = 10;
+                        this.timer = setInterval(()=>{
+                            if(t > 0){
+                                t--;
+                            }else{
+                                clearInterval(this.timer);
+                                this.timer = null;
+                                this.$router.push("/index/login");
+                            }
+                        },100)
+                        return;
+                    }
+
                     this.total = res.data.total;
                     this.tableData = res.data.records;
                 })

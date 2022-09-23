@@ -24,6 +24,7 @@
     export default {
         name: "Index",
         components:{
+
         }
     }
 
