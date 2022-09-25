@@ -16,23 +16,23 @@ mq
 
 > 注意将端口号改成自己配置的端口号，一般默认 8080
 
+#首页
+>http://localhost:8081/index/show
+
 #登录页
 >http://localhost:8081/index/login
 
 #注册页
->http://localhost:8081/index/login
+>http://localhost:8081/index/reg
 
 #后台管理用户管理页面
->http://localhost:8081/user
+>http://localhost:8081/manage/user
 
-#后台管理用户管理页面
->http://localhost:8081/user
-
-#博客首页
->http://localhost:8081/test
+#后台管理文章管理页面
+>http://localhost:8081/manage/article
 
 #博客编辑页
->http://localhost:8081/edit/i
+>http://localhost:8081/manage/edit
 
 # springboot-vue-demo
 
