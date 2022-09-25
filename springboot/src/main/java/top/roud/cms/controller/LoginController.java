@@ -3,11 +3,16 @@ package top.roud.cms.controller;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.impl.UserServiceImpl;
+import top.roud.cms.utils.JwtUtil;
 import top.roud.cms.utils.RedisUtil;
 
 import javax.imageio.ImageIO;
@@ -17,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static top.roud.cms.common.ResultCode.*;
@@ -79,9 +86,22 @@ public class LoginController {
         }
         User byEmailAndPwd = userService.findUserByPhonenumberAndPassword(phonenumber, password);
         Optional<User> op = Optional.ofNullable(byEmailAndPwd);
+        Map<String, Object> map = new HashMap();
         if(op.isPresent()){
-            return Result.success();
+            map.put("name", byEmailAndPwd.getNickname());
+            map.put("time", byEmailAndPwd.getRegistertime());
+            map.put("phone", byEmailAndPwd.getPhonenumber());
+            map.put("power", byEmailAndPwd.getPower());
+            map.put("type", byEmailAndPwd.getType());
+            String sign = JwtUtil.sign(String.valueOf(byEmailAndPwd.getId()), map);
+            return Result.success(new Token(sign));
         }
         return Result.failure(USER_NOT_EXIST);
+    }
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    class Token{
+        private String token;
     }
 }

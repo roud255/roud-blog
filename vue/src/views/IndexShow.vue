@@ -125,9 +125,10 @@
             ,
             load(){
                 this.loading = true;
-                request.get("/aat/page",{params:{
+                request.get("/aat/fp",{params:{
                         num : this.i,
                         size : 5,
+                        search : this.input_search
                     }}).then(res=>{
                     this.t_data_t = this.t_data.concat(res.data.records);
                 });

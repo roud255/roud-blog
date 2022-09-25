@@ -92,23 +92,12 @@
             }
             ,
             load(){
-                request.get("/aat/fps", {params:{
+                request.get("/manage/article/fps", {params:{
                         pageNum : this.currentPage,
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
                         if(res.code=="80002"){
-                            this.showFailMessage(res.msg);
-                            let t = 10;
-                            this.timer = setInterval(()=>{
-                                if(t > 0){
-                                    t--;
-                                }else{
-                                    clearInterval(this.timer);
-                                    this.timer = null;
-                                    this.$router.push("/index/login");
-                                }
-                            },100)
                             return;
                         }
                         this.total = res.data.total;
@@ -131,7 +120,7 @@
             handleDel(row){
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
-                request.delete("/aat/del/"+id).then(res =>{
+                request.delete("/manage/article/del/"+id).then(res =>{
                     this.showSuccessMessage(res.msg)
                 });
                 this.load();

@@ -73,6 +73,18 @@
 
             }
         },
+        created() {
+            if (localStorage.getItem('token')) {
+                request.get("/manage/user/info", {params:{
+                        token : localStorage.getItem('token'),
+                    }}).then(res =>{
+                    if(res.code!="80002"){
+                        this.showWarningMessage("已经存在登录账户！");
+                        this.$router.push("/manage/user");
+                    }
+                })
+            }
+        },
         methods:{
             showSuccessMessage(msg){
                 ElMessage.success({
@@ -118,7 +130,9 @@
                                 if(res.code!="1"){
                                     this.showWarningMessage(res.msg);
                                 }else {
-                                    this.showSuccessMessage("成功");
+                                    localStorage.setItem('token',res.data.token);
+                                    this.showSuccessMessage("登录成功！");
+                                    this.$router.push("/manage/user");
                                 }
                             });
                         }else {

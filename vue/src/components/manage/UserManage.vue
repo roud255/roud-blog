@@ -150,26 +150,25 @@
             }
             ,
             load(){
-                request.get("/user", {params:{
+                request.get("/manage/user/select", {params:{
                     pageNum : this.currentPage,
                     pageSize : this.pageSize,
                     search : this.search
                 }}).then(res =>{
                     if(res.code=="80002"){
-                        this.showFailMessage(res.msg);
-                        let t = 10;
-                        this.timer = setInterval(()=>{
-                            if(t > 0){
-                                t--;
-                            }else{
-                                clearInterval(this.timer);
-                                this.timer = null;
-                                this.$router.push("/index/login");
-                            }
-                        },100)
+                        // this.showFailMessage(res.msg);
+                        // let t = 10;
+                        // this.timer = setInterval(()=>{
+                        //     if(t > 0){
+                        //         t--;
+                        //     }else{
+                        //         clearInterval(this.timer);
+                        //         this.timer = null;
+                        //         this.$router.push("/index/login");
+                        //     }
+                        // },100)
                         return;
                     }
-
                     this.total = res.data.total;
                     this.tableData = res.data.records;
                 })
@@ -215,7 +214,7 @@
                 this.$refs['form'].validate(valid => {
                     if (valid) {
                         if(this.form.id){//更新
-                            request.put("/user", this.form).then(res =>{
+                            request.put("/manage/user/update", this.form).then(res =>{
                                 this.showSuccessMessage(res.msg)
                             });
                             this.dialogVisible = false;
@@ -224,7 +223,7 @@
                         }else{//新增
                             this.form["id"] = (new Date()).getTime();
                             this.form["registertime"] = this.getCurrentTime();
-                            request.post("/user", this.form).then(res =>{
+                            request.post("/manage/user/add", this.form).then(res =>{
                                 if(res.code=="1"){
                                     this.showSuccessMessage(res.msg);
                                 }else{
@@ -251,7 +250,7 @@
             handleDel(row){
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
-                request.delete("/user/"+id).then(res =>{
+                request.delete("/manage/user/del/"+id).then(res =>{
                     this.showSuccessMessage(res.msg)
                 });
                 this.load();

@@ -145,7 +145,10 @@
                 this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
             },
             loadTags(){
-                request.get("/aat/getAllTags").then(res=>{
+                request.get("/manage/tags/select").then(res=>{
+                    if(res.code=="80002"){
+                        return;
+                    }
                     let data = res.data;
                     let tags = [];
                     for(var i=0;i<data.length;i++){
@@ -176,7 +179,7 @@
                 }else if(this.form.tags.length>4){
                     this.showWarningMessage("标签数不能大于4个且不推荐标签过长！")
                 }else{
-                    request.post("/aat/add", this.form).then(res => {
+                    request.post("/manage/article/add", this.form).then(res => {
                         if(res.code!="1"){
                             this.showFailMessage(res.msg);
                         }else {

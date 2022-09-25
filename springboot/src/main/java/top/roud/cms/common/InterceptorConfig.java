@@ -16,6 +16,6 @@ import top.roud.cms.interceptor.JwtInterceptor;
 public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/**").excludePathPatterns("/login");
+        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/manage/**");
     }
 }

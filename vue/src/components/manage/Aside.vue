@@ -10,12 +10,12 @@
         >
             <el-sub-menu index="1">
                 <template #title>
-                    <el-icon><Stamp /></el-icon>
-                    <span>系统管理</span>
+                    <el-icon><User /></el-icon>
+                    <span>用户管理</span>
                 </template>
                 <el-menu-item-group>
                     <el-menu-item index="user" >
-                        用户管理
+                        用户列表
                     </el-menu-item>
                 </el-menu-item-group>
             </el-sub-menu>
@@ -27,7 +27,7 @@
                 </template>
                 <el-menu-item-group>
                     <el-menu-item index="article">
-                        文章管理
+                        文章列表
                     </el-menu-item>
                     <el-menu-item index="edit">
                         文章编辑

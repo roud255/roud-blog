@@ -5,12 +5,12 @@
         <div style="width: 100px">
             <el-dropdown>
                 <span class="el-dropdown-link" style="height: 60px; line-height: 60px">
-                  张三<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                  {{userName}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>个人信息</el-dropdown-item>
-                        <el-dropdown-item>退出系统</el-dropdown-item>
+                        <el-dropdown-item @click="logout">退出系统</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -18,7 +18,71 @@
     </div>
 </template>
 <script>
+    import {ElMessage } from 'element-plus'
+    import request from "../../utils/request";
     export default {
-        name:"Header"
+        name:"Header",
+        data(){
+            return{
+                userName : "default",
+            }
+        },
+        methods:{
+            showSuccessMessage(msg){
+                ElMessage.success({
+                    message: msg,
+                });
+            },
+            showFailMessage(msg){
+                ElMessage.error({
+                    message: msg,
+                });
+            }
+            ,
+            load(){
+                if (localStorage.getItem('token')) {
+                    request.get("/manage/user/info", {params:{
+                            token : localStorage.getItem('token'),
+                        }}).then(res =>{
+                        if(res.code=="80002"){
+                            this.showFailMessage(res.msg);
+                            // let t = 10;
+                            // this.timer = setInterval(()=>{
+                            //     if(t > 0){
+                            //         t--;
+                            //     }else{
+                            //         clearInterval(this.timer);
+                            //         this.timer = null;
+                            //         this.$router.push("/index/login");
+                            //     }
+                            // },100);
+                            this.$router.push("/index/login");
+                            return;
+                        };
+                        this.userName = res.data.name;
+                    })
+                }else{
+                    this.showFailMessage("请先登录！");
+                    let t = 10;
+                    this.timer = setInterval(()=>{
+                        if(t > 0){
+                            t--;
+                        }else{
+                            clearInterval(this.timer);
+                            this.timer = null;
+                            this.$router.push("/index/login");
+                        }
+                    },100);
+                    this.$router.push("/index/login");
+                }
+            },
+            logout() {
+                localStorage.clear();
+                this.$router.push("/index/login"); //跳回登录地址
+            },
+        },
+        created() {
+            this.load();
+        }
     }
 </script>
