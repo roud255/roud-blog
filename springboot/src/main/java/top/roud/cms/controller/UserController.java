@@ -2,7 +2,7 @@ package top.roud.cms.controller;
 
 import top.roud.cms.common.Result;
 import top.roud.cms.entity.User;
-import top.roud.cms.service.impl.UserServiceImpl;
+import top.roud.cms.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ import static top.roud.cms.common.ResultCode.EMAIL_HAS_EXISTED;
 @RequestMapping("/user")
 public class UserController {
     @Resource
-    private UserServiceImpl userService;
+    private UserService userService;
     @PostMapping
     public Result save(@RequestBody User user){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());

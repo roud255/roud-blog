@@ -3,6 +3,7 @@ import Manage from "@/views/Manage";
 import Index from "@/views/Index";
 import IndexShow from "@/views/IndexShow";
 import Editor from "@/views/Article";
+import NotFound from "@/views/NotFound";
 
 const routes = [
     {
@@ -56,17 +57,22 @@ const routes = [
         name: 'Article',
         component: Editor,
         children: [
-            // {
-            //     path: 'edit',
-            //     name: 'edit',
-            //     component: ()=>import("@/components/ArticleEditor")
-            // },
             {
                 path: 'show',
                 name: 'show',
                 component: ()=>import("@/components/ArticleShow")
             }
         ]
+    },
+    {
+        path: '/',
+        name: 'default',
+        component: IndexShow,
+    },
+    {
+        name: 'NotFound',
+        path: '/:pathMatch(.*)*',
+        component: NotFound
     },
 ]
 const router = createRouter({

@@ -4,15 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.entity.User;
-import top.roud.cms.service.impl.ArticleAndTagServiceImpl;
-import top.roud.cms.service.impl.UserServiceImpl;
+import top.roud.cms.service.ArticleAndTagService;
+import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
 
 import javax.annotation.Resource;
@@ -35,10 +34,10 @@ import static top.roud.cms.common.ResultCode.TOKEN_INVALID;
 @RestController
 @RequestMapping("/manage")
 public class ManageController {
-    @Autowired
-    private ArticleAndTagServiceImpl articleAndTagService;
     @Resource
-    private UserServiceImpl userService;
+    private ArticleAndTagService articleAndTagService;
+    @Resource
+    private UserService userService;
     @PostMapping("/user/add")
     public Result save(@RequestBody User user){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());

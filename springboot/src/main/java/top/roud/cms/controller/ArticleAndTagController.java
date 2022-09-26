@@ -4,15 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
-import top.roud.cms.service.impl.ArticleAndTagServiceImpl;
+import top.roud.cms.service.ArticleAndTagService;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,8 +29,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/aat")
 public class ArticleAndTagController {
-    @Autowired
-    private ArticleAndTagServiceImpl articleAndTagService;
+    @Resource
+    private ArticleAndTagService articleAndTagService;
     @PostMapping("/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);

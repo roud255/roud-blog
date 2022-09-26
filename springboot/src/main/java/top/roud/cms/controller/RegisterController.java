@@ -3,18 +3,15 @@ package top.roud.cms.controller;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
-import top.roud.cms.common.ResultCode;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
-import top.roud.cms.service.impl.UserServiceImpl;
+import top.roud.cms.service.UserService;
 import top.roud.cms.utils.MailUtil;
 import top.roud.cms.utils.RedisUtil;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -31,8 +28,8 @@ import static top.roud.cms.common.ResultCode.*;
 @RequestMapping("/reg")
 public class RegisterController {
     @Resource
-    private UserServiceImpl userService;
-    @Autowired
+    private UserService userService;
+    @Resource
     private RedisUtil redisUtil;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)

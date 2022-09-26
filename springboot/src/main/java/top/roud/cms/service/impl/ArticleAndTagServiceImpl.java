@@ -14,6 +14,7 @@ import top.roud.cms.entity.User;
 import top.roud.cms.mapper.ArticleAndTagMapper;
 import top.roud.cms.service.ArticleAndTagService;
 
+import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Service
 public class ArticleAndTagServiceImpl implements ArticleAndTagService {
-    @Autowired
+    @Resource
     private ArticleAndTagMapper articleAndTagMapper;
     @Override
     public void insertArticle(Article article) {

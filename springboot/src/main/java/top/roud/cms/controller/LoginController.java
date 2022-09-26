@@ -6,15 +6,16 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
+import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
-import top.roud.cms.service.impl.UserServiceImpl;
+import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
 import top.roud.cms.utils.RedisUtil;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +41,9 @@ import static top.roud.cms.utils.CaptchaUtil.getCode;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    @Autowired
-    private UserServiceImpl userService;
-    @Autowired
+    @Resource
+    private UserService userService;
+    @Resource
     private RedisUtil redisUtil;
     @GetMapping
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
@@ -69,6 +70,7 @@ public class LoginController {
             return Result.failure(e.getMessage());
         }
     }
+    @NoRepeatRequest(seconds = 10, maxCount = 3)
     @PostMapping
     public Result login(HttpServletRequest request,@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);
