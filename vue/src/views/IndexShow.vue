@@ -118,6 +118,7 @@
                         search : this.input_search
                     }}).then(res=>{
                         this.count = 5;
+                        this.i = 2;
                         this.t_data = res.data.records;
                         this.total = res.data.total;
                         this.pages = res.data.pages;

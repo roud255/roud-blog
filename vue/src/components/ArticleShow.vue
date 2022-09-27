@@ -44,6 +44,10 @@
                 request.get("/aat/getArticleById",{params:{
                         id : get_id,
                     }}).then(res=>{
+                        if(res.code != "1"){
+                            this.$router.push("/notfound");
+                            return;
+                        }
                         let t_data = res.data;
                         this.data = t_data.postbody;
                         this.title = t_data.title;
