@@ -37,13 +37,25 @@
 
             <el-sub-menu index="3">
                 <template #title>
-                    <el-icon><setting /></el-icon>
-                    <span>系统设置</span>
+                    <el-icon><Location /></el-icon>
+                    <span>黑名单管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="2-1">权限管理</el-menu-item>
+                    <el-menu-item index="article">
+                        黑名单列表
+                    </el-menu-item>
                 </el-menu-item-group>
             </el-sub-menu>
+
+<!--            <el-sub-menu index="3">-->
+<!--                <template #title>-->
+<!--                    <el-icon><setting /></el-icon>-->
+<!--                    <span>系统设置</span>-->
+<!--                </template>-->
+<!--                <el-menu-item-group>-->
+<!--                    <el-menu-item index="2-1">权限管理</el-menu-item>-->
+<!--                </el-menu-item-group>-->
+<!--            </el-sub-menu>-->
         </el-menu>
     </div>
 </template>

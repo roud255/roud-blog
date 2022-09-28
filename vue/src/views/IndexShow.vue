@@ -36,7 +36,7 @@
                         <template #title>个人中心</template>
                         <el-menu-item index="2-1">信息</el-menu-item>
                         <el-menu-item index="2-2">设置</el-menu-item>
-                        <el-menu-item index="2-3">后台</el-menu-item>
+                        <el-menu-item index="2-3" @click="$router.push(`/manage/user`)">后台</el-menu-item>
                         <el-menu-item index="2-4">退出</el-menu-item>
 <!--                        <el-sub-menu index="2-4">-->
 <!--                            <template #title>登出</template>-->

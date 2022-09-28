@@ -1,5 +1,8 @@
 package top.roud.cms.utils;
 
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,9 +14,12 @@ import java.util.Date;
  * @Date 2022/5/29
  * @Version 1.0
  */
+@Component
 public class MailUtil {
+    @Resource
+    private MD5Util md5Util;
     public static final String CA = "-request-roud-mail-";
-    private static String CONTENT_FIRST = "<!DOCTYPE html>\n" +
+    private String CONTENT_FIRST = "<!DOCTYPE html>\n" +
             "<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\">\n" +
             "<head>\n" +
             "    <meta charset=\"UTF-8\">\n" +
@@ -41,7 +47,7 @@ public class MailUtil {
             "                    <div id=\"verificationCode\" style=\"color: #f60;font-size: 48px;height: 100px;width: 680px;text-align: center;margin: 30px 0;\">\n" +
             "                        <p id=\"codetext\" style=\"line-height: 100px\">";
 
-    private static String CONTENT_SECOND = "</p>\n" +
+    private String CONTENT_SECOND = "</p>\n" +
             "                    </div>\n" +
             "                </div>\n" +
             "                <div id=\"content_bottom\" style=\"margin-bottom: 30px;\">\n" +
@@ -70,7 +76,7 @@ public class MailUtil {
      * @param receiver
      * @param content
      */
-    public static String  sendVertify (String receiver, String content){
+    public String  sendVertify (String receiver, String content){
         String result = cn.hutool.extra.mail.MailUtil.send(receiver, "验证码", content, true, null);
         return result;
     }
@@ -80,7 +86,7 @@ public class MailUtil {
      * @param code
      * @return
      */
-    public static String getMailContent(String code){
+    public String getMailContent(String code){
         String content = CONTENT_FIRST + code + CONTENT_SECOND;
         return content;
     }
@@ -90,7 +96,7 @@ public class MailUtil {
      * @param n
      * @return
      */
-    public static String getMailRandVertifyCode(int n){
+    public String getMailRandVertifyCode(int n){
         String randStr = "";
         for(int i = 0;i<n;i++){
             randStr += String.valueOf((int) (Math.random() * 10));
@@ -103,11 +109,11 @@ public class MailUtil {
      * @param email
      * @return
      */
-    public static String getServerVertifyCode(String email){
+    public String getServerVertifyCode(String email){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH");
         String date = dateFormat.format(new Date());
         String str = email + CA + date;
-        String vertify = MD5Util.md5(str);
+        String vertify = md5Util.md5(str);
         return vertify;
     }
 }

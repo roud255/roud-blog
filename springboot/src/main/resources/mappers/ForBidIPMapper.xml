@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.roud.cms.mapper.ForBidIPMapper">
+    <select id="selectForBidIPByIp" resultType="ForBidIP" parameterType="string">
+        select id,ip,reason,time from sv_forbidip where ip=#{ip}
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package top.roud.cms.utils;
 
+import org.springframework.stereotype.Component;
 import top.roud.cms.common.Result;
 
 import java.math.BigInteger;
@@ -15,8 +16,9 @@ import static top.roud.cms.common.ResultCode.SYSTEM_INNER_ERROR;
  * @Date 2022/5/29
  * @Version 1.0
  */
+@Component
 public class MD5Util {
-    public static String md5(String str) {
+    public String md5(String str) {
         byte[] digest = null;
         String string = null;
         try {

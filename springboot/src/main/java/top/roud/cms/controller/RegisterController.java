@@ -31,6 +31,8 @@ public class RegisterController {
     private UserService userService;
     @Resource
     private RedisUtil redisUtil;
+    @Resource
+    private MailUtil mailUtil;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)
     @PostMapping("/code")
@@ -38,14 +40,14 @@ public class RegisterController {
         JSONObject jsonObject = JSON.parseObject(info);
         String email = jsonObject.getString("email");
         String userVertifyCode = (jsonObject.getString("userVertifyCode")).toUpperCase();
-        String serverVertifyCode = MailUtil.getServerVertifyCode(email);
+        String serverVertifyCode = mailUtil.getServerVertifyCode(email);
         if(!StrUtil.equals(serverVertifyCode, userVertifyCode)){
             return Result.failure(6101, "异常请求");
         }
-        String mailRandVertifyCode = MailUtil.getMailRandVertifyCode(4);
+        String mailRandVertifyCode = mailUtil.getMailRandVertifyCode(4);
         redisUtil.set(email+"vertifycode", mailRandVertifyCode,3*60);
-        String mailContent = MailUtil.getMailContent(mailRandVertifyCode);
-        String s = MailUtil.sendVertify(email, mailContent);
+        String mailContent = mailUtil.getMailContent(mailRandVertifyCode);
+        String s = mailUtil.sendVertify(email, mailContent);
         return Result.success(SEND_VERTIFYCODE_SUCCESS,s);
     }
     @PostMapping("/do")

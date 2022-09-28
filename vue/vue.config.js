@@ -5,7 +5,9 @@ module.exports = defineConfig({
 // 跨域配置
 module.exports = {
   devServer: {
-    // port: 9876,
+    open: true,
+    host: 'localhost',
+    port: 8081,
     proxy: {                 //设置代理
       '/api': {              //设置拦截器 斜杠+拦截器名字
         target: 'http://localhost:8989',     //代理的目标地址

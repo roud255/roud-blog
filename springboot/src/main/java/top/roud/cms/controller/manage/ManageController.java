@@ -4,13 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
 import top.roud.cms.entity.Article;
+import top.roud.cms.entity.ForbidIP;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.ArticleAndTagService;
+import top.roud.cms.service.ForBidIPService;
 import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
 
@@ -38,6 +41,8 @@ public class ManageController {
     private ArticleAndTagService articleAndTagService;
     @Resource
     private UserService userService;
+    @Resource
+    private ForBidIPService forBidIPService;
     @PostMapping("/user/add")
     public Result save(@RequestBody User user){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
@@ -145,4 +150,27 @@ public class ManageController {
             return Result.failure(TOKEN_INVALID);
         }
     }
+
+    @GetMapping("/ip/select")
+    public Result selectIps(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        Result pages = forBidIPService.findPages(pageNum, pageSize, search);
+        return pages;
+    }
+    @Delete("/ip/sel/{ip}")
+    public Result delIp(@PathVariable Long id){
+        Result result = forBidIPService.del(id);
+        return result;
+    }
+    @PostMapping("/ip/add")
+    public Result add(@RequestBody ForbidIP forbidIP){
+        Result result = forBidIPService.save(forbidIP);
+        return result;
+    }
+
+    @PutMapping("/ip/update")
+    public Result update(@RequestBody ForbidIP forbidIP){
+        Result result = forBidIPService.update(forbidIP);
+        return result;
+    }
+
 }
