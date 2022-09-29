@@ -41,7 +41,7 @@
                     <span>黑名单管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="article">
+                    <el-menu-item index="forbidip">
                         黑名单列表
                     </el-menu-item>
                 </el-menu-item-group>

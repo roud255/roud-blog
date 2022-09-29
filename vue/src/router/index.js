@@ -4,6 +4,7 @@ import Index from "@/views/Index";
 import IndexShow from "@/views/IndexShow";
 import Editor from "@/views/Article";
 import NotFound from "@/views/NotFound";
+import ForBidIPManage from "@/components/manage/ForBidIPManage";
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
               path: 'edit',
               name: 'ArticleEdit',
               component: ()=>import("@/components/manage/ArticleEditor")
+          },
+          {
+              path: 'forbidip',
+              name: 'ForbidIP',
+              component: ForBidIPManage
           }
 
       ]

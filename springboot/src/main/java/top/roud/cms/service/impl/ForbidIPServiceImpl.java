@@ -34,7 +34,7 @@ public class ForbidIPServiceImpl implements ForBidIPService {
 
     @Override
     public ForbidIP selectForBidIPByIp(String ip) {
-        return selectForBidIPByIp(ip);
+        return forBidIPMapper.selectForBidIPByIp(ip);
     }
 
     @Override

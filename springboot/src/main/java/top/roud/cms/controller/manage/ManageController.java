@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
@@ -16,16 +15,15 @@ import top.roud.cms.service.ArticleAndTagService;
 import top.roud.cms.service.ForBidIPService;
 import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.utils.TimeTransUtil;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.EMAIL_HAS_EXISTED;
-import static top.roud.cms.common.ResultCode.TOKEN_INVALID;
+import static top.roud.cms.common.ResultCode.*;
 
 /**
  * @ClassName: ManageController
@@ -43,6 +41,11 @@ public class ManageController {
     private UserService userService;
     @Resource
     private ForBidIPService forBidIPService;
+    @Resource
+    private TimeTransUtil timeTransUtil;
+
+    private ForbidIP forbidIP;
+    private Article a;
     @PostMapping("/user/add")
     public Result save(@RequestBody User user){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
@@ -92,7 +95,7 @@ public class ManageController {
     @PostMapping("/article/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
-        Article a = new Article();
+        a = new Article();
         a.setId(System.currentTimeMillis());
         String title = jsonObject.getString("title");
         a.setTitle(title);
@@ -105,15 +108,13 @@ public class ManageController {
         String postbody = jsonObject.getString("postbody");
         a.setPostbody(postbody);
         String publishtime = jsonObject.getString("publishtime");
-        String dateTime = publishtime .replace("Z", " UTC"); //2019-06-27T16:00:00.000 UTC
-        SimpleDateFormat format_z = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//转换时区格式
-        SimpleDateFormat format_final = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date time= null;
         try {
-            time = format_z.parse(dateTime);
+            time = timeTransUtil.transUTCToZ(publishtime);
         } catch (ParseException e) {
             return Result.failure(e.getMessage());
         }
+
         a.setPublishtime(time);
         JSONArray tags = jsonObject.getJSONArray("tags");
         articleAndTagService.insertArticle(a);
@@ -156,20 +157,42 @@ public class ManageController {
         Result pages = forBidIPService.findPages(pageNum, pageSize, search);
         return pages;
     }
-    @Delete("/ip/sel/{ip}")
+    @DeleteMapping("/ip/del/{id}")
     public Result delIp(@PathVariable Long id){
         Result result = forBidIPService.del(id);
         return result;
     }
+    //时间传入重构
     @PostMapping("/ip/add")
-    public Result add(@RequestBody ForbidIP forbidIP){
-        Result result = forBidIPService.save(forbidIP);
+    public Result addip(@RequestBody String info){
+        JSONObject jsonObject = JSON.parseObject(info);
+        forbidIP = new ForbidIP();
+        forbidIP.setId(System.currentTimeMillis());
+        String ip = jsonObject.getString("ip");
+        ForbidIP forbidIP = forBidIPService.selectForBidIPByIp(ip);
+        Optional<ForbidIP> op = Optional.ofNullable(forbidIP);
+        if(op.isPresent()){
+            return Result.failure(DATA_EXISTED);
+        }
+        this.forbidIP.setIp(ip);
+        String reason = jsonObject.getString("reason");
+        this.forbidIP.setReason(reason);
+
+        String time = jsonObject.getString("time");
+        Date t = null;
+        try {
+            t = timeTransUtil.transUTCToZ(time);
+        } catch (ParseException e) {
+            return Result.failure(e.getMessage());
+        }
+        this.forbidIP.setTime(t);
+        Result result = forBidIPService.save(this.forbidIP);
         return result;
     }
 
     @PutMapping("/ip/update")
-    public Result update(@RequestBody ForbidIP forbidIP){
-        Result result = forBidIPService.update(forbidIP);
+    public Result update(@RequestBody ForbidIP f){
+        Result result = forBidIPService.update(f);
         return result;
     }
 
