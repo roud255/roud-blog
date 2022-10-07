@@ -32,5 +32,7 @@
 </script>
 
 <style scoped>
-
+    .common-layout{
+        min-width: 800px;
+    }
 </style>

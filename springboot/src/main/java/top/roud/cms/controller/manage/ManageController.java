@@ -15,6 +15,7 @@ import top.roud.cms.service.ArticleAndTagService;
 import top.roud.cms.service.ForBidIPService;
 import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.utils.MD5Util;
 import top.roud.cms.utils.TimeTransUtil;
 
 import javax.annotation.Resource;
@@ -43,6 +44,8 @@ public class ManageController {
     private ForBidIPService forBidIPService;
     @Resource
     private TimeTransUtil timeTransUtil;
+    @Resource
+    private MD5Util md5Util;
 
     private ForbidIP forbidIP;
     private Article a;
@@ -53,6 +56,7 @@ public class ManageController {
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
+        user.setPassword(md5Util.md5(user.getPassword()));
         return userService.save(user);
     }
     @GetMapping("/user/select")
@@ -61,6 +65,7 @@ public class ManageController {
     }
     @PutMapping("/user/update")
     public Result update(@RequestBody User user){
+        user.setPassword(md5Util.md5(user.getPassword()));
         return userService.updateById(user);
     }
     @DeleteMapping("/user/del/{id}")

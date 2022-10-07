@@ -31,6 +31,7 @@
         </el-form-item>
         <p class="emptyLine" style="height: 61px"></p>
         <el-form-item label-width="5%">
+            <!--自定义提交按钮-->
             <el-button type="submitbtn" @click="onSubmit">登录</el-button>
         </el-form-item>
         <el-checkbox v-model="notice" label="" size="large" style="margin-left: 50px;">
@@ -151,5 +152,4 @@
 </script>
 <style scoped>
     @import '../assets/css/reg_login.css';
-
 </style>

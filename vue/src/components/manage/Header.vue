@@ -2,7 +2,10 @@
     <div style="height: 60px;line-height: 60px;border-bottom: 1px solid #ccc; display: flex">
         <div style="width: 200px; padding: 0 50px; color: cornflowerblue; font-weight: bold">后台管理系统</div>
         <div style="flex: 1"></div>
-        <div style="width: 100px">
+        <div style="width: 160px">
+            <span style="margin: 0 10px">
+                <el-avatar> {{avatar}} </el-avatar>
+            </span>
             <el-dropdown>
                 <span class="el-dropdown-link" style="height: 60px; line-height: 60px">
                   {{userName}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -26,6 +29,7 @@
         data(){
             return{
                 userName : "default",
+                avatar : "",
             }
         },
         methods:{
@@ -61,6 +65,7 @@
                             return;
                         };
                         this.userName = res.data.name;
+                        this.avatar = this.userName.substring(0,2);
                     })
                 }else{
                     this.showFailMessage("请先登录！");
@@ -81,9 +86,22 @@
                 localStorage.clear();
                 this.$router.push("/index/login"); //跳回登录地址
             },
+            _isMobile() {
+                let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+                return flag;
+            }
         },
         created() {
+            if(this._isMobile()){
+                this.$router.push("/errorcomputermodel");
+                return;
+            }
             this.load();
         }
     }
 </script>
+<style scoped>
+    .el-avatar {
+        --el-avatar-bg-color: #409eff;
+    }
+</style>

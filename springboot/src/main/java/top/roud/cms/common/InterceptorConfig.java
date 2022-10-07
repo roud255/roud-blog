@@ -3,6 +3,7 @@ package top.roud.cms.common;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import top.roud.cms.interceptor.IPInterceptor;
 import top.roud.cms.interceptor.JwtInterceptor;
 
 /**
@@ -17,5 +18,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/manage/**");
+        registry.addInterceptor(new IPInterceptor()).addPathPatterns("/**");
     }
 }

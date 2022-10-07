@@ -8,6 +8,7 @@ import top.roud.cms.common.Result;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
+import top.roud.cms.utils.MD5Util;
 import top.roud.cms.utils.MailUtil;
 import top.roud.cms.utils.RedisUtil;
 
@@ -33,6 +34,8 @@ public class RegisterController {
     private RedisUtil redisUtil;
     @Resource
     private MailUtil mailUtil;
+    @Resource
+    private MD5Util md5Util;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)
     @PostMapping("/code")
@@ -74,7 +77,7 @@ public class RegisterController {
         user = new User();
         user.setId(System.currentTimeMillis());
         user.setNickname(nickname);
-        user.setPassword(password);
+        user.setPassword(md5Util.md5(password));
         user.setPhonenumber(email);
         user.setRegistertime(new Date());
         user.setType(1);

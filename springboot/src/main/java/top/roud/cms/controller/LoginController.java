@@ -13,6 +13,7 @@ import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
 import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.utils.MD5Util;
 import top.roud.cms.utils.RedisUtil;
 
 import javax.annotation.Resource;
@@ -45,6 +46,8 @@ public class LoginController {
     private UserService userService;
     @Resource
     private RedisUtil redisUtil;
+    @Resource
+    private MD5Util md5Util;
     @GetMapping
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
         try{
@@ -57,9 +60,8 @@ public class LoginController {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", new Date().getTime());
             String str = getCode();
-            HttpSession session = request.getSession();
-            String sessionId = session.getId();
-            redisUtil.set("session-id:"+sessionId+"-captcha",str,60);
+            String ip = request.getRemoteAddr();
+            redisUtil.set("ip-"+ip+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
             ServletOutputStream out = response.getOutputStream();
             ImageIO.write(img, "JPG", out);
@@ -77,16 +79,15 @@ public class LoginController {
         String phonenumber = jsonObject.getString("email");
         String password = jsonObject.getString("password");
         String captcha = jsonObject.getString("vertifycode");
-        HttpSession session = request.getSession();
-        String sessionId = session.getId();
-        String captcha_sys = (String) redisUtil.get("session-id:"+sessionId+"-captcha");
+        String ip = request.getRemoteAddr();
+        String captcha_sys = (String) redisUtil.get("ip-"+ip+"-captcha");
         if(captcha_sys==null){
             return Result.failure(CAPTCHA_TIMEOUT);
         }
         if(!StrUtil.equals(captcha.toUpperCase(), captcha_sys.toUpperCase())){
             return Result.failure(CAPTCHA_ERROR);
         }
-        User byEmailAndPwd = userService.findUserByPhonenumberAndPassword(phonenumber, password);
+        User byEmailAndPwd = userService.findUserByPhonenumberAndPassword(phonenumber, md5Util.md5(password));
         Optional<User> op = Optional.ofNullable(byEmailAndPwd);
         Map<String, Object> map = new HashMap();
         if(op.isPresent()){

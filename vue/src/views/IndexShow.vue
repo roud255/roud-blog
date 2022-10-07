@@ -3,48 +3,17 @@
     <el-scrollbar height="100vh">
         <div class="all-page">
             <div class="page-header">
-                <!--                k-->
-                <el-menu
-                        :default-active="activeIndex"
-                        class="el-menu-demo"
-                        mode="horizontal"
-                        :ellipsis="false"
-                        @select="handleSelect"
-                        @keyup.enter="inital"
-                >
-                    <el-menu-item index="0">
-                        <img src="http://roud.top/img/selfstyle.png" style="height: 60px"/>
-                    </el-menu-item>
-                    <div class="flex-grow" />
-                    <el-row :gutter="20" style="margin: 0 30px">
-                        <el-input
-                                v-model="input_search"
-                                class="w-50 m-2"
-                                placeholder="想搜就搜~"
-                                prefix-icon="search"
-                                clearable
-                                style="height: 30px; margin: 15px 0;"
-                        />
-                    </el-row>
-<!--                    <el-input-->
-<!--                            placeholder="请输入内容"-->
-<!--                            prefix-icon="el-icon-search"-->
-<!--                            v-model="input_search">-->
-<!--                    </el-input>-->
-                    <el-menu-item index="2">首页</el-menu-item>
-                    <el-sub-menu index="3">
-                        <template #title>个人中心</template>
-                        <el-menu-item index="2-1">信息</el-menu-item>
-                        <el-menu-item index="2-2">设置</el-menu-item>
-                        <el-menu-item index="2-3" @click="$router.push(`/manage/user`)">后台</el-menu-item>
-                        <el-menu-item index="2-4">退出</el-menu-item>
-<!--                        <el-sub-menu index="2-4">-->
-<!--                            <template #title>登出</template>-->
-<!--                            <el-menu-item index="2-4-1">退出</el-menu-item>-->
-<!--                            <el-menu-item index="2-4-2">注销</el-menu-item>-->
-<!--                        </el-sub-menu>-->
-                    </el-sub-menu>
-                </el-menu>
+                    <img src="http://roud.top/img/selfstyle.png" style="height: 60px" v-if="styleimgshow"/>
+                    <el-input
+                            v-model="input_search"
+                            class="w-50 m-2"
+                            placeholder="想搜就搜~"
+                            prefix-icon="search"
+                            clearable
+                            @keyup.enter="inital"
+                            style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);"
+                    />
+                    <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>
             </div>
             <div class="infinite-list-wrapper" style="overflow:visible;">
                     <ul
@@ -70,7 +39,7 @@
                                             <el-tag
                                                     v-for="tag in item.tags"
                                                     :key="tag.tagname"
-                                                    type="tagtype"
+                                                    type=""
                                                     effect="dark">
                                                 {{ tag.tagname }}
                                             </el-tag>
@@ -105,11 +74,15 @@
                 tagtype : "success",
                 activeIndex : '1',
                 input_search : '',
+                styleimgshow : true,
             }
         },
         methods:{
             forward(id){
-                this.$router.push('/article/show?id='+id.toString());
+                //打开新窗口
+                window.open('/article/show?id='+id.toString(),'_blank');
+                //直接在
+                // this.$router.push('/article/show?id='+id.toString());
             },
             inital(){
                 request.get("/aat/fp",{params:{
@@ -142,7 +115,19 @@
                     this.count = this.t_data.length;
                     this.loading = false;
                 }, 1000);
-            }
+            },
+            _isMobile() {
+                let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+                return flag;
+            },
+            handleResize (event) {
+                this.fullWidth = document.documentElement.clientWidth;
+                if (this.fullWidth < 810) {
+                    this.styleimgshow = false;
+                } else {
+                    this.styleimgshow = true;
+                }
+            },
         },
         computed:{
             noMore:function () {
@@ -153,8 +138,22 @@
             }
         },
         created() {
+
+            if(this._isMobile()){
+                this.$router.push("/errorcomputermodel");
+                return;
+            }
+            this.fullWidth = document.documentElement.clientWidth;
+            if (this.fullWidth < 810) {
+                this.styleimgshow = false;
+            } else {
+                this.styleimgshow = true;
+            }
             this.inital();
-        }
+            window.addEventListener('resize', this.handleResize)
+        },beforeDestroy: function () {
+            window.removeEventListener('resize', this.handleResize)
+        },
     }
 </script>
 
@@ -165,19 +164,19 @@
     }
     .page-header{
         list-style-type: none;
-        min-width: 800px;
         overflow: hidden;
         background-color: #ffffff;
         position: fixed;
         top: 0;
         height: 60px;
         width: 100%;
+        min-width: 800px;
         padding: 0 30px;
         z-index: 999;
     }
     .all-page{
         width: 100%;
-        min-width: 600px;
+        min-width: 800px;
         height: 100%;
         min-height: 100vh;
         background: #f4f4f4;
@@ -196,7 +195,6 @@
     .infinite-list-wrapper .list-item {
          display: flex;
          align-items: center;
-         /*justify-content: center;*/
          width: 50%;
          min-width: 600px;
          height: 160px;
@@ -206,18 +204,6 @@
          color: black;
          cursor: pointer;
      }
-
-    /*.infinite-list-wrapper .list-item:hover {*/
-    /*    color: #3f89ec;*/
-    /*}*/
-    /*.infinite-list-wrapper .list-item:hover #text_author_a_time{*/
-    /*    color: #3f89ec !important;*/
-    /*}*/
-    /*.infinite-list-wrapper .list-item:hover .el-main-text p{*/
-    /*    color: #3f89ec;*/
-    /*}*/
-
-    /*#f4f4f4 #ffffff*/
     .infinite-list-wrapper .list-item + .list-item {
         margin-top: 10px;
     }
@@ -257,7 +243,16 @@
     .infinite-list-wrapper .list-item:hover .roud-cover{
         transform: scale(1.05);
     }
-    .flex-grow {
-        flex-grow: 1;
+    .go_manage_btn{
+        position: absolute;
+        color: #757a77;
+        top:50%;
+        right: 10%;
+        transform: translate(-50%,-50%);
+        cursor: pointer;
     }
+    .go_manage_btn:hover{
+        color: #0095ec;
+    }
+
 </style>

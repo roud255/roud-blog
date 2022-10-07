@@ -5,6 +5,7 @@ import IndexShow from "@/views/IndexShow";
 import Editor from "@/views/Article";
 import NotFound from "@/views/NotFound";
 import ForBidIPManage from "@/components/manage/ForBidIPManage";
+import ErrorComputerModel from "@/views/ErrorComputerModel";
 
 const routes = [
     {
@@ -74,6 +75,11 @@ const routes = [
         path: '/',
         name: 'default',
         component: IndexShow,
+    },
+    {
+        path: '/errorcomputermodel',
+        name: 'errorcomputermodel',
+        component: ErrorComputerModel,
     },
     {
         name: 'NotFound',
