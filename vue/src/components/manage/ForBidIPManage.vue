@@ -89,10 +89,10 @@
                 total : 0,
                 tableData : [],
                 rules: {
-                    //邮箱校验规则
+                    //ip校验规则
                     ip: [
                         { required: true, message: "请输入ip地址", trigger: "blur" },
-                        { pattern:/^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/g, message: "请输入正确的邮箱", trigger: "blur"}
+                        { pattern:/^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/g, message: "请输入正确格式的ip", trigger: "blur"}
                     ],
                     reason:[
                         { required: true, message: "请输入拉黑原因", trigger: "blur" },
