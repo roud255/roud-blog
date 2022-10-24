@@ -71,8 +71,9 @@
                 </el-form-item>
                 <el-form-item label="权　　限" prop="power">
                     <el-select v-model="form.power" placeholder="输入用户权限">
-                        <el-option label="aarrww---" value="0" />
-                        <el-option label="aarrrr---" value="1" />
+                        <el-option label="管理" value="0" />
+                        <el-option label="用户" value="1" />
+                        <el-option label="演示" value="2" />
                     </el-select>
                 </el-form-item>
             </el-form>

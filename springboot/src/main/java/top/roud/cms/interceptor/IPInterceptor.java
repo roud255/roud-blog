@@ -1,6 +1,8 @@
 package top.roud.cms.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.roud.cms.common.Result;
 import top.roud.cms.entity.ForbidIP;
@@ -19,8 +21,11 @@ import static top.roud.cms.common.ResultCode.PERMISSION_NO_ACCESS;
  * @date: 2022/9/28
  * @version:
  */
+/*
+bug标记：非controller普通类中使用@Resource或@Autowried注解注入Service或者Mapper接口就会出现注入为null的问题
+ */
 public class IPInterceptor implements HandlerInterceptor {
-    @Resource
+    @Autowired
     private ForBidIPService forBidIPService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
