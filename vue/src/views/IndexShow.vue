@@ -15,6 +15,12 @@
                     />
                     <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>
             </div>
+            <!--Advertisement-->
+<!--            <div class="roud_Advertisement" style="position: fixed; top: 200px; left: 60px; width: 200px; height: 400px;overflow: hidden; border-radius: 8px;" v-if="true">-->
+<!--                <el-icon style="position: absolute; top: 0%; right: 0%;"><CircleClose /></el-icon>-->
+<!--                <div style="position: absolute; top:10%; height: 90%; width: 100%;background: green"></div>-->
+<!--            </div>-->
+
             <div class="infinite-list-wrapper" style="overflow:visible;">
                     <ul
                         v-infinite-scroll="load"
@@ -138,7 +144,6 @@
             }
         },
         created() {
-
             if(this._isMobile()){
                 this.$router.push("/errorcomputermodel");
                 return;
