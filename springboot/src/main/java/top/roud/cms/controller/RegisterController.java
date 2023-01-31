@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
+import top.roud.cms.common.ResultCode;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
@@ -82,6 +83,7 @@ public class RegisterController {
         user.setRegistertime(new Date());
         user.setType(1);
         user.setPower("1");
-        return userService.save(user);
+//        return userService.save(user);
+        return Result.failure(ResultCode.SYSTEM_INNER_ERROR, "系统未开放注册功能，请联系管理员。");
     }
 }

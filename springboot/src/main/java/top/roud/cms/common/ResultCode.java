@@ -44,6 +44,7 @@ public enum ResultCode {
 	INTERFACE_FORBID_VISIT(60003, "该接口禁止访问"),
 	INTERFACE_ADDRESS_INVALID(60004, "接口地址无效"),
 	INTERFACE_REQUEST_TIMEOUT(60005, "接口请求超时"),
+	REGISTER_CLOSED(60006, "系统未开放注册功能"),
 	
 	/* 权限错误：70001-79999 */
 	PERMISSION_NO_ACCESS(70001, "无访问权限"),
