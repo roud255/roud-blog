@@ -84,6 +84,6 @@ public class RegisterController {
         user.setType(1);
         user.setPower("1");
 //        return userService.save(user);
-        return Result.failure(ResultCode.SYSTEM_INNER_ERROR, "系统未开放注册功能，请联系管理员。");
+        return Result.failure(ResultCode.REGISTER_CLOSED, "系统未开放注册功能，请联系管理员。");
     }
 }
