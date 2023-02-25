@@ -97,7 +97,8 @@
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
-                        if(res.code=="80002"){
+                        if(res.code!=="1"){
+                            this.showFailMessage(res.msg);
                             return;
                         }
                         this.total = res.data.total;

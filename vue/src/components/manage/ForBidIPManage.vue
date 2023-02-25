@@ -132,7 +132,8 @@
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
-                    if(res.code=="80002"){
+                    if(res.code!=="1"){
+                        this.showFailMessage(res.msg);
                         return;
                     }
                     this.total = res.data.total;
@@ -158,6 +159,10 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/ip/update", this.form).then(res =>{
+                                if(res.code!=="1"){
+                                    this.showFailMessage(res.msg);
+                                    return;
+                                }
                                 this.showSuccessMessage(res.msg)
                             });
                             this.dialogVisible = false;
