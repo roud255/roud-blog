@@ -159,7 +159,7 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/ip/update", this.form).then(res =>{
-                                if(!res.code ==="1"){
+                                if(res.code != "1"){
                                     this.showFailMessage(res.msg);
                                     return;
                                 }
@@ -198,7 +198,7 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/ip/del/"+id).then(res =>{
-                    if(!res.code ==="1"){
+                    if(res.code != "1"){
                         this.showFailMessage(res.msg);
                         return;
                     }
