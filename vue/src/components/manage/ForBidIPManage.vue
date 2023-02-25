@@ -193,7 +193,11 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/ip/del/"+id).then(res =>{
-                    this.showSuccessMessage(res.msg)
+                  if(res.code!=="1"){
+                    this.showFailMessage(res.msg);
+                    return;
+                  }
+                  this.showSuccessMessage(res.msg)
                 });
                 this.load();
             },
