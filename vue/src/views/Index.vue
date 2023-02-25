@@ -1,5 +1,10 @@
 <template>
     <div style="position: relative;min-height:100vh;min-width: 758px;overflow: hidden;">
+        <el-page-header @back="goBack" style="color:#ffffff; font-size: 16px !important; font-weight: 200 !important; margin-left: 5%" title="返回首页">
+            <template #content>
+                <span style="font-size: 16px; color: #ffffff; font-weight: 200"> 登录&注册 </span>
+            </template>
+        </el-page-header>
         <div class="bg-container">
         </div>
         <div style="position: absolute;
@@ -25,6 +30,14 @@
         name: "Index",
         components:{
 
+        },
+        data(){
+
+        },
+        methods:{
+            goBack(){
+                this.$router.push("/")
+            }
         }
     }
 
