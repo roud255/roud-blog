@@ -146,7 +146,7 @@
             },
             loadTags(){
                 request.get("/manage/tags/select").then(res=>{
-                    if(res.code=="80002"){
+                    if(!res.code ==="1"){
                         return;
                     }
                     let data = res.data;

@@ -156,7 +156,7 @@
                     pageSize : this.pageSize,
                     search : this.search
                 }}).then(res =>{
-                    if(res.code!=="1"){
+                    if(!res.code ==="1"){
                         this.showFailMessage(res.msg);
                         return;
                     }
