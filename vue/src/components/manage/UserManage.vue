@@ -156,18 +156,7 @@
                     pageSize : this.pageSize,
                     search : this.search
                 }}).then(res =>{
-                    if(res.code=="80002"){
-                        // this.showFailMessage(res.msg);
-                        // let t = 10;
-                        // this.timer = setInterval(()=>{
-                        //     if(t > 0){
-                        //         t--;
-                        //     }else{
-                        //         clearInterval(this.timer);
-                        //         this.timer = null;
-                        //         this.$router.push("/index/login");
-                        //     }
-                        // },100)
+                    if(res.code != "1"){
                         return;
                     }
                     this.total = res.data.total;
@@ -216,6 +205,10 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/user/update", this.form).then(res =>{
+                                if(res.code != "1"){
+                                    this.showFailMessage(res.msg);
+                                    return;
+                                }
                                 this.showSuccessMessage(res.msg)
                             });
                             this.dialogVisible = false;
@@ -225,7 +218,7 @@
                             this.form["id"] = (new Date()).getTime();
                             this.form["registertime"] = this.getCurrentTime();
                             request.post("/manage/user/add", this.form).then(res =>{
-                                if(res.code=="1"){
+                                if(res.code==="1"){
                                     this.showSuccessMessage(res.msg);
                                 }else{
                                     this.showFailMessage(res.msg);
@@ -252,10 +245,10 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/user/del/"+id).then(res =>{
-                  if(res.code!=="1"){
-                    this.showFailMessage(res.msg);
-                    return;
-                  }
+                    if(res.code != "1"){
+                        this.showFailMessage(res.msg);
+                        return;
+                    }
                   this.showSuccessMessage(res.msg)
                 });
                 this.load();

@@ -13,7 +13,30 @@
                             @keyup.enter="inital"
                             style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);"
                     />
-                    <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>
+<!--                    <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>-->
+                <el-dropdown class="my_workplace">
+                    <span class="el-dropdown-link">
+                      更多
+                      <el-icon class="el-icon--right">
+                        <arrow-down />
+                      </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="this.$router.push(`/manage/user`)">进入后台</el-dropdown-item>
+                            <el-dropdown-item @click="dev_ing_show">进入商城</el-dropdown-item>
+                            <el-dropdown-item @click="dev_ing_show">网站说明</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+<!--                <el-menu class="el-menu-demo my_workplace" mode="horizontal" @select="handleSelect">-->
+<!--                    <el-submenu index="1">-->
+<!--                        <template slot="title"></template>-->
+<!--                        <el-menu-item index="1-1">网站说明</el-menu-item>-->
+<!--                        <el-menu-item index="1-2">进入商城</el-menu-item>-->
+<!--                        <el-menu-item index="1-3">进入后台</el-menu-item>-->
+<!--                    </el-submenu>-->
+<!--                </el-menu>-->
             </div>
             <!--Advertisement-->
 <!--            <div class="roud_Advertisement" style="position: fixed; top: 200px; left: 60px; width: 200px; height: 400px;overflow: hidden; border-radius: 8px;" v-if="true">-->
@@ -66,6 +89,8 @@
 <script>
     import { computed, ref } from 'vue';
     import request from "../utils/request";
+    import { ElNotification as notify } from 'element-plus'
+
     export default {
         name: "Index",
         data(){
@@ -134,6 +159,9 @@
                     this.styleimgshow = true;
                 }
             },
+            dev_ing_show(){
+                notify('该功能尚在开发中，敬请期待!');
+            }
         },
         computed:{
             noMore:function () {
@@ -249,14 +277,24 @@
         transform: scale(1.05);
     }
     .go_manage_btn{
+         position: absolute;
+         color: #757a77;
+         top:50%;
+         right: 10%;
+         transform: translate(-50%,-50%);
+         cursor: pointer;
+     }
+    .go_manage_btn:hover{
+        color: #0095ec;
+    }
+    .my_workplace{
         position: absolute;
-        color: #757a77;
         top:50%;
         right: 10%;
         transform: translate(-50%,-50%);
         cursor: pointer;
     }
-    .go_manage_btn:hover{
+    .my_workplace:hover{
         color: #0095ec;
     }
 
