@@ -8,34 +8,40 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.roud.cms.common.annotation.AccessIPRecord;
-import top.roud.cms.utils.LoggerUtil;
+import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+import static top.roud.cms.common.ResultCode.USER_NO_ACCESS;
 
 /**
  * @description : TODO
- * @author: roud
+ * @author: rod
  * @date: 2023/4/25
  * @version:
  */
 @Aspect
 @Component
-public class AccessIPRecordAspect {
-    @Pointcut("@annotation(accessIPRecord)")
-    public void pointCut(AccessIPRecord accessIPRecord) {
-    }
+public class OperationAuthAspect {
+    @Pointcut("@annotation(operationAuth)")
+    public void pointCut(OperationAuth operationAuth){
 
-    @Around("pointCut(accessIPRecord)")
-    public Object around(ProceedingJoinPoint pjp, AccessIPRecord accessIPRecord) throws Throwable {
+    }
+    @Around("pointCut(operationAuth)")
+    public Object before(ProceedingJoinPoint pjp,OperationAuth operationAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
-        String ip=request.getRemoteAddr();
-        String method = request.getMethod();
-        String path = request.getServletPath();
-        LoggerUtil.ip_record.info("{}|{}|{}",ip,path,method);
-        return pjp.proceed();
+        String token = request.getHeader("token");
+        Map<String, Object> info = JwtUtil.getInfo(token);
+        //暂定根据type判断操作权限
+        int type = (int)info.get("type");
+        if(0==type){
+            return pjp.proceed();
+        }
+        return Result.failure(USER_NO_ACCESS);
     }
 
 }

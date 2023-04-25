@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
@@ -31,6 +32,7 @@ import java.util.Optional;
 public class ArticleAndTagController {
     @Resource
     private ArticleAndTagService articleAndTagService;
+    @AccessIPRecord
     @PostMapping("/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
@@ -80,7 +82,7 @@ public class ArticleAndTagController {
         return Result.success();
     }
 
-
+    @AccessIPRecord
     @GetMapping("/getArticleById")
     public Result getArticleById(Long id){
         Article articleAndhTag = articleAndTagService.getArticleByIdWithTag(id);
@@ -96,37 +98,38 @@ public class ArticleAndTagController {
             return Result.failure(ResultCode.DATA_NONE);
         }
     }
+    @AccessIPRecord
     @GetMapping("/getAllTags")
     public Result getAllTags(){
         List<Tag> allTags = articleAndTagService.getAllTags();
         return Result.success(allTags);
     }
-
+    @AccessIPRecord
     @GetMapping("/getAllArticleWithTags")
     public Result getAllArticleWithTags(){
         List<Article> allArticleWithTags = articleAndTagService.getAllArticleWithTag();
         return Result.success(allArticleWithTags);
     }
-
     @NoRepeatRequest(seconds = 60,maxCount = 30)
+    @AccessIPRecord
     @GetMapping("/page")
     public Result test(Integer num, Integer size){
         Page<Article> page = articleAndTagService.findPage(num, size);
         return Result.success(page);
     }
-
+    @AccessIPRecord
     @GetMapping("fp")
     public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search){
         Page<Article> page =  articleAndTagService.findPage_second(num, size, search);
         return Result.success(page);
     }
-
+    @AccessIPRecord
     @GetMapping("fps")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
         return Result.success(page);
     }
-
+    @AccessIPRecord
     @DeleteMapping("/del/{id}")
     public Result del(@PathVariable Long id){
         articleAndTagService.delArticleWithTag(id);

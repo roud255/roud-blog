@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
+import top.roud.cms.common.OperationAuthAspect;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.annotation.AccessIPRecord;
+import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.ForbidIP;
 import top.roud.cms.entity.Tag;
@@ -49,6 +52,9 @@ public class ManageController {
 
     private ForbidIP forbidIP;
     private Article a;
+
+    @OperationAuth
+    @AccessIPRecord
     @PostMapping("/user/add")
     public Result save(@RequestBody User user){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
@@ -59,44 +65,51 @@ public class ManageController {
         user.setPassword(md5Util.md5(user.getPassword()));
         return userService.save(user);
     }
+    @AccessIPRecord
     @GetMapping("/user/select")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         return userService.findPage(pageNum, pageSize, search);
     }
+    @OperationAuth
+    @AccessIPRecord
     @PutMapping("/user/update")
     public Result update(@RequestBody User user){
         user.setPassword(md5Util.md5(user.getPassword()));
         return userService.updateById(user);
     }
+    @OperationAuth
+    @AccessIPRecord
     @DeleteMapping("/user/del/{id}")
     public Result delById(@PathVariable Long id){
         return userService.delById(id);
     }
-
+    @AccessIPRecord
     @GetMapping("/article/fp")
     public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search){
         Page<Article> page =  articleAndTagService.findPage_second(num, size, search);
         return Result.success(page);
     }
-
+    @AccessIPRecord
     @GetMapping("/article/fps")
     public Result fps(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
         return Result.success(page);
     }
-
+    @OperationAuth
+    @AccessIPRecord
     @DeleteMapping("/article/del/{id}")
     public Result del(@PathVariable Long id){
         articleAndTagService.delArticleWithTag(id);
         return Result.success();
     }
-
+    @AccessIPRecord
     @GetMapping("/tags/select")
     public Result getAllTags(){
         List<Tag> allTags = articleAndTagService.getAllTags();
         return Result.success(allTags);
     }
-
+    @OperationAuth
+    @AccessIPRecord
     @PostMapping("/article/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
@@ -143,7 +156,7 @@ public class ManageController {
         }
         return Result.success();
     }
-
+    @AccessIPRecord
     @GetMapping("/user/info")
     public Result getUserInfo(@RequestParam String token){
         try{
@@ -156,17 +169,20 @@ public class ManageController {
             return Result.failure(TOKEN_INVALID);
         }
     }
-
+    @AccessIPRecord
     @GetMapping("/ip/select")
     public Result selectIps(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Result pages = forBidIPService.findPages(pageNum, pageSize, search);
         return pages;
     }
+    @OperationAuth
+    @AccessIPRecord
     @DeleteMapping("/ip/del/{id}")
     public Result delIp(@PathVariable Long id){
         Result result = forBidIPService.del(id);
         return result;
     }
+    @AccessIPRecord
     //时间传入重构
     @PostMapping("/ip/add")
     public Result addip(@RequestBody String info){
@@ -194,7 +210,8 @@ public class ManageController {
         Result result = forBidIPService.save(this.forbidIP);
         return result;
     }
-
+    @OperationAuth
+    @AccessIPRecord
     @PutMapping("/ip/update")
     public Result update(@RequestBody ForbidIP f){
         Result result = forBidIPService.update(f);

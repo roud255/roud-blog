@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
@@ -39,6 +40,7 @@ public class RegisterController {
     private MD5Util md5Util;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)
+    @AccessIPRecord
     @PostMapping("/code")
     public Result getCode(@RequestBody String info) throws Exception {
         JSONObject jsonObject = JSON.parseObject(info);
@@ -55,6 +57,7 @@ public class RegisterController {
 //        return Result.success(SEND_VERTIFYCODE_SUCCESS,s);
         return Result.failure(ResultCode.REGISTER_CLOSED, "系统未开放注册功能，请联系管理员。");
     }
+    @AccessIPRecord
     @PostMapping("/do")
     public Result register(@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);

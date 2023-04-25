@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
+import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
@@ -48,6 +49,7 @@ public class LoginController {
     private RedisUtil redisUtil;
     @Resource
     private MD5Util md5Util;
+    @AccessIPRecord
     @GetMapping
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
         try{
@@ -73,6 +75,7 @@ public class LoginController {
         }
     }
     @NoRepeatRequest(seconds = 10, maxCount = 3)
+    @AccessIPRecord
     @PostMapping
     public Result login(HttpServletRequest request,@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);

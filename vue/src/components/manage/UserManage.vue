@@ -218,11 +218,11 @@
                             this.form["id"] = (new Date()).getTime();
                             this.form["registertime"] = this.getCurrentTime();
                             request.post("/manage/user/add", this.form).then(res =>{
-                                if(res.code==="1"){
-                                    this.showSuccessMessage(res.msg);
-                                }else{
-                                    this.showFailMessage(res.msg);
-                                }
+                              if(res.code != "1"){
+                                this.showFailMessage(res.msg);
+                                return;
+                              }
+                              this.showSuccessMessage(res.msg)
                             });
                             this.dialogVisible = false;
                             this.form = {};
