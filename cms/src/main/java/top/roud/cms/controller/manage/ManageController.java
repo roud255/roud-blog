@@ -22,9 +22,11 @@ import top.roud.cms.utils.MD5Util;
 import top.roud.cms.utils.TimeTransUtil;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static top.roud.cms.common.ResultCode.*;
@@ -67,8 +69,21 @@ public class ManageController {
     }
     @AccessIPRecord
     @GetMapping("/user/select")
-    public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
-        return userService.findPage(pageNum, pageSize, search);
+    public Result findpages(HttpServletRequest req, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        Result page = userService.findPage(pageNum, pageSize, search);
+        String token = req.getHeader("token");
+        Map<String, Object> info = JwtUtil.getInfo(token);
+        //暂定根据type判断操作权限
+        int type = (int)info.get("type");
+        if(0!=type){
+            Page data = (Page) (page.getData());
+            List<User> records = data.getRecords();
+            for(User u:records){
+                u.setId(123456789L);
+                u.setPassword("************");
+            }
+        }
+        return page;
     }
     @OperationAuth
     @AccessIPRecord
