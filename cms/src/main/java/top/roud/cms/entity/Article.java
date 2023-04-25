@@ -17,7 +17,7 @@ import java.util.List;
  * @Date 2022/9/1
  * @Version 1.0
  */
-@TableName("sv_article")
+@TableName("rb_article")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

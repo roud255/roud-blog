@@ -14,7 +14,7 @@ import java.util.Date;
  * @Date 2022/6/8
  * @Version 1.0
  */
-@TableName("sv_user")
+@TableName("rb_user")
 @Data
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;

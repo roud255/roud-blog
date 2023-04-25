@@ -30,14 +30,14 @@
     </resultMap>
 
     <insert id="insertComment">
-        insert into sv_comment(id, content, user_id, time, parent_id, origin_id, article_id) values (#{id}, #{content}, #{user.id}, #{parent.id}, #{origin.id}, #{article.id});
+        insert into rb_comment(id, content, user_id, time, parent_id, origin_id, article_id) values (#{id}, #{content}, #{user.id}, #{parent.id}, #{origin.id}, #{article.id});
     </insert>
 
      <select id="selectArticleWithComment" resultMap="ArticleWithCommentResult">
         select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
         c.id as cid,c.time,c.content,c.user_id, c.parent_id, c.origin_id, c.article_id
-        from sv_article a,
-        sv_comment c
+        from rb_article a,
+        rb_comment c
         where a.id=#{id} and c.article_id=#{id}
     </select>
 

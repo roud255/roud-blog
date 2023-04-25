@@ -3,9 +3,9 @@
 <mapper namespace="top.roud.cms.mapper.UserMapper">
 
     <select id="selectUserByPhonenumberAndPassword" resultType="User">
-        select id,nickname,phonenumber,password,registertime,type,power from sv_user where phonenumber = #{phonenumber} and password = #{password}
+        select id,nickname,phonenumber,password,registertime,type,power from rb_user where phonenumber = #{phonenumber} and password = #{password}
     </select>
     <select id="selectUserByPhonenumber" resultType="User">
-        select id,nickname,phonenumber,password,registertime,type,power from sv_user where phonenumber = #{phonenumber}
+        select id,nickname,phonenumber,password,registertime,type,power from rb_user where phonenumber = #{phonenumber}
     </select>
 </mapper>

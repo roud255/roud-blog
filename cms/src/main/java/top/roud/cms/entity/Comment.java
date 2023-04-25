@@ -16,7 +16,7 @@ import java.util.Date;
  * @Date 2022/9/7
  * @Version 1.0
  */
-@TableName("sv_comment")
+@TableName("rb_comment")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

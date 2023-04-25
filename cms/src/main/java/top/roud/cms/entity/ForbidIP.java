@@ -14,7 +14,7 @@ import java.util.Date;
  * @date: 2022/9/28
  * @version:
  */
-@TableName("sv_forbidip")
+@TableName("rb_forbidip")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
