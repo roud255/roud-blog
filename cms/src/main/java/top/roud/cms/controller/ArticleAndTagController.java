@@ -9,6 +9,7 @@ import top.roud.cms.common.Result;
 import top.roud.cms.common.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
+import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
@@ -32,6 +33,7 @@ import java.util.Optional;
 public class ArticleAndTagController {
     @Resource
     private ArticleAndTagService articleAndTagService;
+    @OperationAuth
     @AccessIPRecord
     @PostMapping("/add")
     public Result addArticle(@RequestBody String info) {
@@ -129,6 +131,7 @@ public class ArticleAndTagController {
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
         return Result.success(page);
     }
+    @OperationAuth
     @AccessIPRecord
     @DeleteMapping("/del/{id}")
     public Result del(@PathVariable Long id){

@@ -2,6 +2,7 @@ package top.roud.cms.controller;
 
 import top.roud.cms.common.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
+import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import static top.roud.cms.common.ResultCode.EMAIL_HAS_EXISTED;
 public class UserController {
     @Resource
     private UserService userService;
+    @OperationAuth
     @AccessIPRecord
     @PostMapping
     public Result save(@RequestBody User user){
@@ -38,11 +40,13 @@ public class UserController {
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         return userService.findPage(pageNum, pageSize, search);
     }
+    @OperationAuth
     @AccessIPRecord
     @PutMapping
     public Result update(@RequestBody User user){
         return userService.updateById(user);
     }
+    @OperationAuth
     @AccessIPRecord
     @DeleteMapping("/{id}")
     public Result delById(@PathVariable Long id){
