@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.roud.cms.common.annotation.NoRepeatRequest;
+import top.roud.cms.utils.IPUtil;
 import top.roud.cms.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class NoRepeatRequestAspect {
         Assert.notNull(request, "request can not null");
         int seconds = noRepeatRequest.seconds();
         int maxCount = noRepeatRequest.maxCount();
-        String ip=request.getRemoteAddr();
+        String ip= IPUtil.getIpAddr(request);
         String key = request.getServletPath() + "-" + ip ;
         Integer count = (Integer) redisUtil.get(key);
         Optional<Integer> op = Optional.ofNullable(count);

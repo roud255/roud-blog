@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.roud.cms.common.annotation.AccessIPRecord;
+import top.roud.cms.utils.IPUtil;
 import top.roud.cms.utils.LoggerUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ public class AccessIPRecordAspect {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
-        String ip=request.getRemoteAddr();
+        String ip= IPUtil.getIpAddr(request);;
         String method = request.getMethod();
         String path = request.getServletPath();
         LoggerUtil.ip_record.info("{}|{}|{}",ip,path,method);
