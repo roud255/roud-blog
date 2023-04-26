@@ -36,6 +36,8 @@ public class AccessIPRecordAspect {
     public void pointCut(AccessIPRecord accessIPRecord) {
     }
 
+    //pjp.getArgs()获取方法请求参数
+    //pjp.proceed()获取方法执行结果
     @Around("pointCut(accessIPRecord)")
     public Object around(ProceedingJoinPoint pjp, AccessIPRecord accessIPRecord) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -45,9 +47,8 @@ public class AccessIPRecordAspect {
         String method = request.getMethod();
         String path = request.getServletPath();
         Object proceed = pjp.proceed();
-        //pjp.getArgs()获取方法请求参数
-        //pjp.proceed()获取方法执行结果
 
+        //序列化servlet请求类、响应类和文件类时会报错。如果参数中包含上述类选择跳过
         Object[] args = pjp.getArgs();
         Object[] arguments  = new Object[args.length];
         for (int i = 0; i < args.length; i++) {
