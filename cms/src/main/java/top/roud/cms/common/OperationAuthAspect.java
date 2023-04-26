@@ -30,7 +30,7 @@ public class OperationAuthAspect {
 
     }
     @Around("pointCut(operationAuth)")
-    public Object before(ProceedingJoinPoint pjp,OperationAuth operationAuth) throws Throwable {
+    public Object around(ProceedingJoinPoint pjp,OperationAuth operationAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
