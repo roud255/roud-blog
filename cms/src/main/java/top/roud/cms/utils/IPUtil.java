@@ -1,10 +1,18 @@
 package top.roud.cms.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import top.roud.cms.common.HttpResult;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IPUtil {
+
     public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;
         try {
@@ -44,6 +52,22 @@ public class IPUtil {
         // ipAddress = this.getRequest().getRemoteAddr();
 
         return ipAddress;
+    }
+    public static String getIPAddress(String ip) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Host","whois.pconline.com.cn");
+        map.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
+        HttpResult httpResult = null;
+        try {
+            httpResult = HttpUtil_static.get("http://whois.pconline.com.cn/ipJson.jsp?ip="+ip+"&json=true", null, map, null);
+        } catch (IOException e) {
+            return "";
+        }
+        String body = httpResult.getBody();
+        JSONObject jsonObject = JSON.parseObject(body);
+        String pro = jsonObject.getString("pro");
+        String city = jsonObject.getString("city");
+        return pro+city;
     }
 
 }

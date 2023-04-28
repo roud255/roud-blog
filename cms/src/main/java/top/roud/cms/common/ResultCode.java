@@ -31,7 +31,8 @@ public enum ResultCode {
 	/* 系统错误：40001-49999 */
 	SYSTEM_INNER_ERROR(40001, "系统内部错误，请稍后重试"),
 	REQUEST_FAST_REFUSE(40002, "请求过快，请稍后重试"),
-	
+	SYSTEM_ERROR(40003, "系统繁忙"),
+
 	/* 数据错误：50001-599999 */
 	DATA_NONE(50001, "数据未找到"),
 	DATA_WRONG(50002, "数据错误"),

@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.entity.LogContnet;
+import top.roud.cms.utils.HttpUtil;
 import top.roud.cms.utils.IPUtil;
 import top.roud.cms.utils.LoggerUtil;
 
