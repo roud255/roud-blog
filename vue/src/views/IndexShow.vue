@@ -58,8 +58,8 @@
                                 </el-aside>
                                 <el-container>
                                     <el-header style="padding-top: 16px">
-                                        <h4 class="roud-title">{{item.title}}</h4>
-                                        <p id="text_author_a_time" style="margin-top:5px; color: #AAA; font-size: 15px;">{{item.author}}&nbsp;&nbsp;&nbsp;&nbsp;{{(item.publishtime).split(" ")[0]}}</p>
+                                        <p class="roud-title">{{item.title}}</p>
+                                        <p id="text_author_a_time" style="margin-top:5px; color: #5b5b5b; font-size:14px">{{item.author}}&nbsp;&nbsp;&nbsp;&nbsp;{{(item.publishtime)}}</p>
                                     </el-header>
                                     <el-main class="el-main-text">
                                         <p>{{item.description}}</p>
@@ -268,7 +268,8 @@
         transition: all .5s ease .1s;
     }
     .roud-title{
-        font-weight: 600;
+        font-size: 18px;
+        font-weight: 500;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
