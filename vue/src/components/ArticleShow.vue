@@ -19,6 +19,9 @@
             <div class="show-main">
                 <v-md-editor :model-value="data" mode="preview"></v-md-editor>
             </div>
+            <div class="comments-box" style="text-align: left; padding: 0 22%; padding-bottom: 50px">
+              <article-comments></article-comments>
+            </div>
             <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>
         </div>
     </el-scrollbar>
@@ -26,10 +29,14 @@
 
 <script>
     import request from "../utils/request";
+    import ArticleComments from "@/components/ArticleComments";
 
     export default {
-        name : "ArticleShow",
-        data() {
+      name : "ArticleShow",
+      components:{
+        ArticleComments
+      },
+      data() {
             return {
                 data: '',
                 title : '',

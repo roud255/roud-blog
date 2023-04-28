@@ -6,6 +6,7 @@ import Editor from "@/views/Article";
 import NotFound from "@/views/NotFound";
 import ForBidIPManage from "@/components/manage/ForBidIPManage";
 import ErrorComputerModel from "@/views/ErrorComputerModel";
+import ArticleComments from "@/components/ArticleComments";
 
 const routes = [
     {
@@ -68,8 +69,18 @@ const routes = [
                 path: 'show',
                 name: 'show',
                 component: ()=>import("@/components/ArticleShow")
+
             }
         ]
+    },
+
+    /*
+    测试
+     */
+    {
+        path: '/test',
+        name: 'test',
+        component: ArticleComments
     },
     {
         path: '/',
