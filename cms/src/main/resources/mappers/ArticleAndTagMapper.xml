@@ -57,11 +57,11 @@
         from rb_article a,
         rb_tag t,
         rb_article_tag at
-        where a.id=at.article_id and t.id=at.tag_id
+        where a.id=at.article_id and t.id=at.tag_id order by a.id desc
     </select>
 
     <select id="selectPage" resultType="top.roud.cms.entity.Article">
-        select id,title,author,description,cover,postbody,publishtime from rb_article ${ew.customSqlSegment}
+        select id,title,author,description,cover,postbody,publishtime from rb_article ${ew.customSqlSegment} order by id desc
     </select>
 
     <select id="getTagByArticleId" parameterType="long" resultType="top.roud.cms.entity.Tag">
