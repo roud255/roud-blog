@@ -2,43 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.roud.cms.mapper.ArticleAndCommentMapper">
 
-    <resultMap id="CommentResult" type="top.roud.cms.entity.Comment">
+    <resultMap id="CommentWithSubResult" type="top.roud.cms.entity.Comment">
         <id property="id" column="cid"/>
-        <result property="time" column="time"/>
         <result property="content" column="content"/>
-        <association property="user" column="user_id" javaType="top.roud.cms.entity.Article">
-<!--            k-->
-        </association>
-        <association property="parentComment" column="parent_id" resultMap="CommentResult">
-
-        </association>
-        <association property="originComment" column="origin_id" resultMap="CommentResult">
-            
-        </association>
-        <association property="article" column="article_id" javaType="top.roud.cms.entity.Article"></association>
+        <result property="time" column="time"/>
+        <result property="article_id" column="article_id"/>
+        <result property="parent_id" column="parent_id"/>
+        <association property="from" column="from_id" select="top.roud.cms.entity.User"/>
+        <association property="to" column="to_id" javaType="top.roud.cms.entity.User"/>
+        <collection property="child_comments" resultMap="CommentResult"/>
     </resultMap>
-
-    <resultMap id="ArticleWithCommentResult" type="top.roud.cms.entity.Article">
-        <id property="id" column="aid"/>
-        <result property="title" column="title"/>
-        <result property="author" column="author"/>
-        <result property="description" column="description"/>
-        <result property="cover" column="cover"/>
-        <result property="postbody" column="postbody"/>
-        <result property="publishtime" column="publishtime"/>
-        <collection property="comments" resultMap="CommentResult"></collection>
+    <resultMap id="CommentResult" type="top.roud.cms.entity.Comment">
+        <id property="id" column="sub_id"/>
+        <result property="content" column="sub_content"/>
+        <result property="time" column="sub_time"/>
+        <result property="article_id" column="sub_article_id"/>
+        <result property="parent_id" column="sub_parent_id"/>
+        <association property="from" column="sub_from_id" select="top.roud.cms.entity.User"/>
+        <association property="to" column="sub_to_id" javaType="top.roud.cms.entity.User"/>
     </resultMap>
 
     <insert id="insertComment">
-        insert into rb_comment(id, content, user_id, time, parent_id, origin_id, article_id) values (#{id}, #{content}, #{user.id}, #{parent.id}, #{origin.id}, #{article.id});
+        insert into rb_comment(id, content, time, from_id, parent_id, to_id, article_id) values (#{id}, #{content},#{time}, #{from.id}, #{parent_comment.id}, #{to.id}, #{article_id});
     </insert>
 
-     <select id="selectArticleWithComment" resultMap="ArticleWithCommentResult">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
-        c.id as cid,c.time,c.content,c.user_id, c.parent_id, c.origin_id, c.article_id
-        from rb_article a,
-        rb_comment c
-        where a.id=#{id} and c.article_id=#{id}
+    <select id="findAllCommentsByArticle" resultMap="CommentWithSubResult">
+        select
+            c.id,c.time,c.content,c.from_id,c.to_id, c.parent_id, c.article_id,c1.id sub_id,
+               c1.time sub_time,c1.content sub_content,c1.from_id sub_from_id,c1.to_id sub_to_id, c1.parent_id sub_parent_id, c1.article_id sub_article_id
+        from rb_comment c,rb_comment c2
+        where
+            c.parent_id=0
+          and
+            c.id=c1.parent_id
+          and
+              c.article_id = #{article_id}
     </select>
 
 </mapper>

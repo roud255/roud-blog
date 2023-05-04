@@ -70,6 +70,9 @@
 </template>
 
 <script>
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
+
 const clickoutside = {
   // 初始化指令
   bind(el, binding, vnode) {
@@ -111,7 +114,7 @@ export default {
         {
           name:'Lana Del Rey',
           id:19870621,
-          headImg:'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
+          headImg:'https://inews.gtimg.com/newsapp_bt/0/13628494480/1000',
           comment:'我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
           time:'2019年9月16日 18:43',
           commentNum:2,
@@ -210,6 +213,16 @@ export default {
     _inputShow(i){
       return this.comments[i].inputShow
     },
+    showSuccessMessage(msg){
+      ElMessage.success({
+        message: msg,
+      });
+    },
+    showFailMessage(msg){
+      ElMessage.error({
+        message: msg,
+      });
+    },
     sendComment(){
       if(!this.replyComment){
         this.$message({
@@ -229,6 +242,13 @@ export default {
         a.commentNum = 0
         a.like = 0
         this.comments.push(a)
+        request.post("/aac",a).then(res =>{
+          if(res.code!="1"){
+            this.showWarningMessage(res.msg);
+          }else {
+            this.showSuccessMessage("成功！");
+          }
+        });
         this.replyComment = ''
         input.innerHTML = '';
 
@@ -253,6 +273,13 @@ export default {
         a.commentNum = 0
         a.like = 0
         this.comments[i].reply.push(a)
+        request.post("/aac",a).then(res =>{
+          if(res.code!="1"){
+            this.showWarningMessage(res.msg);
+          }else {
+            this.showSuccessMessage("成功！");
+          }
+        });
         this.replyComment = ''
         document.getElementsByClassName("reply-comment-input")[i].innerHTML = ""
       }
