@@ -1,12 +1,46 @@
-项目正在不断完善中
+#  <center> roud-blog
+<p align="center">
+<a href=""><img src="https://img.shields.io/badge/author-roud-violet"></a>
+<a href=""><img src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
+<a href=""><img src="https://img.shields.io/badge/jdk-1.8-9cf.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Maven-3.6+-yellow.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Redis-5.0+-inactive.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/SpringBoot-2.3.RELEASE-blue.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Vue-3.0-green.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/ElementUI-plus-green.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/MybatisPlus-3.4-red.svg"></a>
+</p>
+
+### 项目简介(Project Introduction)
+##### 1、简介
+该项目为一个个人个性化博客项目,项目结构分为前台文章展示部分和后台管理部分。</br>
+##### 2、演示站
+项目演示地址: </br><a href="http://8.134.71.114:8081/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
+演示站后台演示账号&密码:</br>
+<img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg">&nbsp;<img src="https://img.shields.io/badge/密码-Demo123456-red.svg">
+</br>
+项目前台展示:</br>
+![前台](http://roud.top/img/20230506004212.png)
+</br>
+文章展示:</br>
+![文章](http://roud.top/img/20230506004439.png)
+</br>
+登录注册页展示:</br>
+![文章](http://roud.top/img/20230506004819.png)
+</br>
+后台文章编辑展示:</br>
+![文章](http://roud.top/img/20230506005056.png)
+### 项目搭建(Project construction)
+>代码拉取: git clone https://gitee.com/roud/roud-blog.git
+
+
+
 ### 涉及技术
 Springboot
 Vue3
 Element-plus
 Redis
 MybatisPlus
-后续引入：
-mq
 
 ### 项目配置
 1、邮箱
@@ -34,7 +68,7 @@ mq
 #博客编辑页
 >http://localhost:8081/manage/edit
 
-# springboot-vue-demo
+# roud—blog
 
 ## Project setup
 ```
