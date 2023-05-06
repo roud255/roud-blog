@@ -19,6 +19,7 @@
 该项目为一个个人个性化博客项目，项目结构分为前台文章展示部分和后台管理部分，角色目前分为管理员和演示用户。</br>
 ##### 2、演示站
 项目演示地址: </br><a href="http://8.134.71.114:8081/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
+
 演示站后台演示账号&密码:</br>
 <p><a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
 项目前台展示:</br>
@@ -36,9 +37,9 @@
 >代码拉取: git clone https://gitee.com/roud/roud-blog.git
 
 <p>拉取后的主体项目结构如下：</p>
-<p><img href="http://roud.top/img/20230506092641.png"></p>
+<p><img src="http://roud.top/img/20230506092641.png"></p>
 <p>拉取后的前端项目结构如下：</p>
-<p><img href="http://roud.top/img/20230506094725.png"></p>
+<p><img src="http://roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤：
 1. <p>将sql文件导入数据库</p>
@@ -71,20 +72,9 @@
 #####博客编辑页
 >http://localhost:8081/manage/edit
 
-## Project setup
-```
-npm install
-```
+#####适配错误页
+>http://localhost:8081/errorcomputermodel
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
 
 ### 该项目目前在不断完善，计划完善功能：
 1. 小黑屋（废弃，打算在nginx中配置）
