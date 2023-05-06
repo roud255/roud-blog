@@ -1,4 +1,4 @@
-#  <center> roud-blog
+<h1 style="text-align: center">roud-blog</h1>
 <p align="center">
 <a href=""><img src="https://img.shields.io/badge/author-roud-violet"></a>
 <a href=""><img src="https://img.shields.io/badge/version-1.0.1-orange.svg"></a>
