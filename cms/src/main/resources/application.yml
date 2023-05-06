@@ -26,10 +26,15 @@ server:
       remote-ip-header: 'x-forwarded-for'
       protocol-header: 'x-forwarded-proto'
 
+
 mybatis-plus:
   mapper-locations: classpath:mappers/*Mapper.xml
   type-aliases-package: top.roud.cms.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
+  level:
+    com.lucifer.springboot.cache.mapper: debug
   config: 'classpath:logback-spring.xml'
 

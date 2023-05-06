@@ -123,7 +123,7 @@ export default {
           reply:[
             {
               from:'Taylor Swift',
-              fromId:19891221,
+              parent_id:19891221,
               fromHeadImg:'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
               to:'Lana Del Rey',
               toId:19870621,
@@ -135,7 +135,7 @@ export default {
             },
             {
               from:'Ariana Grande',
-              fromId:1123,
+              parent_id:1123,
               fromHeadImg:'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
               to:'Lana Del Rey',
               toId:19870621,
@@ -160,7 +160,7 @@ export default {
           reply:[
             {
               from:'Lana Del Rey',
-              fromId:19870621,
+              parent_id:19870621,
               fromHeadImg:'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
               to:'Taylor Swift',
               toId:19891221,
@@ -213,6 +213,13 @@ export default {
     _inputShow(i){
       return this.comments[i].inputShow
     },
+    getArticleId(){
+      let url = window.location.href;
+      let param_str = url.split('?')[1];
+      let params = new URLSearchParams('?'+param_str);
+      let get_id = params.get('id');
+      return get_id
+    },
     showSuccessMessage(msg){
       ElMessage.success({
         message: msg,
@@ -241,6 +248,8 @@ export default {
         a.time = time
         a.commentNum = 0
         a.like = 0
+        a.article_id = this.getArticleId()
+        a.parent_id = this.id
         this.comments.push(a)
         request.post("/aac",a).then(res =>{
           if(res.code!="1"){
@@ -272,6 +281,7 @@ export default {
         a.time = time
         a.commentNum = 0
         a.like = 0
+        a.article_id = this.getArticleId()
         this.comments[i].reply.push(a)
         request.post("/aac",a).then(res =>{
           if(res.code!="1"){

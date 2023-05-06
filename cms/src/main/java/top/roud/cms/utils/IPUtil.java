@@ -2,6 +2,7 @@ package top.roud.cms.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import top.roud.cms.common.HttpResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,11 @@ public class IPUtil {
         JSONObject jsonObject = JSON.parseObject(body);
         String pro = jsonObject.getString("pro");
         String city = jsonObject.getString("city");
+        if(StringUtils.isBlank(pro+city)){
+            return "未知地区";
+        }
         return pro+city;
+
     }
 
 }

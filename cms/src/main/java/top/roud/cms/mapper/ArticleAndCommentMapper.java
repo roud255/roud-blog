@@ -5,6 +5,6 @@ import top.roud.cms.entity.Comment;
 
 @Repository
 public interface ArticleAndCommentMapper {
-    Integer insertComment();
+    Integer insertComment(Comment comment);
     Comment findAllCommentsByArticle(Long article_id);
 }

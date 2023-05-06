@@ -18,7 +18,7 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     private ArticleAndCommentMapper articleAndCommentMapper;
     @Override
     public Integer addComment(Comment comment) {
-        return articleAndCommentMapper.insertComment();
+        return articleAndCommentMapper.insertComment(comment);
     }
 
     @Override

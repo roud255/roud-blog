@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
-import top.roud.cms.utils.IPUtil;
+import top.roud.cms.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.PARAM_NOT_COMPLETE;
+import static top.roud.cms.common.ResultCode.*;
 
 /**
  * @description : TODO
@@ -38,20 +39,32 @@ public class ArticleAndCommentsController {
 
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
+        String token = request.getHeader("token");
+        try {
+            JwtUtil.checkSign(token);
+        } catch (Exception e) {
+            return Result.failure(TOKEN_INVALID);
+        }
         JSONObject body = JSON.parseObject(info);
         String comment = body.getString("comment");
-        String ipAddr = IPUtil.getIpAddr(request);
-        String from = IPUtil.getIPAddress(ipAddr);
+        Map<String, Object> info_u = JwtUtil.getInfo(token);
+        String from = (String) info_u.get("name");
         String to = body.getString("to");
+        String p_id = body.getString("parent_id");
         String article_id = body.getString("article_id");
         Comment c = new Comment();
         c.setId(System.currentTimeMillis());
         Date date = new Date();
-        c.setTime(date);
+        c.setOp_time(date);
         c.setContent(comment);
-        c.setFrom(from);
-        c.setTo(to);
+        c.setFrom_name(from);
+        c.setTo_name(to);
+        c.setParent_id(Long.valueOf(p_id));
         c.setArticle_id(Long.valueOf(article_id));
-        return Result.failure("");
+        Integer res = articleAndCommentService.addComment(c);
+        if(1==res){
+            return Result.success();
+        }
+        return Result.failure(SYSTEM_ERROR);
     }
 }
