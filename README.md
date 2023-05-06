@@ -41,7 +41,7 @@
 <p>拉取后的前端项目结构如下：</p>
 <p><img src="http://roud.top/img/20230506094725.png"></p>
 
-##### 推荐步骤：
+##### 推荐步骤
 1. <p>将sql文件导入数据库</p>
 1. <p>定位到./cms/pom.xml，导入maven依赖</p>
 1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis及项目端口配置</p>
@@ -54,25 +54,25 @@
 
 
 ### 页面路由
-#####首页
+##### 首页
 >http://localhost:8081/index/show
 
-#####登录页
+##### 登录页
 >http://localhost:8081/index/login
 
-#####注册页
+##### 注册页
 >http://localhost:8081/index/reg
 
-#####后台管理用户管理页面
+##### 后台管理用户管理页面
 >http://localhost:8081/manage/user
 
-#####后台管理文章管理页面
+##### 后台管理文章管理页面
 >http://localhost:8081/manage/article
 
-#####博客编辑页
+##### 博客编辑页
 >http://localhost:8081/manage/edit
 
-#####适配错误页
+##### 适配错误页
 >http://localhost:8081/errorcomputermodel
 
 
