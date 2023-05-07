@@ -42,6 +42,8 @@
             c.parent_id='-1'
             and
             c.article_id=#{article_id}
+        order by
+            id desc
     </select>
 
 </mapper>
