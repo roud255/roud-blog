@@ -6,6 +6,8 @@ import top.roud.cms.entity.Comment;
 import top.roud.cms.mapper.ArticleAndCommentMapper;
 import top.roud.cms.service.ArticleAndCommentService;
 
+import java.util.List;
+
 /**
  * @description : TODO
  * @author: guangrui_hu
@@ -22,7 +24,7 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     }
 
     @Override
-    public Comment findCommentByArticle(Long a_id) {
+    public List<Comment> findCommentByArticle(Long a_id) {
         return articleAndCommentMapper.findAllCommentsByArticle(a_id);
     }
 }

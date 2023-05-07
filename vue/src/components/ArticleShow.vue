@@ -20,6 +20,10 @@
                 <v-md-editor :model-value="data" mode="preview"></v-md-editor>
             </div>
             <div class="comments-box" style="text-align: left; padding: 0 22%; padding-bottom: 50px">
+              <el-divider>
+<!--                <el-icon><star-filled /></el-icon>-->
+                以下为评论区
+              </el-divider>
               <article-comments></article-comments>
             </div>
             <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>

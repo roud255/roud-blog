@@ -11,6 +11,7 @@ import top.roud.cms.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,8 +34,8 @@ public class ArticleAndCommentsController {
         if(!op.isPresent()){
             return Result.failure(PARAM_NOT_COMPLETE);
         }
-        Comment commentByArticle = articleAndCommentService.findCommentByArticle(id);
-        return Result.success(commentByArticle);
+        List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(id);
+        return Result.success(commentsByArticle);
     }
 
     @PostMapping

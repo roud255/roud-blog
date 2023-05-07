@@ -26,8 +26,9 @@
         <span class="author-time">{{item.time}}</span>
       </div>
       <div class="icon-btn">
-        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><Comment /></el-icon>{{item.commentNum}}</span>
-        <el-icon><Promotion /></el-icon>{{item.like}}
+        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><ChatDotSquare /></el-icon></span>
+<!--        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><Comment /></el-icon>{{item.commentNum}}</span>-->
+<!--        <el-icon><Promotion /></el-icon>{{item.like}}-->
       </div>
       <div class="talk-box">
         <p>
@@ -42,8 +43,9 @@
             <span class="author-time">{{reply.time}}</span>
           </div>
           <div class="icon-btn">
-            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><Comment /></el-icon>{{reply.commentNum}}</span>
-            <el-icon><Promotion /></el-icon>{{reply.like}}
+            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><ChatDotSquare /></el-icon></span>
+<!--            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><Comment /></el-icon>{{reply.commentNum}}</span>-->
+<!--            <el-icon><Promotion /></el-icon>{{reply.like}}-->
           </div>
           <div class="talk-box">
             <p>
@@ -106,7 +108,7 @@ export default {
       index:'0',
       replyComment:'',
       myName:'Lana Del Rey',
-      myHeader:'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
+      myHeader:'http://roud.top/img/ziya.jpg',
       myId:19870621,
       to:'',
       toId:-1,
@@ -114,7 +116,7 @@ export default {
         {
           name:'Lana Del Rey',
           id:19870621,
-          headImg:'https://inews.gtimg.com/newsapp_bt/0/13628494480/1000',
+          headImg:'http://roud.top/img/ziya.jpg',
           comment:'我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
           time:'2019年9月16日 18:43',
           commentNum:2,
@@ -123,8 +125,8 @@ export default {
           reply:[
             {
               from:'Taylor Swift',
-              parent_id:19891221,
-              fromHeadImg:'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
+              id:19891221,
+              fromHeadImg:'http://roud.top/img/ziya.jpg',
               to:'Lana Del Rey',
               toId:19870621,
               comment:'我很喜欢你的新专辑！！',
@@ -135,8 +137,8 @@ export default {
             },
             {
               from:'Ariana Grande',
-              parent_id:1123,
-              fromHeadImg:'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
+              id:1123,
+              fromHeadImg:'http://roud.top/img/ziya.jpg',
               to:'Lana Del Rey',
               toId:19870621,
               comment:'别忘记宣传我们的合作单曲啊',
@@ -151,7 +153,7 @@ export default {
         {
           name:'Taylor Swift',
           id:19891221,
-          headImg:'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
+          headImg:'http://roud.top/img/ziya.jpg',
           comment:'我发行了我的新专辑Lover',
           time:'2019年9月16日 18:43',
           commentNum:1,
@@ -160,8 +162,8 @@ export default {
           reply:[
             {
               from:'Lana Del Rey',
-              parent_id:19870621,
-              fromHeadImg:'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
+              id:19870621,
+              fromHeadImg:'http://roud.top/img/ziya.jpg',
               to:'Taylor Swift',
               toId:19891221,
               comment:'新专辑和speak now 一样棒！',
@@ -176,7 +178,7 @@ export default {
         {
           name:'Norman Fucking Rockwell',
           id:20190830,
-          headImg:'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
+          headImg:'http://roud.top/img/ziya.jpg',
           comment:'Plz buy Norman Fucking Rockwell on everywhere',
           time:'2019年9月16日 18:43',
           commentNum:0,
@@ -249,15 +251,17 @@ export default {
         a.commentNum = 0
         a.like = 0
         a.article_id = this.getArticleId()
-        a.parent_id = this.id
-        this.comments.push(a)
+        a.parent_id = this.toId
         request.post("/aac",a).then(res =>{
-          if(res.code!="1"){
-            this.showWarningMessage(res.msg);
+          if(res.code != "1"){
+            this.showFailMessage(res.msg);
           }else {
+            //后台成功才添加评论
+            this.comments.push(a)
             this.showSuccessMessage("成功！");
           }
         });
+        this.toId = -1
         this.replyComment = ''
         input.innerHTML = '';
 
@@ -279,17 +283,19 @@ export default {
         a.fromHeadImg = this.myHeader
         a.comment =this.replyComment
         a.time = time
-        a.commentNum = 0
-        a.like = 0
+        // a.commentNum = 0
+        // a.like = 0
         a.article_id = this.getArticleId()
-        this.comments[i].reply.push(a)
+        a.parent_id = this.toId
         request.post("/aac",a).then(res =>{
-          if(res.code!="1"){
-            this.showWarningMessage(res.msg);
+          if(res.code != "1"){
+            this.showFailMessage(res.msg);
           }else {
+            this.comments[i].reply.push(a)
             this.showSuccessMessage("成功！");
           }
         });
+        this.toId = -1
         this.replyComment = ''
         document.getElementsByClassName("reply-comment-input")[i].innerHTML = ""
       }
@@ -323,8 +329,24 @@ export default {
         var date= new Date(parseInt(date));
         return date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate();
       }
+    },
+    initload(){
+      let get_id = this.getArticleId()
+      request.get("/aac",{params:{
+          id : get_id,
+        }}).then(res =>{
+        if(res.code != "1"){
+          console.log(res)
+          this.showFailMessage(res.msg);
+        }else {
+          this.showSuccessMessage("成功！");
+        }
+      });
     }
   },
+  created() {
+    this.initload()
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -403,6 +425,7 @@ export default {
       padding 7px
     }
     >span
+      float right
       cursor pointer
     .iconfont
       margin 0 5px
