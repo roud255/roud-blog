@@ -107,7 +107,7 @@ export default {
       btnShow: false,
       index:'0',
       replyComment:'',
-      myName:'Lana Del Rey',
+      myName:'',
       myHeader:'http://roud.top/img/ziya.jpg',
       myId:19870621,
       to:'',
@@ -331,6 +331,14 @@ export default {
       }
     },
     initload(){
+      request.get("/manage/user/info", {params:{
+          token : localStorage.getItem('token'),
+        }}).then(res =>{
+        if(res.code=="1"){
+          this.myName = res.data.name
+        }else {
+          this.myName = "登录后评论~"
+        }})
       let get_id = this.getArticleId()
       request.get("/aac",{params:{
           id : get_id,
