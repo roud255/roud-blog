@@ -112,81 +112,81 @@ export default {
       myId:19870621,
       to:'',
       toId:-1,
-      comments:[
-        {
-          name:'Lana Del Rey',
-          id:19870621,
-          headImg:'http://roud.top/img/ziya.jpg',
-          comment:'我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
-          time:'2019年9月16日 18:43',
-          commentNum:2,
-          like:15,
-          inputShow:false,
-          reply:[
-            {
-              from:'Taylor Swift',
-              id:19891221,
-              fromHeadImg:'http://roud.top/img/ziya.jpg',
-              to:'Lana Del Rey',
-              toId:19870621,
-              comment:'我很喜欢你的新专辑！！',
-              time:'2019年9月16日 18:43',
-              commentNum:1,
-              like:15,
-              inputShow:false
-            },
-            {
-              from:'Ariana Grande',
-              id:1123,
-              fromHeadImg:'http://roud.top/img/ziya.jpg',
-              to:'Lana Del Rey',
-              toId:19870621,
-              comment:'别忘记宣传我们的合作单曲啊',
-              time:'2019年9月16日 18:43',
-              commentNum:0,
-              like:5,
-              inputShow:false
-
-            }
-          ]
-        },
-        {
-          name:'Taylor Swift',
-          id:19891221,
-          headImg:'http://roud.top/img/ziya.jpg',
-          comment:'我发行了我的新专辑Lover',
-          time:'2019年9月16日 18:43',
-          commentNum:1,
-          like:5,
-          inputShow:false,
-          reply:[
-            {
-              from:'Lana Del Rey',
-              id:19870621,
-              fromHeadImg:'http://roud.top/img/ziya.jpg',
-              to:'Taylor Swift',
-              toId:19891221,
-              comment:'新专辑和speak now 一样棒！',
-              time:'2019年9月16日 18:43',
-              commentNum:25,
-              like:5,
-              inputShow:false
-
-            }
-          ]
-        },
-        {
-          name:'Norman Fucking Rockwell',
-          id:20190830,
-          headImg:'http://roud.top/img/ziya.jpg',
-          comment:'Plz buy Norman Fucking Rockwell on everywhere',
-          time:'2019年9月16日 18:43',
-          commentNum:0,
-          like:5,
-          inputShow:false,
-          reply:[]
-        },
-      ]
+      comments:[]
+          // [
+          // {
+          //   name:'Lana Del Rey',
+          //   id:19870621,
+          //   headImg:'http://roud.top/img/ziya.jpg',
+          //   comment:'我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
+          //   time:'2019年9月16日 18:43',
+          //   commentNum:2,
+          //   like:15,
+          //   inputShow:false,
+          //   reply:[
+          //     {
+          //       from:'Taylor Swift',
+          //       id:19891221,
+          //       fromHeadImg:'http://roud.top/img/ziya.jpg',
+          //       to:'Lana Del Rey',
+          //       toId:19870621,
+          //       comment:'我很喜欢你的新专辑！！',
+          //       time:'2019年9月16日 18:43',
+          //       commentNum:1,
+          //       like:15,
+          //       inputShow:false
+          //     },
+          //     {
+          //       from:'Ariana Grande',
+          //       id:1123,
+          //       fromHeadImg:'http://roud.top/img/ziya.jpg',
+          //       to:'Lana Del Rey',
+          //       toId:19870621,
+          //       comment:'别忘记宣传我们的合作单曲啊',
+          //       time:'2019年9月16日 18:43',
+          //       commentNum:0,
+          //       like:5,
+          //       inputShow:false
+          //     }
+          //   ]
+          // },
+          //     {
+          //       name:'Taylor Swift',
+          //       id:19891221,
+          //       headImg:'http://roud.top/img/ziya.jpg',
+          //       comment:'我发行了我的新专辑Lover',
+          //       time:'2019年9月16日 18:43',
+          //       commentNum:1,
+          //       like:5,
+          //       inputShow:false,
+          //       reply:[
+          //         {
+          //           from:'Lana Del Rey',
+          //           id:19870621,
+          //           fromHeadImg:'http://roud.top/img/ziya.jpg',
+          //           to:'Taylor Swift',
+          //           toId:19891221,
+          //           comment:'新专辑和speak now 一样棒！',
+          //           time:'2019年9月16日 18:43',
+          //           commentNum:25,
+          //           like:5,
+          //           inputShow:false
+          //
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       name:'Norman Fucking Rockwell',
+          //       id:20190830,
+          //       headImg:'http://roud.top/img/ziya.jpg',
+          //       comment:'Plz buy Norman Fucking Rockwell on everywhere',
+          //       time:'2019年9月16日 18:43',
+          //       commentNum:0,
+          //       like:5,
+          //       inputShow:false,
+          //       reply:[]
+          //     },
+          // ]
     }
   },
   directives: {clickoutside},
@@ -336,10 +336,40 @@ export default {
           id : get_id,
         }}).then(res =>{
         if(res.code != "1"){
-          console.log(res)
-          this.showFailMessage(res.msg);
+          this.showFailMessage("初始化评论区失败！");
         }else {
-          this.showSuccessMessage("成功！");
+          let data = res.data;
+          let comment = [];
+          for(var i=0;i<data.length;i++){
+            let j = {};
+            j.name=data[i].from_name;
+            j.id = data[i].id;
+            j.headImg = 'http://roud.top/img/ziya.jpg';
+            j.comment = data[i].content;
+            j.time = data[i].op_time;
+            j.id = data[i].id;
+            j.inputShow = false;
+            let reply = data[i].child_comments
+            let r2 = []
+            if(reply.length>0){
+              for(var flag=0;flag<reply.length;flag++){
+                let j2 = {}
+                j2.id = reply[flag].id;
+                j2.fromHeadImg = 'http://roud.top/img/ziya.jpg';
+                j2.comment = reply[flag].content;
+                j2.time = reply[flag].op_time;
+                j2.id = reply[flag].id;
+                j2.from=reply[flag].from_name;
+                j2.to=reply[flag].to_name;
+                j2.inputShow = false;
+                r2.push(j2)
+              }
+            }
+            j.reply=r2
+            comment.push(j)
+          }
+          console.log(comment)
+          this.comments = comment;
         }
       });
     }
