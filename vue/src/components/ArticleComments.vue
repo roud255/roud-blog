@@ -28,7 +28,7 @@
         <span class="author-time">{{item.time}}</span>
       </div>
       <div class="icon-btn">
-        <span @click="showReplyInput(i,item.name,item.id,parent_id,0)"><el-icon><ChatDotSquare /></el-icon></span>
+        <span @click="showReplyInput(i,item.name,item.id,item.parent_id,0)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><Comment /></el-icon>{{item.commentNum}}</span>-->
 <!--        <el-icon><Promotion /></el-icon>{{item.like}}-->
       </div>
@@ -46,7 +46,7 @@
             <span class="author-time">{{reply.time}}</span>
           </div>
           <div class="icon-btn">
-            <span @click="showReplyInput(i,reply.from,reply.id,parent_id,1)"><el-icon><ChatDotSquare /></el-icon></span>
+            <span @click="showReplyInput(i,reply.from,reply.id,reply.parent_id,1)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><Comment /></el-icon>{{reply.commentNum}}</span>-->
 <!--            <el-icon><Promotion /></el-icon>{{reply.like}}-->
           </div>
@@ -209,6 +209,8 @@ export default {
       replyInput.style.border ="none"
     },
     showReplyInput(i,name,id,parent_id,flag){
+      console.log(parent_id)
+      console.log(flag)
       this.comments[this.index].inputShow = false
       this.index =i
       this.comments[i].inputShow = true
@@ -218,6 +220,7 @@ export default {
       }else {
         this.toId = parent_id
       }
+      console.log(this.toId)
     },
     _inputShow(i){
       return this.comments[i].inputShow
