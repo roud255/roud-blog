@@ -112,8 +112,8 @@
                 // 权限多选框
                 checkAll : false,
                 isIndeterminate : true,
-                checkedItems : ['Shanghai', 'Beijing'],
-                items : ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen'],
+                checkedItems : ["文章-查看"],
+                items : ['用户-查看', '用户-新增', '用户-修改', '用户-删除','文章-查看', '文章-新增', '文章-修改', '文章-删除'],
                 rules: {
                     //邮箱校验规则
                     phonenumber: [
