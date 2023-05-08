@@ -2,7 +2,7 @@
   <div>
     <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
 <!--      <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>-->
-      <el-avatar :style="`background:dodgerblue`"> {{getHeadName(myName)}} </el-avatar>
+        <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`"> {{getHeadName(myName)}} </el-avatar>
       <div class="reply-info" >
         <div
             tabindex="0"
@@ -22,7 +22,7 @@
     </div>
     <div v-for="(item,i) in comments" :key="i" class="author-title reply-father">
 <!--      <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>-->
-      <el-avatar :style="`background:dodgerblue`"> {{getHeadName(item.name)}} </el-avatar>
+      <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`"> {{getHeadName(item.name)}} </el-avatar>
       <div class="author-info">
         <span class="author-name">{{item.name}}</span>
         <span class="author-time">{{item.time}}</span>
@@ -40,7 +40,7 @@
       <div class="reply-box">
         <div v-for="(reply,j) in item.reply" :key="j" class="author-title">
 <!--          <el-avatar class="header-img" :size="40" :src="reply.fromHeadImg"></el-avatar>-->
-          <el-avatar :style="`background:dodgerblue`"> {{getHeadName(reply.from)}} </el-avatar>
+          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`"> {{getHeadName(reply.from)}} </el-avatar>
           <div class="author-info">
             <span class="author-name">{{reply.from}}</span>
             <span class="author-time">{{reply.time}}</span>
