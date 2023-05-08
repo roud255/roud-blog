@@ -376,7 +376,6 @@ export default {
             j.reply=r2
             comment.push(j)
           }
-          console.log(comment)
           this.comments = comment;
         }
       });
