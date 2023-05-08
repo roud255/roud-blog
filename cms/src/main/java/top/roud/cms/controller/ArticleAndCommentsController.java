@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
+import top.roud.cms.common.annotation.CommentAuth;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
 import top.roud.cms.utils.JwtUtil;
@@ -38,6 +39,7 @@ public class ArticleAndCommentsController {
         return Result.success(commentsByArticle);
     }
 
+    @CommentAuth
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
         String token = request.getHeader("token");

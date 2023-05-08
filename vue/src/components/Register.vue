@@ -55,7 +55,7 @@
                     ],
                     nickname:[
                         { required: true, message: "请输入昵称", trigger: "blur" },
-                        { pattern:/^\w{4,8}$/g, message: "昵称由4-8位字母、数字或下划线组成", trigger: "blur"}
+                        { pattern:/^(\w|[\u4e00-\u9fa5]){4,8}$/g, message: "昵称由4-8位字母、数字、下划线或汉字组成", trigger: "blur"}
                     ],
                     password:[
                         { required: true, message: "请输入密码", trigger: "blur" },
