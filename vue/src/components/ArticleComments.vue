@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
-      <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
+<!--      <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>-->
+      <el-avatar :style="`background:dodgerblue`"> {{getHeadName(myName)}} </el-avatar>
       <div class="reply-info" >
         <div
             tabindex="0"
@@ -20,13 +21,14 @@
       </div>
     </div>
     <div v-for="(item,i) in comments" :key="i" class="author-title reply-father">
-      <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>
+<!--      <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>-->
+      <el-avatar :style="`background:dodgerblue`"> {{getHeadName(item.name)}} </el-avatar>
       <div class="author-info">
         <span class="author-name">{{item.name}}</span>
         <span class="author-time">{{item.time}}</span>
       </div>
       <div class="icon-btn">
-        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><ChatDotSquare /></el-icon></span>
+        <span @click="showReplyInput(i,item.name,item.id,parent_id,0)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><Comment /></el-icon>{{item.commentNum}}</span>-->
 <!--        <el-icon><Promotion /></el-icon>{{item.like}}-->
       </div>
@@ -37,13 +39,14 @@
       </div>
       <div class="reply-box">
         <div v-for="(reply,j) in item.reply" :key="j" class="author-title">
-          <el-avatar class="header-img" :size="40" :src="reply.fromHeadImg"></el-avatar>
+<!--          <el-avatar class="header-img" :size="40" :src="reply.fromHeadImg"></el-avatar>-->
+          <el-avatar :style="`background:dodgerblue`"> {{getHeadName(reply.from)}} </el-avatar>
           <div class="author-info">
             <span class="author-name">{{reply.from}}</span>
             <span class="author-time">{{reply.time}}</span>
           </div>
           <div class="icon-btn">
-            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><ChatDotSquare /></el-icon></span>
+            <span @click="showReplyInput(i,reply.from,reply.id,parent_id,1)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><Comment /></el-icon>{{reply.commentNum}}</span>-->
 <!--            <el-icon><Promotion /></el-icon>{{reply.like}}-->
           </div>
@@ -205,12 +208,16 @@ export default {
       replyInput.style.padding= "10px"
       replyInput.style.border ="none"
     },
-    showReplyInput(i,name,id){
+    showReplyInput(i,name,id,parent_id,flag){
       this.comments[this.index].inputShow = false
       this.index =i
       this.comments[i].inputShow = true
       this.to = name
-      this.toId = id
+      if(flag==0){
+        this.toId = id
+      }else {
+        this.toId = parent_id
+      }
     },
     _inputShow(i){
       return this.comments[i].inputShow
@@ -231,6 +238,13 @@ export default {
       ElMessage.error({
         message: msg,
       });
+    },
+    getHeadName(name){
+      var len = (name.split("")).length;
+      if(len>5){
+        return name.slice(0,5);
+      }
+      return name;
     },
     sendComment(){
       if(!this.replyComment){
@@ -356,6 +370,7 @@ export default {
             j.comment = data[i].content;
             j.time = data[i].op_time;
             j.id = data[i].id;
+            j.parent_id = data[i].parent_id;
             j.inputShow = false;
             let reply = data[i].child_comments
             let r2 = []
@@ -369,6 +384,7 @@ export default {
                 j2.id = reply[flag].id;
                 j2.from=reply[flag].from_name;
                 j2.to=reply[flag].to_name;
+                j2.parent_id = reply[flag].parent_id;
                 j2.inputShow = false;
                 r2.push(j2)
               }
