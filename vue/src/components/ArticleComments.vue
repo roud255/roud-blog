@@ -210,8 +210,6 @@ export default {
       replyInput.style.border ="none"
     },
     showReplyInput(i,name,id,parent_id,flag){
-      console.log(parent_id)
-      console.log(flag)
       this.comments[this.index].inputShow = false
       this.index =i
       this.comments[i].inputShow = true
@@ -413,6 +411,7 @@ export default {
   .header-img
     display inline-block
     vertical-align top
+    line-height 40px
   .reply-info
     display inline-block
     margin-left 5px
@@ -454,6 +453,7 @@ export default {
   .header-img
     display inline-block
     vertical-align top
+    line-height 40px
   .author-info
     display inline-block
     margin-left 5px

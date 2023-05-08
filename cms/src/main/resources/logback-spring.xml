@@ -10,7 +10,7 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>info</level>
+            <level>error</level>
         </filter>
         <encoder>
             <Pattern>${console_log_pattern}</Pattern>
@@ -98,7 +98,7 @@
         不能设置为INHERITED或者同义词NULL。默认是DEBUG
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
-    <root level="info">
+    <root level="error">
         <appender-ref ref="console" />
         <appender-ref ref="async-file" />
     </root>

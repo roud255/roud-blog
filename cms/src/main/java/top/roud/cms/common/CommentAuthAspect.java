@@ -1,5 +1,6 @@
 package top.roud.cms.common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,6 +14,8 @@ import top.roud.cms.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
+
+import static top.roud.cms.common.ResultCode.USER_NOT_LOGIN;
 import static top.roud.cms.common.ResultCode.USER_NO_ACCESS_COMMENT;
 
 @Aspect
@@ -28,6 +31,9 @@ public class CommentAuthAspect {
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
         String token = request.getHeader("token");
+        if(StringUtils.isBlank(token)){
+            return Result.failure(USER_NOT_LOGIN);
+        }
         Map<String, Object> info = JwtUtil.getInfo(token);
         //暂定根据type判断操作权限
         int type = (int)info.get("type");
