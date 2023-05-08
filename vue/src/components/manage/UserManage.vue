@@ -67,14 +67,19 @@
                     <el-radio-group v-model="form.type">
                         <el-radio label="0">管理员</el-radio>
                         <el-radio label="1">普通用户</el-radio>
+                        <el-radio label="2">演示用户</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="权　　限" prop="power">
-                    <el-select v-model="form.power" placeholder="输入用户权限">
-                        <el-option label="管理" value="0" />
-                        <el-option label="用户" value="1" />
-                        <el-option label="演示" value="2" />
-                    </el-select>
+<!--                    <el-select v-model="form.power" placeholder="输入用户权限">-->
+<!--                        <el-option label="管理" value="0" />-->
+<!--                        <el-option label="用户" value="1" />-->
+<!--                        <el-option label="演示" value="2" />-->
+<!--                    </el-select>-->
+                  <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange()">Check all</el-checkbox>
+                  <el-checkbox-group v-model="checkedItems" @change="handleCheckedItemsChange()">
+                    <el-checkbox v-for="item in items" :key="item" :label="item">{{item }}</el-checkbox>
+                  </el-checkbox-group>
                 </el-form-item>
             </el-form>
 
@@ -104,6 +109,11 @@
                 pageSize : 10,
                 total : 0,
                 tableData : [],
+                // 权限多选框
+                checkAll : false,
+                isIndeterminate : true,
+                checkedItems : ['Shanghai', 'Beijing'],
+                items : ['Shanghai', 'Beijing', 'Guangzhou', 'Shenzhen'],
                 rules: {
                     //邮箱校验规则
                     phonenumber: [
@@ -120,10 +130,10 @@
                     ],
                     type:[
                         { required: true, message: "必填", trigger: 'change',},
-                    ],
-                    power:[
-                        { required: true, message: "必填", trigger: "change" },
                     ]
+                    // power:[
+                    //     { required: true, message: "必填", trigger: "change" },
+                    // ]
                 }
             }
         },
@@ -139,6 +149,22 @@
             this.load()
         },
         methods : {
+            handleCheckAllChange(){
+              if(this.checkAll){
+                this.checkedItems = this.items
+                this.checkAll = true
+                this.isIndeterminate = false
+              }else {
+                this.checkAll = false
+                this.checkedItems = []
+                this.isIndeterminate = false
+              }
+            },
+            handleCheckedItemsChange(){
+              const checkedCount = this.checkedItems.length
+              this.checkAll = checkedCount === this.items.length
+              this.isIndeterminate = checkedCount > 0 && checkedCount < this.items.length
+            },
             showSuccessMessage(msg){
                 ElMessage.success({
                     message: msg,
