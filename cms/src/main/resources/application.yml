@@ -6,7 +6,7 @@ spring:
     name: defaultDataSource
     url: jdbc:mysql://localhost:3306/roudblog?serverTimezone=GMT%2B8
     username: root
-    password: 12345671
+    password: xBiXWP3MfPz5ADKC
   redis:
     host: 127.0.0.1
     port: 6379
@@ -34,7 +34,9 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
+  #控制台打印SQL语句
   level:
     com.lucifer.springboot.cache.mapper: debug
+  #指定日志配置文件路径
   config: 'classpath:logback-spring.xml'
 

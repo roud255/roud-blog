@@ -6,23 +6,28 @@
 <configuration  scan="true" scanPeriod="10 seconds">
     <springProperty scope="context" name="logPath" source="logPath" defaultValue="${user.dir}/logs"/>
 
-    <!--控制台-->
+    <!--输出到控制台-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>error</level>
         </filter>
         <encoder>
-            <Pattern>${console_log_pattern}</Pattern>
-            <!-- 设置字符集 -->
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
+            </pattern>            <!--输出格式-->
+            <!--%d{HH:mm:ss.SSS} 输出时间-->
+            <!--[%thread] 输出的线程名称-->
+            <!--%-5level 输出的日志级别 靠左占5个字符-->
+            <!--%logger{36} 输出日志输出者-->
+            <!--%msg 日志消息-->
+            <!--%n 换行符-->
             <charset>UTF-8</charset>
         </encoder>
     </appender>
 
     <!-- 时间滚动输出 level为 INFO 日志 -->
-    <appender name="info_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
-        <file>${logPath}/log_info.log</file>
+        <file>${logPath}/catalina.out</file>
         <!--日志文件输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -31,7 +36,7 @@
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 每天日志归档路径以及格式 -->
-            <fileNamePattern>${logPath}/log_info.log-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <fileNamePattern>${logPath}/catalina.log-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -39,11 +44,11 @@
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <!-- 此日志文件只记录info级别的 -->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>info</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+        <!--    <level>info</level>-->
+        <!--    <onMatch>ACCEPT</onMatch>-->
+        <!--    <onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
     </appender>
 
     <appender name="ip_record" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -55,7 +60,8 @@
             <FileNamePattern>${logPath}/ip_record.log.%d{yyyy-MM-dd}</FileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}|%m%n</pattern>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
+            </pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -66,14 +72,14 @@
     </logger>
 
     <!-- 将文件输出设置成异步输出 -->
-    <appender name="async-file" class="ch.qos.logback.classic.AsyncAppender">
-        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
-        <discardingThreshold>0</discardingThreshold>
-        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
-        <queueSize>256</queueSize>
-        <!-- 添加附加的appender,最多只能添加一个 -->
-        <appender-ref ref="info_file"/>
-    </appender>
+    <!--<appender name="async-file" class="ch.qos.logback.classic.AsyncAppender">-->
+    <!--    &lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
+    <!--    <discardingThreshold>0</discardingThreshold>-->
+    <!--    &lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
+    <!--    <queueSize>256</queueSize>-->
+    <!--    &lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
+    <!--    <appender-ref ref="file"/>-->
+    <!--</appender>-->
     <!--
         <logger>用来设置某一个包或者具体的某一个类的日志打印级别、
         以及指定<appender>。<logger>仅有一个name属性，
@@ -98,9 +104,9 @@
         不能设置为INHERITED或者同义词NULL。默认是DEBUG
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
-    <root level="error">
+    <root level="debug">
         <appender-ref ref="console" />
-        <appender-ref ref="async-file" />
+        <appender-ref ref="file" />
     </root>
 
 
