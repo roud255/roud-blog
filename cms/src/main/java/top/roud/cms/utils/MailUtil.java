@@ -1,5 +1,6 @@
 package top.roud.cms.utils;
 
+import cn.hutool.core.lang.UUID;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -76,9 +77,17 @@ public class MailUtil {
      * @param receiver
      * @param content
      */
-    public String  sendVertify (String receiver, String content){
-        String result = cn.hutool.extra.mail.MailUtil.send(receiver, "验证码", content, true, null);
-        return result;
+    public boolean  sendVertify (String receiver, String content){
+        UUID uuid = UUID.randomUUID();
+        LoggerUtil.ip_record.info(uuid +"-验证码开始请求-"+System.currentTimeMillis());
+        try {
+            cn.hutool.extra.mail.MailUtil.send(receiver, "验证码", content, true);
+        }catch (Exception e){
+            LoggerUtil.ip_record.info(uuid +"-验证码请求报错-"+e.getMessage());
+            return false;
+        }
+        LoggerUtil.ip_record.info(uuid+"-验证码请求完成-"+System.currentTimeMillis());
+        return true;
     }
 
     /**

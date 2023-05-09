@@ -53,8 +53,11 @@ public class RegisterController {
         String mailRandVertifyCode = mailUtil.getMailRandVertifyCode(4);
         redisUtil.set(email+"vertifycode", mailRandVertifyCode,3*60);
         String mailContent = mailUtil.getMailContent(mailRandVertifyCode);
-        String s = mailUtil.sendVertify(email, mailContent);
-        return Result.success(SEND_VERTIFYCODE_SUCCESS,s);
+        boolean s = mailUtil.sendVertify(email, mailContent);
+        if(s){
+            return Result.success(SEND_VERTIFYCODE_SUCCESS,s);
+        }
+        return Result.failure(SYSTEM_ERROR);
 //        return Result.failure(ResultCode.REGISTER_CLOSED, "系统未开放注册功能，请联系管理员。");
     }
     @AccessIPRecord
