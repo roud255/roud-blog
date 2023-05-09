@@ -3,4 +3,4 @@ port = 25
 from = xxx<enter your email>
 user = 此处输入你的邮箱enter your email 
 pass = 此处输入你的邮箱密码enter your email's password here
-startttlsEnable = true
+sslEnable = false
