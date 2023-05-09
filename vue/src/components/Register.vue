@@ -180,7 +180,7 @@
                             request.post("/reg/do",this.reg_form).then(res =>{
                                 if(res.code=="1"){
                                     this.showSuccessMessage(res.msg);
-                                    this.$router.push("/index/reg");
+                                    this.$router.push("/index/login");
                                 }else{
                                     this.showFailMessage(res.msg);
                                 }
