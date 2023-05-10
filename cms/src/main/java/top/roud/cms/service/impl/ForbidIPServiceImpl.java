@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.entity.ForbidIP;
 import top.roud.cms.mapper.ForBidIPMapper;
 import top.roud.cms.service.ForBidIPService;

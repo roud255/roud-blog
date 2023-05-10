@@ -1,6 +1,6 @@
 package top.roud.cms.controller;
 
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.entity.User;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.EMAIL_HAS_EXISTED;
+import static top.roud.cms.common.result.ResultCode.EMAIL_HAS_EXISTED;
 
 /**
  * @ClassName: UserController

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.exception.HttpException;
 
 import java.lang.reflect.Field;

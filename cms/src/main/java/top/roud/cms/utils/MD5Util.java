@@ -1,12 +1,12 @@
 package top.roud.cms.utils;
 
 import org.springframework.stereotype.Component;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-import static top.roud.cms.common.ResultCode.SYSTEM_INNER_ERROR;
+import static top.roud.cms.common.result.ResultCode.SYSTEM_INNER_ERROR;
 
 
 /**

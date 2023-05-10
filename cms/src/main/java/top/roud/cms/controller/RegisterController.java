@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.*;
+import static top.roud.cms.common.result.ResultCode.*;
 
 /**
  * @ClassName: RegisterController

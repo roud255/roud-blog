@@ -1,4 +1,4 @@
-package top.roud.cms.common;
+package top.roud.cms.common.result;
 
 /**
  * 统一并自定义返回状态码，如有需求可以另外增加

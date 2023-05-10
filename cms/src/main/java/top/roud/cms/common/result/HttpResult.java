@@ -1,4 +1,4 @@
-package top.roud.cms.common;
+package top.roud.cms.common.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

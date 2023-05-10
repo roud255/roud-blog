@@ -5,10 +5,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 
-import static top.roud.cms.common.ResultCode.METHOD_NOT_SUPPORTED;
-import static top.roud.cms.common.ResultCode.PARAM_NOT_COMPLETE;
+import static top.roud.cms.common.result.ResultCode.METHOD_NOT_SUPPORTED;
+import static top.roud.cms.common.result.ResultCode.PARAM_NOT_COMPLETE;
 
 /**
  * @description : TODO

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.*;
+import static top.roud.cms.common.result.ResultCode.*;
 
 /**
  * @description : TODO

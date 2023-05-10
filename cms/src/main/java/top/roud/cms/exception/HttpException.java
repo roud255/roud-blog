@@ -1,7 +1,7 @@
 package top.roud.cms.exception;
 
-import top.roud.cms.common.Result;
-import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.result.Result;
+import top.roud.cms.common.result.ResultCode;
 
 /**
  * @description : TODO

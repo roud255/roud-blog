@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
@@ -24,14 +24,13 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.*;
+import static top.roud.cms.common.result.ResultCode.*;
 import static top.roud.cms.utils.CaptchaUtil.doDraw;
 import static top.roud.cms.utils.CaptchaUtil.getCode;
 

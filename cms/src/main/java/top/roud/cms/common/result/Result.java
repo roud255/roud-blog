@@ -1,8 +1,8 @@
-package top.roud.cms.common;
+package top.roud.cms.common.result;
 
 import java.io.Serializable;
 
-import static top.roud.cms.common.ResultCode.SYSTEM_INNER_ERROR;
+import static top.roud.cms.common.result.ResultCode.SYSTEM_INNER_ERROR;
 
 public class Result implements Serializable {
 

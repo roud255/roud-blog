@@ -1,6 +1,6 @@
 package top.roud.cms.service;
 
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.entity.User;
 
 public interface UserService {

@@ -2,13 +2,13 @@ package top.roud.cms.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.servlet.HandlerInterceptor;
-import top.roud.cms.common.Result;
+import top.roud.cms.common.result.Result;
 import top.roud.cms.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static top.roud.cms.common.ResultCode.TOKEN_INVALID;
+import static top.roud.cms.common.result.ResultCode.TOKEN_INVALID;
 
 /**
  * @ClassName: JwtInterceptor

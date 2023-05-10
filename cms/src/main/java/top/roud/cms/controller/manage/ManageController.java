@@ -5,9 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.OperationAuthAspect;
-import top.roud.cms.common.Result;
-import top.roud.cms.common.ResultCode;
+import top.roud.cms.common.result.Result;
+import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.entity.Article;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.cms.common.ResultCode.*;
+import static top.roud.cms.common.result.ResultCode.*;
 
 /**
  * @ClassName: ManageController
