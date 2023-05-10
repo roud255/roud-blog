@@ -1,11 +1,10 @@
 package top.roud.cms.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
-import top.roud.cms.common.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
@@ -42,12 +41,12 @@ public class RegisterController {
     @NoRepeatRequest(seconds = 60, maxCount = 1)
     @AccessIPRecord
     @PostMapping("/code")
-    public Result getCode(@RequestBody String info) throws Exception {
+    public Result getCode(@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);
         String email = jsonObject.getString("email");
         String userVertifyCode = (jsonObject.getString("userVertifyCode")).toUpperCase();
         String serverVertifyCode = mailUtil.getServerVertifyCode(email);
-        if(!StrUtil.equals(serverVertifyCode, userVertifyCode)){
+        if(!StringUtils.equals(serverVertifyCode, userVertifyCode)){
             return Result.failure(6101, "异常请求");
         }
         String mailRandVertifyCode = mailUtil.getMailRandVertifyCode(4);
@@ -71,7 +70,7 @@ public class RegisterController {
             return Result.failure("无效验证码");
         }
         String vertifycode = jsonObject.getString("vertifycode");
-        if(!StrUtil.equals(vertifycode, vertifycode_sys)){
+        if(!StringUtils.equals(vertifycode, vertifycode_sys)){
             return Result.failure(CAPTCHA_ERROR);
         }
         //邮箱重复校验

@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.entity.User;
 import top.roud.cms.service.UserService;
+import top.roud.cms.utils.IPUtil;
 import top.roud.cms.utils.JwtUtil;
 import top.roud.cms.utils.MD5Util;
 import top.roud.cms.utils.RedisUtil;
@@ -82,9 +84,9 @@ public class LoginController {
         String phonenumber = jsonObject.getString("email");
         String password = jsonObject.getString("password");
         String captcha = jsonObject.getString("vertifycode");
-        String ip = request.getRemoteAddr();
+        String ip = IPUtil.getIpAddr(request);
         String captcha_sys = (String) redisUtil.get("ip-"+ip+"-captcha");
-        if(captcha_sys==null){
+        if(StringUtils.isBlank(captcha_sys)){
             return Result.failure(CAPTCHA_TIMEOUT);
         }
         if(!StrUtil.equals(captcha.toUpperCase(), captcha_sys.toUpperCase())){
