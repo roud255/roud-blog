@@ -63,7 +63,7 @@ public class LoginController {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", new Date().getTime());
             String str = getCode();
-            String ip = request.getRemoteAddr();
+            String ip = IPUtil.getIpAddr(request);
             redisUtil.set("ip-"+ip+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
             ServletOutputStream out = response.getOutputStream();
