@@ -146,7 +146,7 @@
             },
             loadTags(){
                 request.get("/manage/tags/select").then(res=>{
-                    if(res.code != "1"){
+                    if(res.code != "200"){
                         return;
                     }
                     let data = res.data;
@@ -180,7 +180,7 @@
                     this.showWarningMessage("标签数不能大于4个且不推荐标签过长！")
                 }else{
                     request.post("/manage/article/add", this.form).then(res => {
-                        if(res.code!="1"){
+                        if(res.code!="200"){
                             this.showFailMessage(res.msg);
                         }else {
                             this.showSuccessMessage(res.msg);

@@ -97,7 +97,7 @@
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
-                        if(res.code != "1"){
+                        if(res.code != "200"){
                             return;
                         }
                         this.total = res.data.total;
@@ -121,7 +121,7 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/article/del/"+id).then(res =>{
-                    if(res.code != "1"){
+                    if(res.code != "200"){
                         this.showFailMessage(res.msg);
                         return;
                     }

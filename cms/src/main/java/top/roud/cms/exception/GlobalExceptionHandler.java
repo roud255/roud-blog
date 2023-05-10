@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.roud.cms.common.Result;
 
-import static top.roud.cms.common.ResultCode.METHOD_NOT_COMPLETE;
+import static top.roud.cms.common.ResultCode.METHOD_NOT_SUPPORTED;
 import static top.roud.cms.common.ResultCode.PARAM_NOT_COMPLETE;
 
 /**
@@ -25,6 +25,6 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex){
-        return Result.failure(METHOD_NOT_COMPLETE);
+        return Result.failure(METHOD_NOT_SUPPORTED);
     }
 }

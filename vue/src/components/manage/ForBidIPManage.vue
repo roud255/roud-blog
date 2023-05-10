@@ -132,7 +132,7 @@
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
-                    if(!res.code ==="1"){
+                    if(!res.code ==="200"){
                         return;
                     }
                     this.total = res.data.total;
@@ -158,7 +158,7 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/ip/update", this.form).then(res =>{
-                                if(res.code != "1"){
+                                if(res.code != "200"){
                                     this.showFailMessage(res.msg);
                                     return;
                                 }
@@ -170,7 +170,7 @@
                         }else{//新增
                             this.form["id"] = (new Date()).getTime();
                             request.post("/manage/ip/add", this.form).then(res =>{
-                                if(res.code==="1"){
+                                if(res.code==="200"){
                                     this.showSuccessMessage(res.msg);
                                 }else{
                                     this.showFailMessage(res.msg);
@@ -197,7 +197,7 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/ip/del/"+id).then(res =>{
-                    if(res.code != "1"){
+                    if(res.code != "200"){
                         this.showFailMessage(res.msg);
                         return;
                     }

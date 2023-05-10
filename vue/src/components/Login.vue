@@ -128,7 +128,7 @@
                     if (valid) {
                         if(this.notice){
                             request.post("/login",this.login_form).then(res =>{
-                                if(res.code!="1"){
+                                if(res.code!="200"){
                                     this.showWarningMessage(res.msg);
                                 }else {
                                     localStorage.setItem('token',res.data.token);

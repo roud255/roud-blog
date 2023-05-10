@@ -182,7 +182,7 @@
                     pageSize : this.pageSize,
                     search : this.search
                 }}).then(res =>{
-                    if(res.code != "1"){
+                    if(res.code != "200"){
                         return;
                     }
                     this.total = res.data.total;
@@ -231,7 +231,7 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/user/update", this.form).then(res =>{
-                                if(res.code != "1"){
+                                if(res.code != "200"){
                                     this.showFailMessage(res.msg);
                                     return;
                                 }
@@ -244,7 +244,7 @@
                             this.form["id"] = (new Date()).getTime();
                             this.form["registertime"] = this.getCurrentTime();
                             request.post("/manage/user/add", this.form).then(res =>{
-                              if(res.code != "1"){
+                              if(res.code != "200"){
                                 this.showFailMessage(res.msg);
                                 return;
                               }
@@ -271,7 +271,7 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/user/del/"+id).then(res =>{
-                    if(res.code != "1"){
+                    if(res.code != "200"){
                         this.showFailMessage(res.msg);
                         return;
                     }

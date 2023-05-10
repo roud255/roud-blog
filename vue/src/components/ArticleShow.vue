@@ -58,7 +58,7 @@
                 request.get("/aat/getArticleById",{params:{
                         id : get_id,
                     }}).then(res=>{
-                        if(res.code != "1"){
+                        if(res.code != "200"){
                             this.$router.push("/notfound");
                             return;
                         }

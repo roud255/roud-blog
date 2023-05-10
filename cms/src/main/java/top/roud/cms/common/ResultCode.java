@@ -6,15 +6,15 @@ package top.roud.cms.common;
 public enum ResultCode {
 	
 	/* 成功状态码 */
-	SUCCESS(1, "操作成功"),
-	SEND_VERTIFYCODE_SUCCESS(1,"验证码已发送至您的邮箱，三分钟内有效，请注意查收"),
+	SUCCESS(200, "操作成功"),
+	SEND_VERTIFYCODE_SUCCESS(200,"验证码已发送至您的邮箱，三分钟内有效，请注意查收"),
 	
 	/* 参数错误：10001-19999 */
 	PARAM_IS_INVALID(10001, "参数无效"),
 	PARAM_IS_BLANK(10002, "参数为空"),
 	PARAM_TYPE_BIND_ERROR(10003, "参数类型错误"),
 	PARAM_NOT_COMPLETE(10004, "参数缺失"),
-	METHOD_NOT_COMPLETE(10005, "请求方式异常"),
+	METHOD_NOT_SUPPORTED(10005, "请求方式异常"),
 
 	
 	/* 用户错误：20001-29999*/

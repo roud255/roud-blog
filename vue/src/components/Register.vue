@@ -150,7 +150,7 @@
                         userVertifyCode: md5(this.getUserEmailVertifyCode())
                     }).then(res=>{
                         let resCode = res.code;
-                        if(resCode=="1"){
+                        if(resCode=="200"){
                             this.showSuccessMessage(res.msg);
                         }else {
                             this.showFailMessage(res.msg);
@@ -178,7 +178,7 @@
                     if (valid) {
                         if(this.notice){
                             request.post("/reg/do",this.reg_form).then(res =>{
-                                if(res.code=="1"){
+                                if(res.code=="200"){
                                     this.showSuccessMessage(res.msg);
                                     this.$router.push("/index/login");
                                 }else{
