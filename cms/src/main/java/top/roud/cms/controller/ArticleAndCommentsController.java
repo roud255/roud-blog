@@ -43,9 +43,8 @@ public class ArticleAndCommentsController {
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
         String token = request.getHeader("token");
-        try {
-            JwtUtil.checkSign(token);
-        } catch (Exception e) {
+        boolean flag = JwtUtil.checkSign(token);
+        if(!flag){
             return Result.failure(TOKEN_INVALID);
         }
         JSONObject body = JSON.parseObject(info);

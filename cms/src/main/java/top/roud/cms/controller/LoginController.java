@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
@@ -51,7 +52,7 @@ public class LoginController {
     @Resource
     private MD5Util md5Util;
     @AccessIPRecord
-    @GetMapping
+    @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
         try{
             int imgWidth = 108;
@@ -67,7 +68,7 @@ public class LoginController {
             redisUtil.set("ip-"+ip+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
             ServletOutputStream out = response.getOutputStream();
-            ImageIO.write(img, "JPG", out);
+            ImageIO.write(img, "PNG", out);
             out.flush();
             out.close();
             return null;

@@ -85,10 +85,14 @@ public class JwtUtil {
      * @param token
      * @return
      */
-    public static boolean checkSign(String token) throws Exception {
+    public static boolean checkSign(String token){
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
         JWTVerifier verifier = JWT.require(algorithm).build();
-        verifier.verify(token);
+        try{
+            verifier.verify(token);
+        }catch (Exception e){
+            return false;
+        }
         return true;
     }
 }

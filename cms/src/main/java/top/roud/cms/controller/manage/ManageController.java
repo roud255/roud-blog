@@ -173,15 +173,11 @@ public class ManageController {
     @AccessIPRecord
     @GetMapping("/user/info")
     public Result getUserInfo(@RequestParam String token){
-        try{
-            boolean flag = JwtUtil.checkSign(token);
-            if(flag){
-                return Result.success(JwtUtil.getInfo(token));
-            }
-            return Result.failure(TOKEN_INVALID);
-        }catch (Exception e){
-            return Result.failure(TOKEN_INVALID);
+        boolean flag = JwtUtil.checkSign(token);
+        if(flag){
+            return Result.success(JwtUtil.getInfo(token));
         }
+        return Result.failure(TOKEN_INVALID);
     }
     @AccessIPRecord
     @GetMapping("/ip/select")

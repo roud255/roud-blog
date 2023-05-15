@@ -22,19 +22,19 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
         JSONObject json;
-        try {
-            JwtUtil.checkSign(token);
+
+        boolean flag = JwtUtil.checkSign(token);
+        if(flag){
             return true;
         }
+        json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_INVALID));
+
 //        catch (SignatureException e){
 //            json=(JSONObject) JSONObject.toJSON(Result.failure(SIGN_INVALID));
 //        } catch (TokenExpiredException e){
 //            json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_EXPIRED));
 //        } catch (ArithmeticException e){
 //            json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_ARITHMETERROR));
-        catch (Exception e){
-            json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_INVALID));
-        }
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(json);
         return false;
