@@ -1,12 +1,15 @@
 spring:
   application:
     name: springboot
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/DBTest
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: defaultDataSource
     url: jdbc:mysql://localhost:3306/roudblog?serverTimezone=GMT%2B8
     username: root
-    password: xBiXWP3MfPz5ADKC
+    password: 12345671
   redis:
     host: 127.0.0.1
     port: 6379

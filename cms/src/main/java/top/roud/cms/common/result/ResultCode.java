@@ -38,6 +38,7 @@ public enum ResultCode {
 	DATA_NONE(50001, "数据未找到"),
 	DATA_WRONG(50002, "数据错误"),
 	DATA_EXISTED(50003, "数据已存在"),
+	FILE_IS_EMPTY(50101, "文件为空"),
 	
 	
 	/* 接口错误：60001-69999 */
