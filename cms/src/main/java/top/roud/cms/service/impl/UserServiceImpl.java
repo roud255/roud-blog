@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     public Result save(User user) {
+        //用户权限暂时根据type判断，power全部设置为1
+        user.setPower("1");
+
         userMapper.insert(user);
         return Result.success();
     }

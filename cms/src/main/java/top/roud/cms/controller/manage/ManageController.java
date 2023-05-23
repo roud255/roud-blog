@@ -79,6 +79,14 @@ public class ManageController {
             List<User> records = data.getRecords();
             for(User u:records){
                 u.setId(123456789L);
+                char[] chars = u.getPhonenumber().toCharArray();
+                String email = "";
+                int a = 0;
+                for(char c:chars){
+                    email = a > 0 && a < 4 ? email.concat("*") : email.concat(String.valueOf(c));
+                    a++;
+                }
+                u.setPhonenumber(email);
                 u.setPassword("************");
             }
         }
