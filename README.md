@@ -42,16 +42,24 @@
 <p><img src="http://roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤
-1. <p>将sql文件导入数据库</p>
+1. <p>将sqlfiles目录下的sql文件导入数据库</p>
 1. <p>定位到./cms/pom.xml，导入maven依赖</p>
 1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis及项目端口配置</p>
-1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码），当前注册功能默认关闭；如需开启，请在./cms/src/main/java/top/roud/cms/controller/RegisterController.java中取消代码注释</p>
+1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
 1. <p>切换到./vue目录下，执行npm install命令安装vue项目所需依赖</p>
 1. <p>启动redis服务</p>
 1. <p>启动springboot项目服务</p>
 1. <p>启动vue服务，启动完成自动跳转至主页</p>
 
-
+##### 其他
+1. <p>目前角色权限仅通过type进行划分，type类型分别为：</p>
+ - <p>0-超级管理员（具有对用户和博客文章增删改查权限）</p>
+ - <p>1-普通用户（评论权限和查看信息脱敏的后台管理系统的权限，注册的账号默认类型为普通用户）</p>
+ - <p>2-演示用户（仅具备查看信息脱敏的后台管理系统的权限）</p>
+ 
+2. <p>如何在自己的项目中将普通账号升级为超级管理员账号？</p>
+ - <p>直接修改数据库，将用户type修改为0</p>
+3. ...
 
 ### 页面路由
 ##### 首页
