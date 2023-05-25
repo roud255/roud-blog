@@ -60,7 +60,7 @@ public enum ResultCode {
 	TOKEN_ARITHMETERROR(80004, "算法不一致"),
 	CAPTCHA_TIMEOUT(80007,"图片验证码过期，请点击刷新图片验证码"),
 	CAPTCHA_ERROR(80008,"验证码错误"),
-	COUNT_LIMIT(80009,"请求次数限制一天一次");
+	COUNT_LIMIT(80009,"头像或拓展信息修改限制一天一次");
 
 	private Integer code;
 

@@ -13,7 +13,7 @@
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>个人信息</el-dropdown-item>
+<!--                    <el-dropdown-item>个人信息</el-dropdown-item>-->
                         <el-dropdown-item @click="$router.push(`/`)">回到首页</el-dropdown-item>
                         <el-dropdown-item @click="logout">退出系统</el-dropdown-item>
                     </el-dropdown-menu>
