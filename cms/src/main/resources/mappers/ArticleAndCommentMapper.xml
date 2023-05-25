@@ -10,6 +10,7 @@
         <result property="parent_id" column="parent_id"/>
         <result property="from_name" column="from_name"/>
         <result property="to_name" column="to_name"/>
+        <result property="headimg" column="headimg"/>
         <collection property="child_comments" resultMap="CommentResult"/>
     </resultMap>
     <resultMap id="CommentResult" type="top.roud.cms.entity.Comment">
@@ -20,18 +21,19 @@
         <result property="parent_id" column="sub_parent_id"/>
         <result property="from_name" column="sub_from_name"/>
         <result property="to_name" column="sub_to_name"/>
+        <result property="headimg" column="sub_headimg"/>
     </resultMap>
 
     <insert id="insertComment" parameterType="top.roud.cms.entity.Comment">
-        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id) values (#{id}, #{content},#{op_time}, #{from_name}, #{parent_id}, #{to_name}, #{article_id});
+        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id, headimg) values (#{id}, #{content},#{op_time}, #{from_name}, #{parent_id}, #{to_name}, #{article_id}, #{headimg});
     </insert>
 
     <select id="findAllCommentsByArticle" resultType="List" resultMap="CommentWithSubResult" parameterType="Long">
         select
-            id, op_time,content,from_name,to_name,parent_id,article_id,sub_id, sub_op_time,sub_content,sub_from_name,sub_to_name,sub_parent_id,sub_article_id
+            id, op_time,content,from_name,to_name,parent_id,article_id,headimg,sub_id, sub_op_time,sub_content,sub_from_name,sub_to_name,sub_parent_id,sub_article_id,sub_headimg
         from
             (select
-                 c.id id,c.op_time,c.content,c.from_name,c.to_name, c.parent_id, c.article_id,c1.id sub_id, c1.op_time sub_op_time,c1.content sub_content,c1.from_name sub_from_name,c1.to_name sub_to_name, c1.parent_id sub_parent_id, c1.article_id sub_article_id
+                 c.id id,c.op_time,c.content,c.from_name,c.to_name, c.parent_id, c.article_id,c.headimg,c1.id sub_id, c1.op_time sub_op_time,c1.content sub_content,c1.from_name sub_from_name,c1.to_name sub_to_name, c1.parent_id sub_parent_id, c1.article_id sub_article_id,c1.headimg sub_headimg
              from
                  rb_comment c
                      LEFT OUTER JOIN

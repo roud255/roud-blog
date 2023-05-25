@@ -3,7 +3,7 @@
         <div style="width: 200px; padding: 0 50px; color: cornflowerblue; font-weight: bold">后台管理系统</div>
         <div style="flex: 1"></div>
         <div style="width: 160px">
-            <span style="display: inline-block;height: 40px; margin: 10px 10px">
+            <span style="display: inline-block;height: 40px; line-height:40px; margin: 10px 10px">
                 <el-avatar :src="head_img" v-if="avatar_show"/>
                 <el-avatar v-if="!avatar_show"> {{avatar}} </el-avatar>
             </span>

@@ -58,4 +58,5 @@ public class Comment implements Serializable {
     private Long parent_id;
     private List<Comment> child_comments;
     private Long article_id;
+    private String headimg;
 }

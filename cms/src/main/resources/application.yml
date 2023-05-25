@@ -3,7 +3,7 @@ spring:
     name: springboot
   data:
     mongodb:
-      uri: mongodb://127.0.0.1:27017/DBTest
+      uri: mongodb://127.0.0.1:27017/roudblog
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: defaultDataSource

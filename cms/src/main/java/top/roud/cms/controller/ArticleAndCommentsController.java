@@ -54,6 +54,7 @@ public class ArticleAndCommentsController {
         String to = body.getString("to");
         String p_id = body.getString("parent_id");
         String article_id = body.getString("article_id");
+        String headimg = body.getString("headimg");
         Comment c = new Comment();
         c.setId(System.currentTimeMillis());
         Date date = new Date();
@@ -63,6 +64,7 @@ public class ArticleAndCommentsController {
         c.setTo_name(to);
         c.setParent_id(Long.valueOf(p_id));
         c.setArticle_id(Long.valueOf(article_id));
+        c.setHeadimg(headimg);
         Integer res = articleAndCommentService.addComment(c);
         if(1==res){
             return Result.success();

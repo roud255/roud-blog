@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
-<!--      <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>-->
-        <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`"> {{getHeadName(myName)}} </el-avatar>
+        <el-avatar class="header-img" :size="40" :src="headimg" v-if="headimg"></el-avatar>
+        <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`" v-if="!headimg"> {{getHeadName(myName)}} </el-avatar>
       <div class="reply-info" >
         <div
             tabindex="0"
@@ -21,8 +21,8 @@
       </div>
     </div>
     <div v-for="(item,i) in comments" :key="i" class="author-title reply-father">
-<!--      <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>-->
-      <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`"> {{getHeadName(item.name)}} </el-avatar>
+      <el-avatar class="header-img" :size="40" :src="item.headimg" v-if="item.headimg"></el-avatar>
+      <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!item.headimg"> {{getHeadName(item.name)}} </el-avatar>
       <div class="author-info">
         <span class="author-name">{{item.name}}</span>
         <span class="author-time">{{item.time}}</span>
@@ -39,8 +39,8 @@
       </div>
       <div class="reply-box">
         <div v-for="(reply,j) in item.reply" :key="j" class="author-title">
-<!--          <el-avatar class="header-img" :size="40" :src="reply.fromHeadImg"></el-avatar>-->
-          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`"> {{getHeadName(reply.from)}} </el-avatar>
+          <el-avatar class="header-img" :size="40" :src="reply.headimg" v-if="reply.headimg"></el-avatar>
+          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!reply.headimg"> {{getHeadName(reply.from)}} </el-avatar>
           <div class="author-info">
             <span class="author-name">{{reply.from}}</span>
             <span class="author-time">{{reply.time}}</span>
@@ -62,8 +62,8 @@
         </div>
       </div>
       <div  v-show="_inputShow(i)" class="my-reply my-comment-reply">
-        <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`"> {{getHeadName(myName)}} </el-avatar>
-        <!--        <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>-->
+        <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`" v-if="!headimg"> {{getHeadName(myName)}} </el-avatar>
+        <el-avatar class="header-img" :size="40" :src="headimg" v-if="headimg"></el-avatar>
         <div class="reply-info" >
           <div tabindex="0" contenteditable="true" spellcheck="false" placeholder="输入评论..."   @input="onDivInput($event)"  class="reply-input reply-comment-input"></div>
         </div>
@@ -112,10 +112,10 @@ export default {
       index:'0',
       replyComment:'',
       myName:'',
-      myHeader:'http://roud.top/img/ziya.jpg',
       myId:19870621,
       to:'',
       toId:-1,
+      headimg:'',
       comments:[]
           // [
           // {
@@ -262,7 +262,7 @@ export default {
         let time= this.dateStr(timeNow);
         a.name= this.myName
         a.comment =this.replyComment
-        a.headImg = this.myHeader
+        a.headimg = this.headimg
         a.time = time
         a.commentNum = 0
         a.like = 0
@@ -296,7 +296,7 @@ export default {
         let time= this.dateStr(timeNow);
         a.from= this.myName
         a.to = this.to
-        a.fromHeadImg = this.myHeader
+        a.headimg = this.headimg
         a.comment =this.replyComment
         a.time = time
         // a.commentNum = 0
@@ -352,6 +352,9 @@ export default {
         }}).then(res =>{
         if(res.code=="200"){
           this.myName = res.data.name
+          if(res.data.imgurl){
+            this.headimg = "/api/img/show/"+res.data.imgurl;
+          }
         }else {
           this.myName = "登录后评论~"
         }})
@@ -368,7 +371,7 @@ export default {
             let j = {};
             j.name=data[i].from_name;
             j.id = data[i].id;
-            j.headImg = 'http://roud.top/img/ziya.jpg';
+            j.headimg = data[i].headimg;
             j.comment = data[i].content;
             j.time = data[i].op_time;
             j.id = data[i].id;
@@ -380,7 +383,7 @@ export default {
               for(var flag=0;flag<reply.length;flag++){
                 let j2 = {}
                 j2.id = reply[flag].id;
-                j2.fromHeadImg = 'http://roud.top/img/ziya.jpg';
+                j2.headimg = reply[flag].headimg;
                 j2.comment = reply[flag].content;
                 j2.time = reply[flag].op_time;
                 j2.id = reply[flag].id;

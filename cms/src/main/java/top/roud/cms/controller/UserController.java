@@ -9,6 +9,7 @@ import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.common.utils.JwtUtil;
+import top.roud.cms.common.utils.RedisUtil;
 import top.roud.cms.entity.User;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
@@ -36,6 +37,8 @@ public class UserController {
     private UserService userService;
     @Resource
     private UserInformationService userInformationService;
+    @Resource
+    private RedisUtil redisUtil;
     @OperationAuth
     @AccessIPRecord
     @PostMapping
@@ -73,7 +76,6 @@ public class UserController {
         return userService.delById(id);
     }
 
-    @NoRepeatRequest(seconds = 60*60*24, maxCount = 1)
     @AccessIPRecord
     @PostMapping("/updateinfo")
     public Result updateUserInfo(@RequestBody String info,HttpServletRequest request){
@@ -84,6 +86,11 @@ public class UserController {
             }
             Map<String, Object> tokeninfo = JwtUtil.getInfo(token);
             Long u_id = (Long) tokeninfo.get("id");
+            Integer count = (Integer) redisUtil.get(u_id + "-updateinfo");
+            Optional<Integer> op = Optional.ofNullable(count);
+            if(op.isPresent()){
+                return Result.failure(COUNT_LIMIT);
+            }
             UserInformation userInformation = userInformationService.selectByUserId(u_id);
             JSONObject jsonObject = JSON.parseObject(info);
             String sex = jsonObject.getString("sex");
@@ -92,6 +99,7 @@ public class UserController {
             userInformation.setSex(s);
             userInformation.setMotto(motto);
             userInformationService.updateByUserId(userInformation);
+            redisUtil.set(u_id+"-updateinfo",1,60*60*24);
             return Result.success();
         }catch (Exception e){
             return Result.failure(SYSTEM_ERROR);
