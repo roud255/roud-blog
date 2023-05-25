@@ -12,8 +12,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.NoRepeatRequest;
-import top.roud.cms.utils.IPUtil;
-import top.roud.cms.utils.RedisUtil;
+import top.roud.cms.common.utils.IPUtil;
+import top.roud.cms.common.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;

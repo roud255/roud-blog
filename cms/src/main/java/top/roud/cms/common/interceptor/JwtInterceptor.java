@@ -1,9 +1,9 @@
-package top.roud.cms.interceptor;
+package top.roud.cms.common.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.roud.cms.common.result.Result;
-import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.common.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

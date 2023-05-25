@@ -1,4 +1,4 @@
-package top.roud.cms.exception;
+package top.roud.cms.common.exception;
 
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.roud.cms.common.result.Result;
 
-import static top.roud.cms.common.result.ResultCode.METHOD_NOT_SUPPORTED;
-import static top.roud.cms.common.result.ResultCode.PARAM_NOT_COMPLETE;
+import java.sql.SQLSyntaxErrorException;
+
+import static top.roud.cms.common.result.ResultCode.*;
 
 /**
  * @description : TODO
@@ -26,5 +27,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex){
         return Result.failure(METHOD_NOT_SUPPORTED);
+    }
+    @ExceptionHandler(SQLSyntaxErrorException.class)
+    public Result handleSQLSyntaxErrorException(SQLSyntaxErrorException ex){
+        return Result.failure(DATA_WRONG);
+    }
+    @ExceptionHandler(Exception.class)
+    public Result handleException(Exception ex){
+        return Result.failure(SYSTEM_INNER_ERROR);
     }
 }

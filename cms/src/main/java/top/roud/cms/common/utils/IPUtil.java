@@ -1,4 +1,4 @@
-package top.roud.cms.utils;
+package top.roud.cms.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

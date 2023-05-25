@@ -7,6 +7,7 @@ import NotFound from "@/views/NotFound";
 import ForBidIPManage from "@/components/manage/ForBidIPManage";
 import ErrorComputerModel from "@/views/ErrorComputerModel";
 import ArticleComments from "@/components/ArticleComments";
+import AccountInformation from "@/components/AccountInformation";
 
 const routes = [
     {
@@ -80,7 +81,7 @@ const routes = [
     {
         path: '/test',
         name: 'test',
-        component: ArticleComments
+        component: AccountInformation
     },
     {
         path: '/',

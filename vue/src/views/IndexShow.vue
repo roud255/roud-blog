@@ -26,6 +26,7 @@
                             <el-dropdown-item @click="this.$router.push(`/manage/user`)">进入后台</el-dropdown-item>
                             <el-dropdown-item @click="dev_ing_show">进入商城</el-dropdown-item>
                             <el-dropdown-item @click="dev_ing_show">网站说明</el-dropdown-item>
+                            <el-dropdown-item @click="accountInformationShow">个人信息</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
@@ -83,6 +84,9 @@
                 <p v-if="noMore" style="padding: 20px 0">我也是有底线的~</p>
             </div>
         </div>
+        <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%)">
+          <AccountInformation ref="aif"></AccountInformation>
+        </div>
     </el-scrollbar>
 </template>
 
@@ -90,10 +94,12 @@
     import { computed, ref } from 'vue';
     import request from "../utils/request";
     import { ElNotification as notify } from 'element-plus'
+    import AccountInformation from "@/components/AccountInformation";
 
     export default {
-        name: "Index",
-        data(){
+      name: "Index",
+      components: {AccountInformation},
+      data(){
             return{
                 loading : false,
                 t_data : [],
@@ -114,6 +120,9 @@
                 window.open('/article/show?id='+id.toString(),'_blank');
                 //直接在
                 // this.$router.push('/article/show?id='+id.toString());
+            },
+            accountInformationShow(){
+              this.$refs.aif.show_div();
             },
             inital(){
                 request.get("/aat/fp",{params:{

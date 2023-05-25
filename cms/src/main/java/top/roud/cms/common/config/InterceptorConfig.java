@@ -3,7 +3,7 @@ package top.roud.cms.common.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import top.roud.cms.interceptor.JwtInterceptor;
+import top.roud.cms.common.interceptor.JwtInterceptor;
 
 /**
  * @ClassName: InterceptorConfig
@@ -16,6 +16,7 @@ import top.roud.cms.interceptor.JwtInterceptor;
 public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/manage/**").addPathPatterns("/user/**").addPathPatterns("/aat/del/**");
+        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/manage/**").addPathPatterns("/user/**").addPathPatterns("/aat/del/**")
+                .addPathPatterns("/img/upload");
     }
 }

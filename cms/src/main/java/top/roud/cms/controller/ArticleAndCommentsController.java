@@ -8,7 +8,7 @@ import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
-import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.common.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

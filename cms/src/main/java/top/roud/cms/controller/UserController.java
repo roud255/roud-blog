@@ -1,16 +1,26 @@
 package top.roud.cms.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
+import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.utils.IPUtil;
+import top.roud.cms.common.utils.JwtUtil;
 import top.roud.cms.entity.User;
+import top.roud.cms.entity.UserInformation;
+import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.cms.common.result.ResultCode.EMAIL_HAS_EXISTED;
+import static top.roud.cms.common.result.ResultCode.*;
 
 /**
  * @ClassName: UserController
@@ -24,15 +34,19 @@ import static top.roud.cms.common.result.ResultCode.EMAIL_HAS_EXISTED;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private UserInformationService userInformationService;
     @OperationAuth
     @AccessIPRecord
     @PostMapping
-    public Result save(@RequestBody User user){
+    public Result save(@RequestBody User user, HttpServletRequest request){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
         Optional<User> op = Optional.ofNullable(userByPhonenumber);
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
+        UserInformation userInformation = new UserInformation().setUser(user).setId(System.currentTimeMillis()).setRecentlyip(IPUtil.getIpAddr(request));
+        userInformationService.save(userInformation);
         return userService.save(user);
     }
     @AccessIPRecord
@@ -51,5 +65,36 @@ public class UserController {
     @DeleteMapping("/{id}")
     public Result delById(@PathVariable Long id){
         return userService.delById(id);
+    }
+
+    @AccessIPRecord
+    @PostMapping("/{id}")
+    public Result updateUserInfo(@PathVariable Long id){
+        return userService.delById(id);
+    }
+
+    @NoRepeatRequest(seconds = 60*60*24, maxCount = 1)
+    @AccessIPRecord
+    @PostMapping("/updateinfo")
+    public Result updateUserInfo(@RequestBody String info,HttpServletRequest request){
+        try {
+            String token = request.getHeader("token");
+            if (StringUtils.isBlank(token) || !JwtUtil.checkSign(token)) {
+                return Result.failure(TOKEN_INVALID);
+            }
+            Map<String, Object> tokeninfo = JwtUtil.getInfo(token);
+            Long u_id = (Long) tokeninfo.get("id");
+            UserInformation userInformation = userInformationService.selectByUserId(u_id);
+            JSONObject jsonObject = JSON.parseObject(info);
+            String sex = jsonObject.getString("sex");
+            String motto = jsonObject.getString("motto");
+            int s = StringUtils.equals("女",sex)?1:0;
+            userInformation.setSex(s);
+            userInformation.setMotto(motto);
+            userInformationService.updateByUserId(userInformation);
+            return Result.success();
+        }catch (Exception e){
+            return Result.failure(SYSTEM_ERROR);
+        }
     }
 }

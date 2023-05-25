@@ -1,4 +1,4 @@
-package top.roud.cms.utils;
+package top.roud.cms.common.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -8,7 +8,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import top.roud.cms.common.result.ResultCode;
-import top.roud.cms.exception.HttpException;
+import top.roud.cms.common.exception.HttpException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

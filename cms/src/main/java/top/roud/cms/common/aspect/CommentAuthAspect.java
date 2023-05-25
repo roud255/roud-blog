@@ -11,7 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
-import top.roud.cms.utils.JwtUtil;
+import top.roud.cms.common.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

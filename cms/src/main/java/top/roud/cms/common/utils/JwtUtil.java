@@ -1,4 +1,4 @@
-package top.roud.cms.utils;
+package top.roud.cms.common.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

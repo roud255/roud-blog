@@ -1,4 +1,4 @@
-package top.roud.cms.utils;
+package top.roud.cms.common.utils;
 
 import cn.hutool.core.lang.UUID;
 import org.springframework.stereotype.Component;

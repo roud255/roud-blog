@@ -3,8 +3,9 @@
         <div style="width: 200px; padding: 0 50px; color: cornflowerblue; font-weight: bold">后台管理系统</div>
         <div style="flex: 1"></div>
         <div style="width: 160px">
-            <span style="margin: 0 10px">
-                <el-avatar> {{avatar}} </el-avatar>
+            <span style="display: inline-block;height: 40px; margin: 10px 10px">
+                <el-avatar :src="head_img" v-if="avatar_show"/>
+                <el-avatar v-if="!avatar_show"> {{avatar}} </el-avatar>
             </span>
             <el-dropdown>
                 <span class="el-dropdown-link" style="height: 60px; line-height: 60px">
@@ -30,6 +31,8 @@
             return{
                 userName : "default",
                 avatar : "",
+                avatar_show: false,
+                head_img : ""
             }
         },
         methods:{
@@ -66,6 +69,13 @@
                         };
                         this.userName = res.data.name;
                         this.avatar = this.userName.substring(0,2);
+                        var img = res.data.imgurl;
+                        if(img){
+                          this.avatar_show = true;
+                          this.head_img = "/api/img/show/"+img;
+                        }else {
+                          this.avatar_show = false;
+                        }
                     })
                 }else{
                     this.showFailMessage("请先登录！");

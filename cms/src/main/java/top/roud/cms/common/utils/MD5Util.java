@@ -1,4 +1,4 @@
-package top.roud.cms.utils;
+package top.roud.cms.common.utils;
 
 import org.springframework.stereotype.Component;
 import top.roud.cms.common.result.Result;

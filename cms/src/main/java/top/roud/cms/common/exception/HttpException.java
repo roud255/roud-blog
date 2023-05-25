@@ -1,4 +1,4 @@
-package top.roud.cms.exception;
+package top.roud.cms.common.exception;
 
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;

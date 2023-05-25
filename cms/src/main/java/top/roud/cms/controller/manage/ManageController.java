@@ -9,16 +9,15 @@ import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
-import top.roud.cms.entity.Article;
-import top.roud.cms.entity.ForbidIP;
-import top.roud.cms.entity.Tag;
-import top.roud.cms.entity.User;
+import top.roud.cms.common.utils.IPUtil;
+import top.roud.cms.entity.*;
 import top.roud.cms.service.ArticleAndTagService;
 import top.roud.cms.service.ForBidIPService;
+import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
-import top.roud.cms.utils.JwtUtil;
-import top.roud.cms.utils.MD5Util;
-import top.roud.cms.utils.TimeTransUtil;
+import top.roud.cms.common.utils.JwtUtil;
+import top.roud.cms.common.utils.MD5Util;
+import top.roud.cms.common.utils.TimeTransUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +49,8 @@ public class ManageController {
     private TimeTransUtil timeTransUtil;
     @Resource
     private MD5Util md5Util;
+    @Resource
+    private UserInformationService userInformationService;
 
     private ForbidIP forbidIP;
     private Article a;
@@ -57,12 +58,14 @@ public class ManageController {
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/user/add")
-    public Result save(@RequestBody User user){
+    public Result save(@RequestBody User user,HttpServletRequest request){
         User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
         Optional<User> op = Optional.ofNullable(userByPhonenumber);
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
+        UserInformation userInformation = new UserInformation().setUser(user).setId(System.currentTimeMillis()).setRecentlyip(IPUtil.getIpAddr(request));
+        userInformationService.save(userInformation);
         user.setPassword(md5Util.md5(user.getPassword()));
         return userService.save(user);
     }

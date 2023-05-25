@@ -7,13 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
+import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.entity.User;
+import top.roud.cms.entity.UserInformation;
+import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
-import top.roud.cms.utils.MD5Util;
-import top.roud.cms.utils.MailUtil;
-import top.roud.cms.utils.RedisUtil;
+import top.roud.cms.common.utils.MD5Util;
+import top.roud.cms.common.utils.MailUtil;
+import top.roud.cms.common.utils.RedisUtil;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Optional;
 
@@ -37,6 +41,8 @@ public class RegisterController {
     private MailUtil mailUtil;
     @Resource
     private MD5Util md5Util;
+    @Resource
+    private UserInformationService userInformationService;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)
     @AccessIPRecord
@@ -61,7 +67,7 @@ public class RegisterController {
     }
     @AccessIPRecord
     @PostMapping("/do")
-    public Result register(@RequestBody String info){
+    public Result register(@RequestBody String info, HttpServletRequest request){
         JSONObject jsonObject = JSON.parseObject(info);
         String email = jsonObject.getString("email");
         String vertifycode_sys = (String) redisUtil.get(email+"vertifycode");
@@ -89,6 +95,8 @@ public class RegisterController {
         user.setRegistertime(new Date());
         user.setType(1);
         user.setPower("1");
+        UserInformation userInformation = new UserInformation().setUser(user).setId(System.currentTimeMillis()).setRecentlyip(IPUtil.getIpAddr(request));
+        userInformationService.save(userInformation);
         return userService.save(user);
 //        return Result.failure(ResultCode.REGISTER_CLOSED, "系统未开放注册功能，请联系管理员。");
     }
