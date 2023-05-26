@@ -11,10 +11,7 @@ import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.entity.*;
-import top.roud.cms.service.ArticleAndTagService;
-import top.roud.cms.service.ForBidIPService;
-import top.roud.cms.service.UserInformationService;
-import top.roud.cms.service.UserService;
+import top.roud.cms.service.*;
 import top.roud.cms.common.utils.JwtUtil;
 import top.roud.cms.common.utils.MD5Util;
 import top.roud.cms.common.utils.TimeTransUtil;
@@ -51,6 +48,8 @@ public class ManageController {
     private MD5Util md5Util;
     @Resource
     private UserInformationService userInformationService;
+    @Resource
+    private ArticleAndCommentService articleAndCommentService;
 
     private ForbidIP forbidIP;
     private Article a;
@@ -124,7 +123,12 @@ public class ManageController {
     @AccessIPRecord
     @DeleteMapping("/article/del/{id}")
     public Result del(@PathVariable Long id){
-        articleAndTagService.delArticleWithTag(id);
+        try{
+            articleAndTagService.delArticleWithTag(id);
+            articleAndCommentService.delByArticleId(id);
+        }catch (Exception e){
+            return Result.failure(SYSTEM_ERROR);
+        }
         return Result.success();
     }
     @AccessIPRecord

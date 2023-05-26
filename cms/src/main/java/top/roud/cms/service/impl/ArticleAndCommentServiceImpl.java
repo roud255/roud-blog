@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @description : TODO
- * @author: guangrui_hu
+ * @author: roud
  * @date: 2023/5/4
  * @version:
  */
@@ -26,5 +26,15 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     @Override
     public List<Comment> findCommentByArticle(Long a_id) {
         return articleAndCommentMapper.findAllCommentsByArticle(a_id);
+    }
+
+    @Override
+    public Integer delById(Long id) {
+        return articleAndCommentMapper.delById(id);
+    }
+
+    @Override
+    public Integer delByArticleId(Long article_id) {
+        return articleAndCommentMapper.delByArticleId(article_id);
     }
 }

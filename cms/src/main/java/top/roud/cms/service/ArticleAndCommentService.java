@@ -13,4 +13,6 @@ import java.util.List;
 public interface ArticleAndCommentService {
     public Integer addComment(Comment comment);
     public List<Comment> findCommentByArticle(Long a_id);
+    public Integer delById(Long id);
+    public Integer delByArticleId(Long article_id);
 }

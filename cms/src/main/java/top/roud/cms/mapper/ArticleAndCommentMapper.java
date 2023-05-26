@@ -9,4 +9,6 @@ import java.util.List;
 public interface ArticleAndCommentMapper {
     Integer insertComment(Comment comment);
     List<Comment> findAllCommentsByArticle(Long article_id);
+    Integer delById(Long id);
+    Integer delByArticleId(Long article_id);
 }

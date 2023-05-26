@@ -48,4 +48,12 @@
             id desc
     </select>
 
+    <delete id="delById" parameterType="long">
+        delete from rb_comment where id=#{id}
+    </delete>
+
+    <delete id="delByArticleId" parameterType="long">
+        delete from rb_comment where article_id=#{article_id}
+    </delete>
+
 </mapper>
