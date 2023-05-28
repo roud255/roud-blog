@@ -8,7 +8,7 @@
                 <el-avatar v-if="!avatar_show"> {{avatar}} </el-avatar>
             </span>
             <el-dropdown>
-                <span class="el-dropdown-link" style="height: 60px; line-height: 60px">
+                <span class="el-dropdown-link" style="height: 60px; line-height: 60px; text-overflow: ellipsis">
                   {{userName}}<el-icon class="el-icon--right"><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
@@ -66,8 +66,12 @@
                             // },100);
                             this.$router.push("/index/login");
                             return;
-                        };
-                        this.userName = res.data.name;
+                        }
+                        if(res.data.name!=null && (res.data.name).length>5){
+                          this.userName = (res.data.name).substring(0,4)+"...";
+                        }else {
+                          this.userName = res.data.name;
+                        }
                         this.avatar = this.userName.substring(0,2);
                         var img = res.data.imgurl;
                         if(img){
