@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.mapper.ArticleAndTagMapper;
@@ -22,6 +23,7 @@ import java.util.List;
  * @Date 2022/9/3
  * @Version 1.0
  */
+@Transactional
 @Service
 public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Resource

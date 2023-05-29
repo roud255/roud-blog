@@ -2,6 +2,7 @@ package top.roud.cms.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.mapper.ArticleAndCommentMapper;
 import top.roud.cms.service.ArticleAndCommentService;
@@ -14,6 +15,7 @@ import java.util.List;
  * @date: 2023/5/4
  * @version:
  */
+@Transactional
 @Service
 public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     @Autowired

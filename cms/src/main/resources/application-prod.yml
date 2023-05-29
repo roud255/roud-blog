@@ -10,6 +10,7 @@ spring:
     url: jdbc:mysql://8.134.71.114:3306/roudblog?serverTimezone=GMT%2B8
     username: root
     password: 12345671
+    type: com.alibaba.druid.pool.DruidDataSource
   redis:
     host: 8.134.71.114
     port: 6379

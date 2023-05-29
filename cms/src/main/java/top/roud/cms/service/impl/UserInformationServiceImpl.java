@@ -1,6 +1,7 @@
 package top.roud.cms.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.mapper.UserInformationMapper;
 import top.roud.cms.service.UserInformationService;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
  * @date: 2023/5/24
  * @version:
  */
+@Transactional
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
     @Resource

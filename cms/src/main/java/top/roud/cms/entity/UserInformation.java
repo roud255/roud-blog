@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @description : TODO
  * @author: roud
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
 @TableName("rb_user_extends")
 @Data
 @Accessors(chain = true)
-public class UserInformation {
+public class UserInformation implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private User user;
