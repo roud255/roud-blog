@@ -82,8 +82,49 @@
       </div>
       <div class="reply-box">
         <div v-for="(reply,j) in item.reply" :key="j" class="author-title">
-          <el-avatar class="header-img" :size="40" :src="reply.headimg" v-if="reply.headimg"></el-avatar>
-          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!reply.headimg"> {{getHeadName(reply.from)}} </el-avatar>
+<!--          <el-avatar class="header-img" :size="40" :src="reply.headimg" v-if="reply.headimg"></el-avatar>-->
+<!--          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!reply.headimg"> {{getHeadName(reply.from)}} </el-avatar>-->
+
+          <el-popover
+              :width="300"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
+              placement="right"
+              trigger="click"
+          >
+            <template #reference>
+              <el-avatar class="header-img" :size="40" :src="reply.headimg" v-if="reply.headimg"></el-avatar>
+              <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!reply.headimg"> {{getHeadName(reply.from)}} </el-avatar>
+            </template>
+            <template #default>
+              <div
+                  class="demo-rich-conent"
+                  style="display: flex; gap: 16px; flex-direction: column"
+              >
+                <el-avatar class="header-img" :size="40" :src="reply.headimg" v-if="reply.headimg"></el-avatar>
+                <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!reply.headimg"> {{getHeadName(reply.from)}} </el-avatar>
+                <div>
+                  <p
+                      class="demo-rich-content__name"
+                      style="margin: 0; font-weight: 500"
+                  >
+                    {{reply.from}}<span style="display: inline-block; margin-left: 20px" v-if="reply.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
+                    <span style="display: inline-block; margin-left: 20px" v-if="reply.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
+                  </p>
+                  <p
+                      class="demo-rich-content__mention"
+                      style="margin: 0; font-size: 14px; color: var(--el-color-info)"
+                  >
+                    {{reply.email}}
+                  </p>
+                </div>
+
+                <p class="demo-rich-content__desc" style="margin: 0">
+                  {{reply.motto}}
+                </p>
+              </div>
+            </template>
+          </el-popover>
+
           <div class="author-info">
             <span class="author-name">{{reply.from}}</span>
             <span class="author-time">{{reply.time}}</span>
@@ -242,10 +283,18 @@ export default {
   directives: {clickoutside},
   methods: {
     inputFocus(){
-      var replyInput = document.getElementById('replyInput');
-      replyInput.style.padding= "8px 8px"
-      replyInput.style.border ="2px solid blue"
-      replyInput.focus()
+      request.get("/manage/user/info", {params:{
+          token : localStorage.getItem('token'),
+        }}).then(res =>{
+        if(res.code!=="200"){
+          this.$router.push("/index/login");
+        }else {
+          var replyInput = document.getElementById('replyInput');
+          replyInput.style.padding= "8px 8px"
+          replyInput.style.border ="2px solid blue"
+          replyInput.focus()
+        }
+      })
     },
     showReplyBtn(){
       this.btnShow = true
