@@ -286,7 +286,7 @@ export default {
       request.get("/manage/user/info", {params:{
           token : localStorage.getItem('token'),
         }}).then(res =>{
-        if(res.code!=="200"){
+        if(res.code!="200"){
           this.$router.push("/index/login");
         }else {
           var replyInput = document.getElementById('replyInput');
