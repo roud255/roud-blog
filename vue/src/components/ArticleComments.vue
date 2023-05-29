@@ -21,8 +21,50 @@
       </div>
     </div>
     <div v-for="(item,i) in comments" :key="i" class="author-title reply-father">
-      <el-avatar class="header-img" :size="40" :src="item.headimg" v-if="item.headimg"></el-avatar>
-      <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!item.headimg"> {{getHeadName(item.name)}} </el-avatar>
+      <!--nn-->
+      <el-popover
+          :width="300"
+          popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
+          placement="right"
+          trigger="click"
+      >
+        <template #reference>
+          <el-avatar class="header-img" :size="40" :src="item.headimg" v-if="item.headimg"></el-avatar>
+          <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!item.headimg"> {{getHeadName(item.name)}} </el-avatar>
+        </template>
+        <template #default>
+          <div
+              class="demo-rich-conent"
+              style="display: flex; gap: 16px; flex-direction: column"
+          >
+            <el-avatar class="header-img" :size="60" :src="item.headimg" v-if="item.headimg"></el-avatar>
+            <el-avatar class="header-img" :size="60" :style="`background:dodgerblue`" v-if="!item.headimg"> {{getHeadName(item.name)}} </el-avatar>
+            <div>
+              <p
+                  class="demo-rich-content__name"
+                  style="margin: 0; font-weight: 500"
+              >
+                {{item.name}}
+              </p>
+              <p
+                  class="demo-rich-content__mention"
+                  style="margin: 0; font-size: 14px; color: var(--el-color-info)"
+              >
+                {{item.email}}
+              </p>
+            </div>
+
+            <p class="demo-rich-content__desc" style="margin: 0">
+              {{item.motto}}
+            </p>
+          </div>
+        </template>
+      </el-popover>
+
+
+<!--      <el-avatar class="header-img" :size="40" :src="item.headimg" v-if="item.headimg"></el-avatar>-->
+<!--      <el-avatar class="header-img" :size="40" :style="`background:dodgerblue`" v-if="!item.headimg"> {{getHeadName(item.name)}} </el-avatar>-->
+<!--      -->
       <div class="author-info">
         <span class="author-name">{{item.name}}</span>
         <span class="author-time">{{item.time}}</span>
@@ -116,6 +158,9 @@ export default {
       to:'',
       toId:-1,
       headimg:'',
+      email :'',
+      motto :'',
+      sex :'',
       comments:[]
           // [
           // {
@@ -219,7 +264,6 @@ export default {
       }else {
         this.toId = parent_id
       }
-      console.log(this.toId)
     },
     _inputShow(i){
       return this.comments[i].inputShow
@@ -263,6 +307,9 @@ export default {
         a.name= this.myName
         a.comment =this.replyComment
         a.headimg = this.headimg
+        a.email = this.email
+        a.motto = this.motto
+        a.sex = this.sex
         a.time = time
         a.commentNum = 0
         a.like = 0
@@ -297,6 +344,9 @@ export default {
         a.from= this.myName
         a.to = this.to
         a.headimg = this.headimg
+        a.email = this.email
+        a.motto = this.motto
+        a.sex = this.sex
         a.comment =this.replyComment
         a.time = time
         // a.commentNum = 0
@@ -352,6 +402,9 @@ export default {
         }}).then(res =>{
         if(res.code=="200"){
           this.myName = res.data.name
+          this.email = res.data.phone
+          this.motto = res.data.motto
+          this.sex = res.data.sex==0?"男":"女"
           if(res.data.imgurl){
             this.headimg = "/api/img/show/"+res.data.imgurl;
           }
@@ -372,6 +425,9 @@ export default {
             j.name=data[i].from_name;
             j.id = data[i].id;
             j.headimg = data[i].headimg;
+            j.sex = data[i].sex;
+            j.motto = data[i].motto;
+            j.email = data[i].email;
             j.comment = data[i].content;
             j.time = data[i].op_time;
             j.id = data[i].id;
@@ -384,6 +440,9 @@ export default {
                 let j2 = {}
                 j2.id = reply[flag].id;
                 j2.headimg = reply[flag].headimg;
+                j2.email = reply[flag].email;
+                j2.motto = reply[flag].motto;
+                j2.sex = reply[flag].sex;
                 j2.comment = reply[flag].content;
                 j2.time = reply[flag].op_time;
                 j2.id = reply[flag].id;

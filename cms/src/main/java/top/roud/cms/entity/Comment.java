@@ -59,4 +59,7 @@ public class Comment implements Serializable {
     private List<Comment> child_comments;
     private Long article_id;
     private String headimg;
+    private String email;
+    private String motto;
+    private String sex;
 }
