@@ -44,7 +44,8 @@
                   class="demo-rich-content__name"
                   style="margin: 0; font-weight: 500"
               >
-                {{item.name}}
+                {{item.name}}<span style="display: inline-block; margin-left: 20px" v-if="item.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
+                <span style="display: inline-block; margin-left: 20px" v-if="item.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
               </p>
               <p
                   class="demo-rich-content__mention"

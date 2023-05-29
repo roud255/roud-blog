@@ -68,9 +68,9 @@ public class ArticleAndCommentsController {
         c.setParent_id(Long.valueOf(p_id));
         c.setArticle_id(Long.valueOf(article_id));
         c.setHeadimg(headimg);
-        c.setHeadimg(sex);
-        c.setHeadimg(motto);
-        c.setHeadimg(email);
+        c.setSex(sex);
+        c.setMotto(motto);
+        c.setEmail(email);
         Integer res = articleAndCommentService.addComment(c);
         if(1==res){
             return Result.success();
