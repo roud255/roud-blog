@@ -1,5 +1,6 @@
 package top.roud.cms.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -56,6 +57,7 @@ public class Comment implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date op_time;
     private Long parent_id;
+    @TableField(exist = false)
     private List<Comment> child_comments;
     private Long article_id;
     private String headimg;

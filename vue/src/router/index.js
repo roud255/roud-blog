@@ -8,6 +8,7 @@ import ForBidIPManage from "@/components/manage/ForBidIPManage";
 import ErrorComputerModel from "@/views/ErrorComputerModel";
 import ArticleComments from "@/components/ArticleComments";
 import AccountInformation from "@/components/AccountInformation";
+import CommentsManage from "@/components/manage/CommentsManage";
 
 const routes = [
     {
@@ -34,6 +35,11 @@ const routes = [
               path: 'forbidip',
               name: 'ForbidIP',
               component: ForBidIPManage
+          },
+          {
+              path: 'comment',
+              name: 'comment',
+              component: CommentsManage
           }
 
       ]

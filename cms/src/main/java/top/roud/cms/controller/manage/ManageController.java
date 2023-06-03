@@ -243,4 +243,28 @@ public class ManageController {
         return result;
     }
 
+    @OperationAuth
+    @AccessIPRecord
+    @DeleteMapping("/comment/del/{id}")
+    public Result delCommentById(@PathVariable(value = "id") Long id){
+        Integer res = articleAndCommentService.delById(id);
+        if(res==1){
+            return Result.success();
+        }
+        return Result.failure(SYSTEM_INNER_ERROR);
+    }
+
+    @OperationAuth
+    @AccessIPRecord
+    @GetMapping("/comment/findall")
+    public Result findAll(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        Page<Comment>  allComments;
+        try{
+            allComments = articleAndCommentService.findAllComments(pageNum, pageSize, search);
+        }catch (Exception e){
+            return Result.failure(SYSTEM_INNER_ERROR);
+        }
+        return Result.success(allComments);
+    }
+
 }
