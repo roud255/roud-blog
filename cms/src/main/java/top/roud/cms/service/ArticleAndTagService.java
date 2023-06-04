@@ -19,4 +19,5 @@ public interface ArticleAndTagService {
     public Page<Article> findPage_second(Integer pageNum, Integer pageSize, String search);
     public List<Tag> getTagByArticleId(Long id);
     public void delArticleWithTag(Long id);
+    public Integer updateArticleById(Article article);
 }

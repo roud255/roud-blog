@@ -130,4 +130,9 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     public void delArticleWithTag(Long id) {
         articleAndTagMapper.delArticleWithTag(id);
     }
+
+    @Override
+    public Integer updateArticleById(Article article) {
+        return articleAndTagMapper.updateById(article);
+    }
 }

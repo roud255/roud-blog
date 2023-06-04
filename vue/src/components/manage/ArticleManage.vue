@@ -23,7 +23,7 @@
             <el-table-column prop="publishtime" label="发布时间" width="100" :show-overflow-tooltip="true"/>
             <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
-<!--                    <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>-->
+                    <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
                         <template #reference>
                             <el-button link type="danger">删除</el-button>
@@ -33,6 +33,46 @@
             </el-table-column>
         </el-table>
     </div>
+
+    <el-dialog v-model="dialogVisible" title="修改文章" width="800px" :before-close="handleClose" center>
+      <el-form
+          :model="form"
+          :rules="rules"
+          ref="form"
+          label-width="auto"
+          :label-position="labelPosition"
+          class="demo-ruleForm"
+      >
+        <el-form-item label="标题"  prop="title">
+          <el-input v-model="form.title" />
+        </el-form-item>
+        <el-form-item label="署名" prop="author">
+          <el-input v-model="form.author" />
+        </el-form-item>
+        <el-form-item label="摘要" prop="description">
+          <el-input v-model="form.description" />
+        </el-form-item>
+        <el-form-item label="封面" prop="cover">
+          <el-input v-model="form.cover" />
+        </el-form-item>
+        <el-form-item label="时间">
+          <el-date-picker v-model="form.publishtime" type="datetime" placeholder="选择日期和时间" disabled/>
+        </el-form-item>
+
+        <el-form-item label="内容" style="margin: 20px 0">
+          <v-md-editor v-model="form.postbody" height="400px"></v-md-editor>
+        </el-form-item>
+
+        <div style="text-align: -webkit-center">
+          <el-form ref="ruleForm" style="width: max-content">
+            <el-form-item style="margin: 20px 0">
+              <el-button type="primary" @click="onSubmitUpdate">更新</el-button>
+              <el-button @click="onCancel">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-form>
+    </el-dialog>
 
     <div>
         <el-pagination
@@ -66,6 +106,22 @@
                 pageSize : 10,
                 total : 0,
                 tableData : [],
+                dialogVisible: false,
+                rules: {
+                  //邮箱校验规则
+                  title: [
+                    { required: true, message: "必填", trigger: "blur" },
+                  ],
+                  author:[
+                    { required: true, message: "必填", trigger: "blur" },
+                  ],
+                  description:[
+                    { required: true, message: "必填", trigger: "blur" },
+                  ],
+                  cover:[
+                    { required: true, message: "必填", trigger: 'change',},
+                  ]
+                }
             }
         },
         // 自定义指令
@@ -128,6 +184,34 @@
                     this.showSuccessMessage(res.msg)
                 });
                 this.load();
+            },
+            handleEdit(row){
+              this.form = JSON.parse(JSON.stringify(row));
+              this.dialogVisible = true;
+            },
+            onCancel(){
+              this.dialogVisible=false;
+            },
+            onSubmitUpdate(){
+              this.$refs['form'].validate(valid => {
+                if (valid) {
+                  if(this.form.id){//更新
+                    request.put("/manage/article/update", this.form).then(res =>{
+                      if(res.code != "200"){
+                        this.showFailMessage(res.msg);
+                        return;
+                      }
+                      this.showSuccessMessage(res.msg)
+                    });
+                    this.dialogVisible = false;
+                    this.form = {};
+                    this.load();
+                  }
+                } else {
+                  this.showFailMessage("提交失败");
+                }
+              });
+
             },
 
         },

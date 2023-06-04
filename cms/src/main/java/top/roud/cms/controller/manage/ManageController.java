@@ -119,6 +119,23 @@ public class ManageController {
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
         return Result.success(page);
     }
+
+    @OperationAuth
+    @AccessIPRecord
+    @PutMapping("/article/update")
+    public Result updateArticle(@RequestBody Article article){
+        Integer count;
+        try{
+            count = articleAndTagService.updateArticleById(article);
+        }catch (Exception e){
+            return Result.failure(SYSTEM_ERROR);
+        }
+        if(count==1){
+            return Result.success();
+        }
+        return Result.failure(SYSTEM_ERROR);
+    }
+
     @OperationAuth
     @AccessIPRecord
     @DeleteMapping("/article/del/{id}")
@@ -254,7 +271,6 @@ public class ManageController {
         return Result.failure(SYSTEM_INNER_ERROR);
     }
 
-    @OperationAuth
     @AccessIPRecord
     @GetMapping("/comment/findall")
     public Result findAll(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){

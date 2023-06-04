@@ -1,5 +1,6 @@
 package top.roud.cms.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,9 @@ public class Article implements Serializable {
     private String postbody;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date publishtime;
+    @TableField(exist = false)
     private List<Tag> tags;
+    @TableField(exist = false)
     private List<Comment> comments;
 
 }
