@@ -11,6 +11,7 @@ mybatis-plus:
   type-aliases-package: top.roud.cms.entity
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
 
 logging:
   #控制台打印SQL语句

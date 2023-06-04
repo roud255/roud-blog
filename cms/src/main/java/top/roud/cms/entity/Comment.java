@@ -52,13 +52,18 @@ public class Comment implements Serializable {
     private static final long serialVersionUID = 1L;
     private Long id;
     private String content;
+    @TableField("from_name")
     private String from_name;
+    @TableField("to_name")
     private String to_name;
+    @TableField("op_time")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date op_time;
+    @TableField("parent_id")
     private Long parent_id;
     @TableField(exist = false)
     private List<Comment> child_comments;
+    @TableField("article_id")
     private Long article_id;
     private String headimg;
     private String email;
