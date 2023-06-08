@@ -55,6 +55,16 @@ public class RedisUtil {
         }
         return result;
     }
+    public boolean set(final String key, String value, long timeout, TimeUnit timeUnit) {
+        boolean result = false;
+        try {
+            redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public boolean set(final String key, Integer value, long offset, int code) {
         boolean result = false;

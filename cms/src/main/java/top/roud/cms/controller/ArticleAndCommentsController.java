@@ -2,10 +2,13 @@ package top.roud.cms.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
+import top.roud.cms.common.utils.ConstUtil;
+import top.roud.cms.common.utils.RedisUtil;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
 import top.roud.cms.common.utils.JwtUtil;
@@ -15,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static top.roud.cms.common.result.ResultCode.*;
 
@@ -29,13 +33,22 @@ import static top.roud.cms.common.result.ResultCode.*;
 public class ArticleAndCommentsController {
     @Autowired
     private ArticleAndCommentService articleAndCommentService;
+    @Autowired
+    private RedisUtil redisUtil;
     @RequestMapping
     public Result selectComments(@RequestParam Long id){
         Optional<Long> op = Optional.ofNullable(id);
         if(!op.isPresent()){
             return Result.failure(PARAM_NOT_COMPLETE);
         }
+        String key = ConstUtil.REDIS_COMMENTS_KEY+id;
+        String cacheStr = (String)redisUtil.get(key);
+        if(StringUtils.isNotBlank(cacheStr)){
+            List<Comment> commentsByArticle = JSON.parseObject(cacheStr, List.class);
+            return Result.success(commentsByArticle);
+        }
         List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(id);
+        redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
         return Result.success(commentsByArticle);
     }
 

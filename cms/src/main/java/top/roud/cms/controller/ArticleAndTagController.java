@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.utils.ConstUtil;
+import top.roud.cms.common.utils.RedisUtil;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
@@ -20,6 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import static top.roud.cms.common.result.ResultCode.PARAM_NOT_COMPLETE;
 
 /**
  * @ClassName: ArticleAndTagController
@@ -33,6 +39,8 @@ import java.util.Optional;
 public class ArticleAndTagController {
     @Resource
     private ArticleAndTagService articleAndTagService;
+    @Resource
+    private RedisUtil redisUtil;
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/add")
@@ -87,14 +95,25 @@ public class ArticleAndTagController {
     @AccessIPRecord
     @GetMapping("/getArticleById")
     public Result getArticleById(Long id){
+        if(!Optional.ofNullable(id).isPresent()){
+            return Result.failure(PARAM_NOT_COMPLETE);
+        }
+        String key = ConstUtil.REDIS_ARTICLE_KEY+id;
+        String articleCacheStr = (String)redisUtil.get(key);
+        if(StringUtils.isNotBlank(articleCacheStr)){
+            Article articleCache = JSON.parseObject(articleCacheStr, Article.class);
+            return Result.success(articleCache);
+        }
         Article articleAndhTag = articleAndTagService.getArticleByIdWithTag(id);
         Optional<Article> op = Optional.ofNullable(articleAndhTag);
         if(op.isPresent()){
+            redisUtil.set(key, JSON.toJSONString(articleAndhTag), 10, TimeUnit.MINUTES);
             return Result.success(articleAndhTag);
         }else{
             Article article = articleAndTagService.getArticleById(id);
             Optional<Article> op_a = Optional.ofNullable(article);
             if(op_a.isPresent()){
+                redisUtil.set(key, JSON.toJSONString(article), 10, TimeUnit.MINUTES);
                 return Result.success(article);
             }
             return Result.failure(ResultCode.DATA_NONE);

@@ -75,6 +75,13 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     /**
     分页查询+表关联，如果直接用关联+分页，总条数变多。只能拆分，先分页查article，再添加tags
     */
+
+    /**
+     * 该方法不支持模糊查询
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
     public Page<Article> findPage(Integer pageNum, Integer pageSize) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
@@ -96,6 +103,13 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
         return result;
     }
 
+    /**
+     * 该方法支持模糊查询
+     * @param pageNum
+     * @param pageSize
+     * @param search
+     * @return
+     */
     @Override
     public Page<Article> findPage_second(Integer pageNum, Integer pageSize, String search) {
         LambdaQueryWrapper<Article> wrapper = Wrappers.<Article>lambdaQuery();
