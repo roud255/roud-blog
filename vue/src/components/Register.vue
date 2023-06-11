@@ -22,7 +22,7 @@
         </el-form-item>
         <p class="emptyLine"></p>
         <el-form-item label="验证码" size="large" prop="vertifycode">
-            <el-input v-model="reg_form.vertifycode" placeholder="请输入验证码" style="width: 180px; margin-right: 10px;"/>
+            <el-input v-model="reg_form.vertifycode" placeholder="请输入验证码" style="width: 180px; margin-right: 10px;"  @keydown.enter="onSubmit"/>
             <el-button :disabled="checkCodeBtn.disabled" @click="getCode">{{ checkCodeBtn.text }}</el-button>
         </el-form-item>
         <p class="emptyLine"></p>

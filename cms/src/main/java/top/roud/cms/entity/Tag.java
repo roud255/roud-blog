@@ -1,5 +1,6 @@
 package top.roud.cms.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class Tag implements Serializable {
     private Long id;
     private String tagname;
     private String description;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date addtime;
     private List<Article> articles;

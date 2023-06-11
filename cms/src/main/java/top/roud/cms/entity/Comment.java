@@ -1,5 +1,6 @@
 package top.roud.cms.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -57,6 +58,7 @@ public class Comment implements Serializable {
     @TableField("to_name")
     private String to_name;
     @TableField("op_time")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date op_time;
     @TableField("parent_id")

@@ -3,16 +3,16 @@ spring:
     name: springboot
   data:
     mongodb:
-      uri: mongodb://8.134.71.114:27017/roudblog
+      uri: mongodb://127.0.0.1:27017/roudblog
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: defaultDataSource
-    url: jdbc:mysql://8.134.71.114:3306/roudblog?serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/roudblog?serverTimezone=GMT%2B8
     username: root
     password: 12345671
     type: com.alibaba.druid.pool.DruidDataSource
   redis:
-    host: 8.134.71.114
+    host: 127.0.0.1
     port: 6379
     database: 0
     jedis:
@@ -22,3 +22,5 @@ spring:
         max-idle: 20
         min-idle: 2
     timeout: 5000
+violentRequest:
+  maxCount: 1000

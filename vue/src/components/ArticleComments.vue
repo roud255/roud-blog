@@ -13,6 +13,7 @@
             class="reply-input"
             @focus="showReplyBtn"
             @input="onDivInput($event)"
+            @keydown.enter="replyInputEnter($event)"
         >
         </div>
       </div>
@@ -149,7 +150,7 @@
         <el-avatar class="header-img" :size="40" :style="`background:dodgerblue;`" v-if="!headimg"> {{getHeadName(myName)}} </el-avatar>
         <el-avatar class="header-img" :size="40" :src="headimg" v-if="headimg"></el-avatar>
         <div class="reply-info" >
-          <div tabindex="0" contenteditable="true" spellcheck="false" placeholder="输入评论..."   @input="onDivInput($event)"  class="reply-input reply-comment-input"></div>
+          <div tabindex="0" contenteditable="true" spellcheck="false" placeholder="输入评论..."   @input="onDivInput($event)" @keydown.enter="replyInputEnter_S($event,i,j)"  class="reply-input reply-comment-input"></div>
         </div>
         <div class=" reply-btn-box">
           <el-button class="reply-btn" size="medium" @click="sendCommentReply(i,j)" type="primary">发表评论</el-button>
@@ -349,6 +350,12 @@ export default {
           type:'warning',
           message:'评论不能为空'
         })
+      }else if(this.replyComment.length>500){
+        this.$message({
+          showClose: true,
+          type:'warning',
+          message:'评论超出500字限制'
+        })
       }else{
         let a ={}
         let input =  document.getElementById('replyInput')
@@ -387,7 +394,12 @@ export default {
           type:'warning',
           message:'评论不能为空'
         })
-      }else{
+      }else if(this.replyComment.length>100){
+        this.$message({
+          showClose: true,
+          type:'warning',
+          message:'回复超出100字限制'
+        })} else{
         let a ={}
         let timeNow = new Date().getTime();
         let time= this.dateStr(timeNow);
@@ -417,7 +429,19 @@ export default {
       }
     },
     onDivInput: function(e) {
-      this.replyComment = e.target.innerHTML;
+      this.replyComment = e.target.innerText;
+    },
+    replyInputEnter:function(e){
+      if (e.charCode === 0) {
+        e.preventDefault();
+        this.sendComment();
+      }
+    },
+    replyInputEnter_S:function(e,i,j){
+      if (e.charCode === 0) {
+        e.preventDefault();
+        this.sendCommentReply(i,j);
+      }
     },
     dateStr(date){
       //获取js 时间戳
@@ -524,6 +548,7 @@ export default {
     display inline-block
     vertical-align top
     line-height 40px
+    cursor pointer
   .reply-info
     display inline-block
     margin-left 5px
@@ -566,6 +591,7 @@ export default {
     display inline-block
     vertical-align top
     line-height 40px
+    cursor pointer
   .author-info
     display inline-block
     margin-left 5px
@@ -605,6 +631,11 @@ export default {
     .reply
       font-size 16px
       color #000
+      display block
+      white-space pre-wrap
+      word-wrap break-word
+
+  overflow: hidden;
   .reply-box
     margin 10px 0 0 50px
     background-color #efefef

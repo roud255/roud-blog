@@ -22,3 +22,5 @@ spring:
         max-idle: 20
         min-idle: 2
     timeout: 5000
+violentRequest:
+  maxCount: 1000

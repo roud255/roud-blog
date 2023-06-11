@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
@@ -45,19 +46,11 @@ public class ArticleAndTagController {
     @AccessIPRecord
     @PostMapping("/add")
     public Result addArticle(@RequestBody String info) {
-        JSONObject jsonObject = JSON.parseObject(info);
         Article a = new Article();
+        JSONObject jsonObject = JSON.parseObject(info);
+        Article article = JSON.parseObject(info, Article.class);
+        BeanUtils.copyProperties(article, a);
         a.setId(System.currentTimeMillis());
-        String title = jsonObject.getString("title");
-        a.setTitle(title);
-        String author = jsonObject.getString("author");
-        a.setAuthor(author);
-        String description = jsonObject.getString("description");
-        a.setDescription(description);
-        String cover = jsonObject.getString("cover");
-        a.setCover(cover);
-        String postbody = jsonObject.getString("postbody");
-        a.setPostbody(postbody);
         String publishtime = jsonObject.getString("publishtime");
         String dateTime = publishtime .replace("Z", " UTC"); //2019-06-27T16:00:00.000 UTC
         SimpleDateFormat format_z = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//转换时区格式

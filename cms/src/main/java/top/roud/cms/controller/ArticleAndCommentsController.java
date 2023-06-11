@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
+import top.roud.cms.common.utils.CacheUtil;
 import top.roud.cms.common.utils.ConstUtil;
 import top.roud.cms.common.utils.RedisUtil;
 import top.roud.cms.entity.Comment;
@@ -52,7 +53,7 @@ public class ArticleAndCommentsController {
         return Result.success(commentsByArticle);
     }
 
-    @CommentAuth
+    @CommentAuth(dailyMaxCount = 3)
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
         String token = request.getHeader("token");
@@ -62,11 +63,25 @@ public class ArticleAndCommentsController {
         }
         JSONObject body = JSON.parseObject(info);
         String comment = body.getString("comment");
+        if(StringUtils.isBlank(comment)){
+            return Result.failure(PARAM_IS_BLANK);
+        }
+        if(comment.length()>500){
+            return Result.failure(STRING_OVER_LIMMIT);
+        }
         Map<String, Object> info_u = JwtUtil.getInfo(token);
         String from = (String) info_u.get("name");
         String to = body.getString("to");
         String p_id = body.getString("parent_id");
         String article_id = body.getString("article_id");
+        String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+article_id;
+        if(CacheUtil.intConMap.containsKey(countKey)){
+            Integer count = CacheUtil.intConMap.get(countKey);
+            if(count>=50){
+                return Result.failure(COMMENTS_OVERFLOW);
+
+            }
+        }
         String headimg = body.getString("headimg");
         String sex = body.getString("sex");
         String motto = body.getString("motto");
@@ -86,6 +101,10 @@ public class ArticleAndCommentsController {
         c.setEmail(email);
         Integer res = articleAndCommentService.addComment(c);
         if(1==res){
+            String key = ConstUtil.REDIS_COMMENTS_KEY+article_id;
+            List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(Long.valueOf(article_id));
+            redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
+            CacheUtil.intConMap.put(countKey,commentsByArticle.size());
             return Result.success();
         }
         return Result.failure(SYSTEM_ERROR);

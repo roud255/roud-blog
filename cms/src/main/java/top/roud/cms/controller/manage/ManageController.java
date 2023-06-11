@@ -4,17 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
-import top.roud.cms.common.utils.IPUtil;
+import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.*;
 import top.roud.cms.service.*;
-import top.roud.cms.common.utils.JwtUtil;
-import top.roud.cms.common.utils.MD5Util;
-import top.roud.cms.common.utils.TimeTransUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +48,8 @@ public class ManageController {
     private UserInformationService userInformationService;
     @Resource
     private ArticleAndCommentService articleAndCommentService;
+    @Resource
+    private RedisUtil redisUtil;
 
     private ForbidIP forbidIP;
     private Article a;
@@ -131,6 +131,11 @@ public class ManageController {
             return Result.failure(SYSTEM_ERROR);
         }
         if(count==1){
+            String key = ConstUtil.REDIS_ARTICLE_KEY+article.getId();
+            String cache = (String) redisUtil.get(key);
+            if(Optional.ofNullable(cache).isPresent()){
+                redisUtil.delete(key);
+            }
             return Result.success();
         }
         return Result.failure(SYSTEM_ERROR);
@@ -143,6 +148,11 @@ public class ManageController {
         try{
             articleAndTagService.delArticleWithTag(id);
             articleAndCommentService.delByArticleId(id);
+            String key = ConstUtil.REDIS_ARTICLE_KEY+id;
+            String cache = (String) redisUtil.get(key);
+            if(Optional.ofNullable(cache).isPresent()){
+                redisUtil.delete(key);
+            }
         }catch (Exception e){
             return Result.failure(SYSTEM_ERROR);
         }
@@ -159,26 +169,17 @@ public class ManageController {
     @PostMapping("/article/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
+        Article article = JSON.parseObject(info, Article.class);
         a = new Article();
+        BeanUtils.copyProperties(article, a);
         a.setId(System.currentTimeMillis());
-        String title = jsonObject.getString("title");
-        a.setTitle(title);
-        String author = jsonObject.getString("author");
-        a.setAuthor(author);
-        String description = jsonObject.getString("description");
-        a.setDescription(description);
-        String cover = jsonObject.getString("cover");
-        a.setCover(cover);
-        String postbody = jsonObject.getString("postbody");
-        a.setPostbody(postbody);
         String publishtime = jsonObject.getString("publishtime");
-        Date time= null;
+        Date time = null;
         try {
             time = timeTransUtil.transUTCToZ(publishtime);
         } catch (ParseException e) {
             return Result.failure(e.getMessage());
         }
-
         a.setPublishtime(time);
         JSONArray tags = jsonObject.getJSONArray("tags");
         articleAndTagService.insertArticle(a);

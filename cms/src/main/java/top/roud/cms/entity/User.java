@@ -1,5 +1,6 @@
 package top.roud.cms.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class User implements Serializable {
     private String nickname;
     private String phonenumber;
     private String password;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date registertime;
     private int type;

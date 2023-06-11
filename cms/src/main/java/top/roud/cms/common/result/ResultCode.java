@@ -48,7 +48,8 @@ public enum ResultCode {
 	INTERFACE_ADDRESS_INVALID(60004, "接口地址无效"),
 	INTERFACE_REQUEST_TIMEOUT(60005, "接口请求超时"),
 	REGISTER_CLOSED(60006, "系统未开放注册功能"),
-	
+	HAVIOR_INVOKE_ERROR(60006, "行为异常，禁止访问"),
+
 	/* 权限错误：70001-79999 */
 	PERMISSION_NO_ACCESS(70001, "无访问权限"),
 	USER_NO_ACCESS(70002, "用户无操作权限"),
@@ -60,7 +61,11 @@ public enum ResultCode {
 	TOKEN_ARITHMETERROR(80004, "算法不一致"),
 	CAPTCHA_TIMEOUT(80007,"图片验证码过期，请点击刷新图片验证码"),
 	CAPTCHA_ERROR(80008,"验证码错误"),
-	COUNT_LIMIT(80009,"头像或拓展信息修改限制一天一次");
+	COUNT_LIMIT(80009,"头像或拓展信息修改限制一天一次"),
+	STRING_OVER_LIMMIT(80010,"内容长度超出限制"),
+	COMMENTS_OVERFLOW(80011,"评论区坐满啦~"),
+	COMMENTS_DAILY_OVERFLOW(80012,"今日评论次数已使用完~"),
+	;
 
 	private Integer code;
 
