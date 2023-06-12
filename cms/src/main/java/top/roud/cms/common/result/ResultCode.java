@@ -39,7 +39,8 @@ public enum ResultCode {
 	DATA_WRONG(50002, "数据错误"),
 	DATA_EXISTED(50003, "数据已存在"),
 	FILE_IS_EMPTY(50101, "文件为空"),
-	
+	FILE_IS_OVERFLOW(50102, "文件过大"),
+
 	
 	/* 接口错误：60001-69999 */
 	INTERFACE_INNER_INVOKE_ERROR(60001, "内部系统接口调用异常"),

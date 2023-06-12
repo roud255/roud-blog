@@ -5,6 +5,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import top.roud.cms.common.result.Result;
 
 import java.sql.SQLSyntaxErrorException;
@@ -31,6 +32,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SQLSyntaxErrorException.class)
     public Result handleSQLSyntaxErrorException(SQLSyntaxErrorException ex){
         return Result.failure(DATA_WRONG);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Result handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex){
+        return Result.failure(FILE_IS_OVERFLOW);
     }
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception ex){
