@@ -202,7 +202,7 @@
 
 <style scoped>
     *{
-        padding: 0;
+        /*padding: 0;*/
         margin: 0;
     }
     .page-header{
