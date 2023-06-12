@@ -10,6 +10,7 @@ import java.util.List;
 public interface ArticleAndCommentMapper extends BaseMapper<Comment> {
     Integer insertComment(Comment comment);
     List<Comment> findAllCommentsByArticle(Long article_id);
+    Long findArticleIdById(Long id);
     Integer delById(Long id);
     Integer delByArticleId(Long article_id);
 }

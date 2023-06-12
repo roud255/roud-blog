@@ -11,7 +11,7 @@
         (#{id},#{tagname},#{description},#{addtime})
     </insert>
 
-    <select id="getArticleById" parameterType="long" resultType="top.roud.cms.entity.Article">select id,title,author,description,cover,postbody,publishtime from rb_article where id=#{id}</select>
+    <select id="getArticleById" parameterType="long" resultType="top.roud.cms.entity.Article">select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article where id=#{id}</select>
 
     <select id="getTagById" parameterType="long" resultType="top.roud.cms.entity.Tag">select id,tagname,description,addtime from rb_tag where id=#{id}
      </select>
@@ -30,6 +30,8 @@
         <result property="cover" column="cover"/>
         <result property="postbody" column="postbody"/>
         <result property="publishtime" column="publishtime"/>
+        <result property="viewsnum" column="viewsnum"/>
+        <result property="commentsnum" column="commentsnum"/>
     </resultMap>
 
     <resultMap id="TagResult" type="top.roud.cms.entity.Tag">
@@ -44,7 +46,7 @@
     </resultMap>
 
     <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
@@ -52,7 +54,7 @@
         where a.id=#{id} and a.id=at.article_id and t.id=at.tag_id
     </select>
     <select id="getAllArticleWithTag" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
@@ -61,12 +63,20 @@
     </select>
 
     <select id="selectPage" resultType="top.roud.cms.entity.Article">
-        select id,title,author,description,cover,postbody,publishtime from rb_article ${ew.customSqlSegment} order by id desc
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article ${ew.customSqlSegment} order by id desc
     </select>
 
     <select id="getTagByArticleId" parameterType="long" resultType="top.roud.cms.entity.Tag">
         select id,tagname,description,addtime from rb_tag t where exists (select tag_id from rb_article_tag where article_id=#{id} and tag_id=t.id)
     </select>
+
+    <update id="updateViewsnumAndCommentsnumByArticleId">
+        update rb_article
+        <set>
+            viewsnum=#{viewsnum},commentsnum=#{commentsnum}
+        </set>
+        where id=#{id}
+    </update>
 
     <delete id="delArticleWithTag" parameterType="long">
         DELETE rb_article,rb_article_tag from rb_article LEFT JOIN rb_article_tag ON rb_article.id=rb_article_tag.article_id WHERE rb_article.id=#{id}

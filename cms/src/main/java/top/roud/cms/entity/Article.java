@@ -38,5 +38,7 @@ public class Article implements Serializable {
     private List<Tag> tags;
     @TableField(exist = false)
     private List<Comment> comments;
+    private int viewsnum;
+    private int commentsnum;
 
 }

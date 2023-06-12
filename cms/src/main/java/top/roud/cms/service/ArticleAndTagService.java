@@ -20,4 +20,5 @@ public interface ArticleAndTagService {
     public List<Tag> getTagByArticleId(Long id);
     public void delArticleWithTag(Long id);
     public Integer updateArticleById(Article article);
+    public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum);
 }

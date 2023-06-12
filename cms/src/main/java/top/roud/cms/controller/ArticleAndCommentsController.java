@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.CommentAuth;
-import top.roud.cms.common.utils.CacheUtil;
-import top.roud.cms.common.utils.ConstUtil;
-import top.roud.cms.common.utils.RedisUtil;
+import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.Comment;
 import top.roud.cms.service.ArticleAndCommentService;
-import top.roud.cms.common.utils.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -44,12 +41,15 @@ public class ArticleAndCommentsController {
         }
         String key = ConstUtil.REDIS_COMMENTS_KEY+id;
         String cacheStr = (String)redisUtil.get(key);
+        String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+id;
         if(StringUtils.isNotBlank(cacheStr)){
             List<Comment> commentsByArticle = JSON.parseObject(cacheStr, List.class);
+            CacheUtil.intConMap.put(countKey,commentsByArticle.size());
             return Result.success(commentsByArticle);
         }
         List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(id);
         redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
+        CacheUtil.intConMap.put(countKey,commentsByArticle.size());
         return Result.success(commentsByArticle);
     }
 
@@ -79,7 +79,6 @@ public class ArticleAndCommentsController {
             Integer count = CacheUtil.intConMap.get(countKey);
             if(count>=50){
                 return Result.failure(COMMENTS_OVERFLOW);
-
             }
         }
         String headimg = body.getString("headimg");
@@ -105,6 +104,7 @@ public class ArticleAndCommentsController {
             List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(Long.valueOf(article_id));
             redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
             CacheUtil.intConMap.put(countKey,commentsByArticle.size());
+            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
             return Result.success();
         }
         return Result.failure(SYSTEM_ERROR);

@@ -54,6 +54,10 @@
             id desc
     </select>
 
+    <select id="findArticleIdById" parameterType="long" resultType="long">
+        select article_id from rb_comment where id=#{id}
+    </select>
+
     <delete id="delById" parameterType="long">
         delete from rb_comment where id=#{id}
     </delete>

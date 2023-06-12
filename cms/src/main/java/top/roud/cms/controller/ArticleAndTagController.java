@@ -14,6 +14,7 @@ import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.common.utils.ConstUtil;
 import top.roud.cms.common.utils.RedisUtil;
+import top.roud.cms.common.utils.StaticVarUtil;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
@@ -95,23 +96,40 @@ public class ArticleAndTagController {
         String articleCacheStr = (String)redisUtil.get(key);
         if(StringUtils.isNotBlank(articleCacheStr)){
             Article articleCache = JSON.parseObject(articleCacheStr, Article.class);
+            saveViewsnum(id, articleCache);
+            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
             return Result.success(articleCache);
         }
         Article articleAndhTag = articleAndTagService.getArticleByIdWithTag(id);
         Optional<Article> op = Optional.ofNullable(articleAndhTag);
         if(op.isPresent()){
             redisUtil.set(key, JSON.toJSONString(articleAndhTag), 10, TimeUnit.MINUTES);
+            saveViewsnum(id, articleAndhTag);
+            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
             return Result.success(articleAndhTag);
         }else{
             Article article = articleAndTagService.getArticleById(id);
             Optional<Article> op_a = Optional.ofNullable(article);
             if(op_a.isPresent()){
                 redisUtil.set(key, JSON.toJSONString(article), 10, TimeUnit.MINUTES);
+                StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
                 return Result.success(article);
             }
             return Result.failure(ResultCode.DATA_NONE);
         }
     }
+
+    private void saveViewsnum(Long id, Article articleCache) {
+        String viewKey = ConstUtil.REDIS_ARTICLE_VIEWSNUM_KEY+ id;
+        if(!Optional.ofNullable(redisUtil.get(viewKey)).isPresent()){
+            int viewsnum = articleCache.getViewsnum();
+            redisUtil.set(viewKey, viewsnum+1, 60*60*24);
+        }else {
+            int viewsnum = (int) redisUtil.get(viewKey);
+            redisUtil.set(viewKey, viewsnum+1, 0,1001);
+        }
+    }
+
     @AccessIPRecord
     @GetMapping("/getAllTags")
     public Result getAllTags(){

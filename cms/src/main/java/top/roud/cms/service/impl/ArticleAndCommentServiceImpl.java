@@ -55,4 +55,9 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     public Integer delByArticleId(Long article_id) {
         return articleAndCommentMapper.delByArticleId(article_id);
     }
+
+    @Override
+    public Long findArticleIdById(Long id) {
+        return articleAndCommentMapper.findArticleIdById(id);
+    }
 }

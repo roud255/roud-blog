@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static top.roud.cms.common.result.ResultCode.*;
 
@@ -169,7 +170,7 @@ public class ManageController {
     @PostMapping("/article/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
-        Article article = JSON.parseObject(info, Article.class);
+        Article article = JSON.parseObject(jsonObject.remove("tags").toString(), Article.class);
         a = new Article();
         BeanUtils.copyProperties(article, a);
         a.setId(System.currentTimeMillis());
@@ -267,6 +268,11 @@ public class ManageController {
     public Result delCommentById(@PathVariable(value = "id") Long id){
         Integer res = articleAndCommentService.delById(id);
         if(res==1){
+            Long articleIdById = articleAndCommentService.findArticleIdById(id);
+            String key = ConstUtil.REDIS_COMMENTS_KEY+articleIdById;
+            if(Optional.ofNullable(redisUtil.get(key)).isPresent()){
+                redisUtil.delete(key);
+            }
             return Result.success();
         }
         return Result.failure(SYSTEM_INNER_ERROR);

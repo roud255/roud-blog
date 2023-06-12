@@ -17,4 +17,5 @@ public interface ArticleAndCommentService {
     public Page<Comment> findAllComments(Integer pageNum, Integer pageSize, String search);
     public Integer delById(Long id);
     public Integer delByArticleId(Long article_id);
+    public Long findArticleIdById(Long id);
 }

@@ -26,4 +26,5 @@ public interface ArticleAndTagMapper extends BaseMapper<Article> {
     //自定义分页查询
     public Page<Article> selectPage(Page<Article> page, @Param("ew") Wrapper<Article> queryWrapper);
     public void delArticleWithTag(Long id);
+    public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum);
 }

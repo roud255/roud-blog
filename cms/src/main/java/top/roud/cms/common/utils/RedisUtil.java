@@ -1,10 +1,9 @@
 package top.roud.cms.common.utils;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,6 +20,11 @@ public class RedisUtil {
 
     public Object get(final String key) {
         return redisTemplate.opsForValue().get(key);
+    }
+
+    public Set<String> getKeysForPrefix(final String prefix){
+        Set<String> keys = redisTemplate.keys(prefix.concat("*"));
+        return keys;
     }
 
     public boolean set(final String key, String value) {

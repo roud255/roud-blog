@@ -1,5 +1,7 @@
 package top.roud.cms.common.utils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * @description : TODO
  * @author: roud
@@ -8,11 +10,11 @@ package top.roud.cms.common.utils;
  */
 public class ConstUtil {
     public static final String REDIS_ARTICLE_KEY = "BLOG.ARTICLE.ID.";
+    public static final String REDIS_ARTICLE_VIEWSNUM_KEY = "BLOG.ARTICLE.VIEWSNUM.ID.";
     public static final String REDIS_FP_KEY = "BLOG.FP";
     public static final String REDIS_FPS_KEY = "BLOG.FPS";
     public static final String REDIS_COMMENTS_KEY = "BLOG.ARTICLE.COMMENTS.ID.";
     public static final String REDIS_COMMENTS_COUNT_KEY = "BLOG.ARTICLE.COMMENTS.COUNT.ID";
     public static final String REDIS_USER_DAILYCOMMENTSCOUNT_KEY = "BLOG.ARTICLE.USER.DAILY.COMMENTS.COUNT.ID.";
     public static final String REDIS_PREVENT_VIOLENT_REQUESTS_KEY = "BLOG.PREVENT_VIOLENT_REQUESTS.";
-
 }

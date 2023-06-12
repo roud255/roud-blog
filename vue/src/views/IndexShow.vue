@@ -73,6 +73,7 @@
                                                     effect="dark">
                                                 {{ tag.tagname }}
                                             </el-tag>
+                                            <span style="font-size: 12px; color: #AAAAAA; float: right"><el-icon><View /></el-icon>&nbsp;{{item.viewsnum}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<el-icon><ChatDotRound /></el-icon>&nbsp;{{item.commentsnum}}</span>
                                         </div>
                                     </el-main>
                                 </el-container>

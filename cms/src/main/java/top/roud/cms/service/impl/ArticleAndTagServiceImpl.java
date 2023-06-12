@@ -149,4 +149,9 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     public Integer updateArticleById(Article article) {
         return articleAndTagMapper.updateById(article);
     }
+
+    @Override
+    public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum) {
+        return articleAndTagMapper.updateViewsnumAndCommentsnumByArticleId(id, viewsnum, commentsnum);
+    }
 }
