@@ -480,6 +480,7 @@ export default {
           this.motto = res.data.motto
           this.sex = res.data.sex==0?"男":"女"
           if(res.data.imgurl){
+            /*通过request类访问才会自动加上代理，默认访问必须加上全部路径*/
             this.headimg = "/api/img/show/"+res.data.imgurl;
           }
         }else {
