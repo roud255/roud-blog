@@ -33,6 +33,8 @@
 <p><img src="http://roud.top/img/20230506090505.png" alt="登录注册"></p></br>
 后台文章编辑展示:</br>
 <p><img src="http://roud.top/img/20230506005056.png" alt="后台页"></p></br>
+项目后端健康检查:</br>
+http://域名或者服务器地址:8989/actuator/health
 
 ### 项目搭建(Project construction)
 <p>项目准备：jdk、mysql、maven、redis、mogodb、node.js等相关环境需要提前配置好</p>
@@ -47,7 +49,7 @@
 ##### 推荐步骤
 1. <p>将sqlfiles目录下的sql文件导入数据库</p>
 1. <p>定位到./cms/pom.xml，导入maven依赖</p>
-1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis及项目端口配置</p>
+1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
 1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
 1. <p>切换到./vue目录下，执行npm install命令安装vue项目所需依赖</p>
 1. <p>启动redis服务</p>
@@ -106,6 +108,11 @@
 <p>引入mongodb实现图片上传查看，在项目中主要用于账户头像的上传与查看，实现用户头像和拓展信息的修改、项目目录规范化、以及前端小bug的修复等等</p>
 <p>…</p>
 
-<p>后续计划开发功能：评论管理</p>
+<p>2023.6.18 开始记录项目迭代（堆屎山）的过程</p>
+<p>本次更新内容：</p>
+<p>修复文章新增功能、新增文章编辑粘贴图片上传功能、文章编辑功能完善、新增文章浏览回到顶部功能以及修复若干bug</p>
+<p>…</p>
+
+<p>后续计划开发功能：后端kafka+elk分布式日志收集（没错，杀鸡用牛刀）</p>
 
 >该项目为个人项目，仅在有空时进行更新完善，目前功能十分不完善，只满足了主要功能，欢迎各位提出宝贵意见。联系QQ：2273459453
