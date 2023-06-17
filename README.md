@@ -1,17 +1,20 @@
 <h1 align="center">roud-blog</h1>
 <p align="center">
-<a href=""><img src="https://img.shields.io/badge/author-roud-violet"></a>
-<a href=""><img src="https://img.shields.io/badge/version-1.0.1-orange.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
-<a href=""><img src="https://img.shields.io/badge/jdk-1.8-9cf.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/Maven-3.6+-yellow.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/Redis-5.0+-inactive.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Author-roud-violet"></a>
+<a href=""><img src="https://img.shields.io/badge/Version-1.0.1-orange.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/License-Apache--2.0-blue"></a>
+<a href=""><img src="https://img.shields.io/badge/Jdk-1.8-9cf.svg"></a>
 <a href=""><img src="https://img.shields.io/badge/SpringBoot-2.3.RELEASE-blue.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/java--jwt-3.10-succes.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/Element--plus-2.2.15-green.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/MybatisPlus-3.4-red.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/Vue-3.0-green.svg"></a>
-<a href=""><img src="https://img.shields.io/badge/v--md--editor-2.3-ff69b4.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Vue-2.0+-green.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Maven-3.6+-yellow.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Redis-inactive.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Java--jwt-succes.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/ElementUI--plus-green.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/MybatisPlus-red.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/V--MD--Editor-ff69b4.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Mogodb-green.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Actuator-FFCC33.svg"></a>
+<a href=""><img src="https://img.shields.io/badge/Druid-FFCC33.svg"></a>
 </p>
 
 ### 项目简介(Project Introduction)
@@ -32,7 +35,7 @@
 <p><img src="http://roud.top/img/20230506005056.png" alt="后台页"></p></br>
 
 ### 项目搭建(Project construction)
-<p>项目准备：jdk、mysql、maven、redis、node.js等相关环境需要提前配置好</p>
+<p>项目准备：jdk、mysql、maven、redis、mogodb、node.js等相关环境需要提前配置好</p>
 
 >代码拉取: git clone https://gitee.com/roud/roud-blog.git
 
