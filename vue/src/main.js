@@ -10,8 +10,10 @@ import VueMarkdownEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
 import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
-
-
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
+import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 
 //中文包
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -20,7 +22,7 @@ import Prism from 'prismjs';
 //mdeditor
 VueMarkdownEditor.use(vuepressTheme, {
     Prism,
-});
+}).use(createCopyCodePlugin()).use(createEmojiPlugin());
 
 const app = createApp(App)
 // 图标

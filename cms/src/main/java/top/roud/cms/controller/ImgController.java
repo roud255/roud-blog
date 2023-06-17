@@ -75,6 +75,31 @@ public class ImgController {
         redisUtil.set(u_id+"-upload-img-count",1,60*60*24);
         return Result.success(String.valueOf(id));
     }
+
+    @PostMapping("/upload/editor")
+    public Result uploadEditor(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
+        String token = request.getHeader("token");
+        if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
+            return Result.failure(TOKEN_INVALID);
+        }
+        Map<String, Object> info = JwtUtil.getInfo(token);
+        Integer type = (Integer) info.get("type");
+        if(!Optional.ofNullable(type).isPresent() || type != 0){
+            return Result.failure(PERMISSION_NO_ACCESS);
+        }
+        if(file.isEmpty()){
+            return Result.failure(FILE_IS_EMPTY);
+        }
+        Long id = System.currentTimeMillis();
+        try {
+            ImgFile imgFile = new ImgFile().setId(String.valueOf(id)).setFilename(file.getOriginalFilename()).setContent(new Binary(file.getBytes())).setCreateTime(LocalDateTime.now()).setContentType(file.getContentType()).setSize(file.getSize());
+            mongoTemplate.save(imgFile);
+        } catch (IOException e) {
+            return Result.failure(SYSTEM_ERROR);
+        }
+        return Result.success(String.valueOf(id));
+    }
+
     @GetMapping(value = "/show/{id}",produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public byte[] downloadImage(@PathVariable("id")String id) {
         byte[] data = null;

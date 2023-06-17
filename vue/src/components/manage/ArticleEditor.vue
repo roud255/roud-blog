@@ -24,7 +24,7 @@
                 </el-form-item>
 
                 <el-form-item label="内容" style="margin: 20px 0">
-                    <v-md-editor v-model="form.postbody" height="400px"></v-md-editor>
+                    <v-md-editor v-model="form.postbody" :include-level="[1, 3]" :disabled-menus="[]" @upload-image="handleUploadImage" height="400px"></v-md-editor>
                 </el-form-item>
 
               <!--添加标签-->
@@ -158,6 +158,18 @@
                 })
             }
             ,
+            handleUploadImage(event, insertImage, files) {
+              let imgform = {}
+              imgform.file = files[0]
+              request.post("/img/upload/editor", imgform, {headers:{'Content-Type': 'multipart/form-data'}}).then(res => {
+                if(res.code=="200"){
+                  insertImage({
+                    url: "/api/img/show/"+res.data,
+                    desc: ''
+                  })
+                }
+              });
+            },
             onSubmit(){
                 this.form.tags = this.dynamicTags;
                 if(
@@ -184,9 +196,9 @@
                             this.showFailMessage(res.msg);
                         }else {
                             this.showSuccessMessage(res.msg);
+                            this.form={};
                         }
                     });
-                    this.form={};
                 }
             },
             onCancel(){

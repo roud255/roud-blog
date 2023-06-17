@@ -170,7 +170,12 @@ public class ManageController {
     @PostMapping("/article/add")
     public Result addArticle(@RequestBody String info) {
         JSONObject jsonObject = JSON.parseObject(info);
-        Article article = JSON.parseObject(jsonObject.remove("tags").toString(), Article.class);
+        if(!jsonObject.containsKey("tags")){
+            return Result.failure(SPECIFIED_QUESTIONED_USER_NOT_EXIST);
+        }
+        JSONArray tags = jsonObject.getJSONArray("tags");
+        jsonObject.remove("tags");
+        Article article = JSON.parseObject(jsonObject.toString(), Article.class);
         a = new Article();
         BeanUtils.copyProperties(article, a);
         a.setId(System.currentTimeMillis());
@@ -182,7 +187,6 @@ public class ManageController {
             return Result.failure(e.getMessage());
         }
         a.setPublishtime(time);
-        JSONArray tags = jsonObject.getJSONArray("tags");
         articleAndTagService.insertArticle(a);
         Tag tag = new Tag();
         for(Object t : tags){

@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.roud.cms.mapper.UserMapper">
-
+    <sql id="userField">
+        id,nickname,phonenumber,password,registertime,type,power
+    </sql>
     <select id="selectUserByPhonenumberAndPassword" resultType="User">
-        select id,nickname,phonenumber,password,registertime,type,power from rb_user where phonenumber = #{phonenumber} and password = #{password}
+        select
+            <include refid="userField"/>
+            from
+                rb_user
+            where
+                phonenumber = #{phonenumber}
+              and
+                password = #{password}
     </select>
     <select id="selectUserByPhonenumber" resultType="User">
-        select id,nickname,phonenumber,password,registertime,type,power from rb_user where phonenumber = #{phonenumber}
+        select
+            <include refid="userField"/>
+            from
+                rb_user
+            where
+                phonenumber = #{phonenumber}
     </select>
 </mapper>
