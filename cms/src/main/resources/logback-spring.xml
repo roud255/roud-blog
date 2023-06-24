@@ -67,6 +67,49 @@
     </appender>
 
 
+    <!-- 向kafka输出日志 -->
+    <appender name="KafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers class="net.logstash.logback.composite.loggingevent.LoggingEventJsonProviders">
+                <pattern>
+                    <pattern>
+                        {"app":"${APP}",
+                        "profile":"${PROFILES_ACTIVE}",
+                        "thread": "%thread",
+                        "logger": "%logger{5}",
+                        "message":"%msg",
+                        "app_name":"${APP_NAME}",
+                        "env_name":"${ENV_NAME}",
+                        "hostname":"${HOSTNAME}",
+                        "captain_seq":"${CAPTAIN_SEQ}",
+                        "captain_gen":"${CAPTAIN_GEN}",
+                        "build_name":"${BUILD_NAME}",
+                        "build_git_version":"${BUILD_GIT_VERSION}",
+                        "build_git_hash":"${BUILD_GIT_HASH}",
+                        "build_timestamp":"${BUILD_TIMESTAMP}",
+                        "date":"%d{yyyy-MM-dd HH:mm:ss.SSS}",
+                        "level":"%level",
+                        "stack_trace":"%exception"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <topic>roudblogLog</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+        <producerConfig>bootstrap.servers=localhost:9092</producerConfig>
+        <producerConfig>retries=1</producerConfig>
+        　　　 　  <producerConfig>batch-size=16384</producerConfig>
+        　　　 　  <producerConfig>buffer-memory=33554432</producerConfig>
+        　　　 　  <producerConfig>properties.max.request.size==2097152</producerConfig>
+        <appender-ref ref="console"/>
+    </appender>
+
+    <logger level="info" addtivity="false" name="ip_record">
+        <appender-ref ref="KafkaAppender"/>
+    </logger>
+
     <logger level="info" addtivity="false" name="ip_record">
         <appender-ref ref="ip_record"/>
     </logger>
@@ -104,6 +147,8 @@
         不能设置为INHERITED或者同义词NULL。默认是DEBUG
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
+
+
     <root level="debug">
         <appender-ref ref="console" />
         <appender-ref ref="file" />
