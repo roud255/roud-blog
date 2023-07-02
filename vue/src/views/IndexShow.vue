@@ -164,6 +164,7 @@
                 request.get("/aat/fp",{params:{
                         num : this.i,
                         size : 5,
+                        type : this.select_s,
                         search : this.input_search
                     }}).then(res=>{
                     this.t_data_t = this.t_data.concat(res.data.records);

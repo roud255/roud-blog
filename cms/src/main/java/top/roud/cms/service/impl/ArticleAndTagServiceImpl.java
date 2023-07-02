@@ -137,9 +137,11 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public Page<Article> findPageByTag(Integer pageNum, Integer pageSize, String search) {
         Integer pagestart = (pageNum-1)*pageSize;
-        List<Article> articles = articleAndTagMapper.selectPageByTag(search, pagestart, pageSize);
+        List<Article> records = articleAndTagMapper.selectPageByTag(search, pagestart, pageSize);
+        Integer total = (articleAndTagMapper.selectPageByTag(search, pagestart, 0)).size();
+        Page<Article> result = new Page<>();
         List<Article> records_new = new LinkedList<>();
-        for(Article article : articles){
+        for(Article article : records){
             List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
             if(0 == tags.size()){
                 continue;
@@ -147,7 +149,9 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
             article.setTags(tags);
             records_new.add(article);
         }
-        Page<Article> result = new Page<>();
+        result.setPages((int)Math.ceil((double)total/pageSize));
+        result.setTotal(total);
+        result.setCurrent(pageNum);
         result.setRecords(records_new);
         return result;
     }

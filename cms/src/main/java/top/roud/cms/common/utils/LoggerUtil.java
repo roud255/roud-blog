@@ -11,5 +11,6 @@ import org.slf4j.LoggerFactory;
  */
 public class LoggerUtil {
     public static Logger ip_record = LoggerFactory.getLogger("ip_record");
+    public static Logger ex = LoggerFactory.getLogger("ex_log");
 }
 

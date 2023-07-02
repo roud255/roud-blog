@@ -67,7 +67,10 @@
     </select>
 
     <select id="selectPageByTag" resultType="top.roud.cms.entity.Article">
-        select ra.id,ra.title,ra.author,ra.description,ra.cover,ra.postbody,ra.publishtime,ra.viewsnum,ra.commentsnum from rb_article ra RIGHT OUTER JOIN rb_article_tag rab on ra.id = rab.article_id LEFT JOIN rb_tag rt ON rab.tag_id = rt.id where rt.tagname like "%"#{tagname}"%" order by ra.id desc limit #{pagestart},#{pagecount}
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
+        <if test="pagecount>0">
+            limit #{pagestart},#{pagecount}
+        </if>
     </select>
 
     <select id="getTagByArticleId" parameterType="long" resultType="top.roud.cms.entity.Tag">
