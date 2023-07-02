@@ -4,15 +4,33 @@
         <div class="all-page">
             <div class="page-header">
                     <img src="http://roud.top/img/selfstyle.png" style="height: 60px" v-if="styleimgshow"/>
-                    <el-input
-                            v-model="input_search"
-                            class="w-50 m-2"
-                            placeholder="想搜就搜~"
-                            prefix-icon="search"
-                            clearable
-                            @keyup.enter="inital"
-                            style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);"
-                    />
+<!--                    <el-input-->
+<!--                            v-model="input_search"-->
+<!--                            class="w-50 m-2"-->
+<!--                            placeholder="想搜就搜~"-->
+<!--                            prefix-icon="search"-->
+<!--                            clearable-->
+<!--                            @keyup.enter="inital"-->
+<!--                            style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);"-->
+<!--                    />-->
+              <div class="mt-4" style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);">
+                <el-input
+                    v-model="input_search"
+                    placeholder="想搜就搜~"
+                    class="input-with-select"
+                    @keyup.enter="inital"
+                >
+                  <template #prepend>
+                    <el-select v-model="select_s" placeholder="选择" style="width: 80px">
+                      <el-option label="标题" value="1" />
+                      <el-option label="标签" value="2" />
+                    </el-select>
+                  </template>
+                  <template #append>
+                    <el-button @click="inital"><el-icon><Search /></el-icon></el-button>
+                  </template>
+                </el-input>
+              </div>
 <!--                    <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>-->
                 <el-dropdown class="my_workplace">
                     <span class="el-dropdown-link">
@@ -113,6 +131,7 @@
                 activeIndex : '1',
                 input_search : '',
                 styleimgshow : true,
+                select_s: '1',
             }
         },
         methods:{
@@ -129,6 +148,7 @@
                 request.get("/aat/fp",{params:{
                         num : 1,
                         size : 5,
+                        type : this.select_s,
                         search : this.input_search
                     }}).then(res=>{
                         this.count = 5;

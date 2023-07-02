@@ -134,6 +134,23 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
         return result;
     }
 
+    @Override
+    public Page<Article> findPageByTag(Integer pageNum, Integer pageSize, String search) {
+        Integer pagestart = (pageNum-1)*pageSize;
+        List<Article> articles = articleAndTagMapper.selectPageByTag(search, pagestart, pageSize);
+        List<Article> records_new = new LinkedList<>();
+        for(Article article : articles){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        Page<Article> result = new Page<>();
+        result.setRecords(records_new);
+        return result;
+    }
 
     @Override
     public List<Tag> getTagByArticleId(Long id) {

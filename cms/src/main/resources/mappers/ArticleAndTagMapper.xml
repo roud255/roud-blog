@@ -66,6 +66,10 @@
         select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article ${ew.customSqlSegment} order by id desc
     </select>
 
+    <select id="selectPageByTag" resultType="top.roud.cms.entity.Article">
+        select ra.id,ra.title,ra.author,ra.description,ra.cover,ra.postbody,ra.publishtime,ra.viewsnum,ra.commentsnum from rb_article ra RIGHT OUTER JOIN rb_article_tag rab on ra.id = rab.article_id LEFT JOIN rb_tag rt ON rab.tag_id = rt.id where rt.tagname like "%"#{tagname}"%" order by ra.id desc limit #{pagestart},#{pagecount}
+    </select>
+
     <select id="getTagByArticleId" parameterType="long" resultType="top.roud.cms.entity.Tag">
         select id,tagname,description,addtime from rb_tag t where exists (select tag_id from rb_article_tag where article_id=#{id} and tag_id=t.id)
     </select>

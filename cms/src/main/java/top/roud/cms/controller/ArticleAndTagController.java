@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
@@ -151,10 +152,16 @@ public class ArticleAndTagController {
     }
     @AccessIPRecord
     @GetMapping("fp")
-    public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search){
-        Page<Article> page =  articleAndTagService.findPage_second(num, size, search);
+    public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
+        Page<Article> page;
+        if(StringUtils.equals(type, "2")){
+            page =  articleAndTagService.findPageByTag(num, size, search);
+        }else {
+            page =  articleAndTagService.findPage_second(num, size, search);
+        }
         return Result.success(page);
     }
+
     @AccessIPRecord
     @GetMapping("fps")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
