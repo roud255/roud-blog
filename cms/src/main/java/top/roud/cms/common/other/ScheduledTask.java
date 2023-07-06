@@ -34,11 +34,16 @@ public class ScheduledTask {
     @Scheduled(cron = "0/5 * * * * ?")
     public void updateViewsnumAndCommentsnum(){
         if(StaticVarUtil.updateViewsnumAndCommentsnumFlag.get()){
-            Set<String> keys = redisUtil.getKeysForPrefix(ConstUtil.REDIS_ARTICLE_VIEWSNUM_KEY);
-            keys.forEach(id-> {
-                if(Optional.ofNullable(redisUtil.get(id)).isPresent()){
-                    articleAndTagMapper.updateViewsnumAndCommentsnumByArticleId(Long.valueOf(id.split(ConstUtil.REDIS_ARTICLE_VIEWSNUM_KEY)[1]),
-                            (Integer) redisUtil.get(id), CacheUtil.intConMap.get(ConstUtil.REDIS_COMMENTS_COUNT_KEY+id.split(ConstUtil.REDIS_ARTICLE_VIEWSNUM_KEY)[1]));
+            CacheUtil.booleanConMap.entrySet().forEach(o->{
+                if(o.getValue()){
+                    if(o.getKey().contains(ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY)){
+                        Long realId = Long.valueOf(ConstUtil.getRealId(o.getKey(), ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY));
+                        articleAndTagMapper.updateCommentsnumByArticleId(realId, CacheUtil.intConMap.get(ConstUtil.REDIS_COMMENTS_COUNT_KEY+realId));
+                    }else if(o.getValue() && o.getKey().contains(ConstUtil.ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY)){
+                        Long realId = Long.valueOf(ConstUtil.getRealId(o.getKey(), ConstUtil.ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY));
+                        articleAndTagMapper.updateViewsnumByArticleId(realId, (Integer) redisUtil.get(ConstUtil.REDIS_ARTICLE_VIEWSNUM_KEY+realId));
+                    }
+                    o.setValue(false);
                 }
             });
         }

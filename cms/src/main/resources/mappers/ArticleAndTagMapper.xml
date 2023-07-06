@@ -85,6 +85,22 @@
         where id=#{id}
     </update>
 
+    <update id="updateViewsnumByArticleId">
+        update rb_article
+        <set>
+            viewsnum=#{viewsnum}
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateCommentsnumByArticleId">
+        update rb_article
+        <set>
+            commentsnum=#{commentsnum}
+        </set>
+        where id=#{id}
+    </update>
+
     <delete id="delArticleWithTag" parameterType="long">
         DELETE rb_article,rb_article_tag from rb_article LEFT JOIN rb_article_tag ON rb_article.id=rb_article_tag.article_id WHERE rb_article.id=#{id}
     </delete>

@@ -99,12 +99,14 @@ public class ArticleAndCommentsController {
         c.setMotto(motto);
         c.setEmail(email);
         Integer res = articleAndCommentService.addComment(c);
+        String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+article_id;
         if(1==res){
             String key = ConstUtil.REDIS_COMMENTS_KEY+article_id;
             List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(Long.valueOf(article_id));
             redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
             CacheUtil.intConMap.put(countKey,commentsByArticle.size());
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
+            CacheUtil.booleanConMap.put(commentCountNeedUpdateKey, true);
             return Result.success();
         }
         return Result.failure(SYSTEM_ERROR);

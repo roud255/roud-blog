@@ -1,5 +1,7 @@
 package top.roud.cms.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -17,4 +19,10 @@ public class ConstUtil {
     public static final String REDIS_COMMENTS_COUNT_KEY = "BLOG.ARTICLE.COMMENTS.COUNT.ID";
     public static final String REDIS_USER_DAILYCOMMENTSCOUNT_KEY = "BLOG.ARTICLE.USER.DAILY.COMMENTS.COUNT.ID.";
     public static final String REDIS_PREVENT_VIOLENT_REQUESTS_KEY = "BLOG.PREVENT_VIOLENT_REQUESTS.";
+    public static final String ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY = "BLOG.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE.";
+    public static final String ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY = "BLOG.ARTICLE_COMMENTS_VIEWSUM_ISNEED_UPDATE.";
+    public static String getRealId(String key, String child){
+        String[] arr = StringUtils.split(key, child);
+        return arr[0];
+    }
 }

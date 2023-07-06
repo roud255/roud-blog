@@ -13,6 +13,7 @@ import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.utils.CacheUtil;
 import top.roud.cms.common.utils.ConstUtil;
 import top.roud.cms.common.utils.RedisUtil;
 import top.roud.cms.common.utils.StaticVarUtil;
@@ -94,11 +95,13 @@ public class ArticleAndTagController {
             return Result.failure(PARAM_NOT_COMPLETE);
         }
         String key = ConstUtil.REDIS_ARTICLE_KEY+id;
+        String viewNumNeedUpdateKey = ConstUtil.ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY+id;
         String articleCacheStr = (String)redisUtil.get(key);
         if(StringUtils.isNotBlank(articleCacheStr)){
             Article articleCache = JSON.parseObject(articleCacheStr, Article.class);
             saveViewsnum(id, articleCache);
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
+            CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);
             return Result.success(articleCache);
         }
         Article articleAndhTag = articleAndTagService.getArticleByIdWithTag(id);
@@ -107,13 +110,16 @@ public class ArticleAndTagController {
             redisUtil.set(key, JSON.toJSONString(articleAndhTag), 10, TimeUnit.MINUTES);
             saveViewsnum(id, articleAndhTag);
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
+            CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);
             return Result.success(articleAndhTag);
         }else{
             Article article = articleAndTagService.getArticleById(id);
             Optional<Article> op_a = Optional.ofNullable(article);
             if(op_a.isPresent()){
                 redisUtil.set(key, JSON.toJSONString(article), 10, TimeUnit.MINUTES);
+                saveViewsnum(id, article);
                 StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
+                CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);
                 return Result.success(article);
             }
             return Result.failure(ResultCode.DATA_NONE);

@@ -29,4 +29,6 @@ public interface ArticleAndTagMapper extends BaseMapper<Article> {
     public List<Article> selectPageByTag(String tagname,Integer pagestart,Integer pagecount);
     public void delArticleWithTag(Long id);
     public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum);
+    public Integer updateViewsnumByArticleId(Long id, Integer viewsnum);
+    public Integer updateCommentsnumByArticleId(Long id, Integer commentsnum);
 }
