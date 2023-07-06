@@ -25,7 +25,10 @@ public class ScheduledTask {
     @Resource
     private ArticleAndTagMapper articleAndTagMapper;
     @Scheduled(cron = "0 0/1 * * * ?")
-    public void updateVCFlag(){StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(false);
+    public void updateVCFlag(){
+        if(StaticVarUtil.updateViewsnumAndCommentsnumFlag.get()){
+            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(false);
+        }
     }
 
     @Scheduled(cron = "0/5 * * * * ?")
