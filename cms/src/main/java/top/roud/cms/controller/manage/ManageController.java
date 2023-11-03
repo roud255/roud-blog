@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.types.Binary;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
@@ -54,6 +57,9 @@ public class ManageController {
 
     private ForbidIP forbidIP;
     private Article a;
+
+    @Autowired
+    private ThreeCacheUtil threeCacheUtil;
 
     @OperationAuth
     @AccessIPRecord
@@ -211,6 +217,13 @@ public class ManageController {
     @AccessIPRecord
     @GetMapping("/user/info")
     public Result getUserInfo(@RequestParam String token){
+        String threeCacheKey = ConstUtil.CACHE_USERINFO_PRE + token;
+        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        if(StringUtils.isNotBlank(resStringbyThreeCache)){
+            Map<String,Object> map = JSON.parseObject(resStringbyThreeCache, Map.class);
+            LoggerUtil.cacheLog.info("从缓存中获取用户信息|{}", token);
+            return Result.success(map);
+        }
         boolean flag = JwtUtil.checkSign(token);
         if(flag){
             return Result.success(JwtUtil.getInfo(token));

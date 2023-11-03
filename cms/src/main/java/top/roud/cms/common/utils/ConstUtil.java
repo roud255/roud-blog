@@ -24,6 +24,7 @@ public class ConstUtil {
     public static final String CACHE_ARTCLE_FINDPAGE_PRE = "CACHE.ARTCLE.FINDPAGE.PRE.";
     public static final String CACHE_ARTCLE_FINDPAGES_PRE = "CACHE.ARTCLE.FINDPAGES.PRE.";
     public static final String CACHE_IMGFILE_PRE = "CACHE.IMGFILE.PRE.";
+    public static final String CACHE_USERINFO_PRE = "CACHE.USERINFO.PRE.";
     public static String getRealId(String key, String child){
         String[] arr = StringUtils.split(key, child);
         return arr[0];
