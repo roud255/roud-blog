@@ -70,7 +70,7 @@
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>info</level>
         </filter>
-        <file>${logPath}/ip_record.log</file>
+        <file>${logPath}/cache_log.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${logPath}/cache_log.log.%d{yyyy-MM-dd}</FileNamePattern>
         </rollingPolicy>
@@ -144,7 +144,7 @@
         <appender-ref ref="ip_record"/>
     </logger>
 
-    <logger level="info" addtivity="false" name="ip_record">
+    <logger level="info" addtivity="false" name="cache_log">
         <appender-ref ref="cache_log"/>
     </logger>
 
