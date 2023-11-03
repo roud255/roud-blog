@@ -51,6 +51,14 @@ public class Result implements Serializable {
 		return result;
 	}
 
+	public static Result success(Object data, String message) {
+		Result result = new Result();
+		result.setResultCode(ResultCode.SUCCESS);
+		result.setData(data);
+		result.setMsg(message);
+		return result;
+	}
+
 	/**
 	 * 操作成功，自定义ResultCode
 	 */

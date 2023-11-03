@@ -66,6 +66,21 @@
         </encoder>
     </appender>
 
+    <appender name="cache_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+        </filter>
+        <file>${logPath}/ip_record.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logPath}/cache_log.log.%d{yyyy-MM-dd}</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
     <appender name="ex_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>error</level>
@@ -127,6 +142,10 @@
 
     <logger level="info" addtivity="false" name="ip_record">
         <appender-ref ref="ip_record"/>
+    </logger>
+
+    <logger level="info" addtivity="false" name="ip_record">
+        <appender-ref ref="cache_log"/>
     </logger>
 
     <logger level="error" addtivity="false" name="ex_log">

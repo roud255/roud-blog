@@ -21,6 +21,9 @@ public class ConstUtil {
     public static final String REDIS_PREVENT_VIOLENT_REQUESTS_KEY = "BLOG.PREVENT_VIOLENT_REQUESTS.";
     public static final String ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY = "BLOG.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE.";
     public static final String ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY = "BLOG.ARTICLE_COMMENTS_VIEWSUM_ISNEED_UPDATE.";
+    public static final String CACHE_ARTCLE_FINDPAGE_PRE = "CACHE.ARTCLE.FINDPAGE.PRE.";
+    public static final String CACHE_ARTCLE_FINDPAGES_PRE = "CACHE.ARTCLE.FINDPAGES.PRE.";
+    public static final String CACHE_IMGFILE_PRE = "CACHE.IMGFILE.PRE.";
     public static String getRealId(String key, String child){
         String[] arr = StringUtils.split(key, child);
         return arr[0];

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
@@ -13,10 +14,7 @@ import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.annotation.OperationAuth;
-import top.roud.cms.common.utils.CacheUtil;
-import top.roud.cms.common.utils.ConstUtil;
-import top.roud.cms.common.utils.RedisUtil;
-import top.roud.cms.common.utils.StaticVarUtil;
+import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
@@ -45,6 +43,8 @@ public class ArticleAndTagController {
     private ArticleAndTagService articleAndTagService;
     @Resource
     private RedisUtil redisUtil;
+    @Autowired
+    private ThreeCacheUtil threeCacheUtil;
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/add")
@@ -160,18 +160,32 @@ public class ArticleAndTagController {
     @GetMapping("fp")
     public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
         Page<Article> page;
+        String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGE_PRE + num + "." + size + "." + search + "." + type;
+        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        if(StringUtils.isNotBlank(resStringbyThreeCache)){
+            page = JSON.parseObject(resStringbyThreeCache, Page.class);
+            return Result.success(page, "数据来源于缓存");
+        }
         if(StringUtils.equals(type, "2")){
             page =  articleAndTagService.findPageByTag(num, size, search);
         }else {
             page =  articleAndTagService.findPage_second(num, size, search);
         }
+        threeCacheUtil.putToThreeCache(threeCacheKey, page);
         return Result.success(page);
     }
 
     @AccessIPRecord
     @GetMapping("fps")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGES_PRE + pageNum + "." + pageSize + "." + search;
+        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        if(StringUtils.isNotBlank(resStringbyThreeCache)){
+            Page<Article> page = JSON.parseObject(resStringbyThreeCache, Page.class);
+            return Result.success(page, "数据来源于缓存");
+        }
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
+        threeCacheUtil.putToThreeCache(threeCacheKey, page);
         return Result.success(page);
     }
     @OperationAuth
