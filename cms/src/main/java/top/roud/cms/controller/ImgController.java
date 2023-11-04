@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.utils.*;
@@ -45,6 +46,7 @@ public class ImgController {
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
 
+    @AccessIPRecord
     @PostMapping("/upload")
     public Result upload(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
         String token = request.getHeader("token");
@@ -81,6 +83,7 @@ public class ImgController {
         return Result.success(String.valueOf(id));
     }
 
+    @AccessIPRecord
     @PostMapping("/upload/editor")
     public Result uploadEditor(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
         String token = request.getHeader("token");
@@ -105,6 +108,7 @@ public class ImgController {
         return Result.success(String.valueOf(id));
     }
 
+    @AccessIPRecord
     @GetMapping(value = "/show/{id}",produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public byte[] downloadImage(@PathVariable("id")String id) {
         byte[] data = null;

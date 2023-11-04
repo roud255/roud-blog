@@ -40,6 +40,7 @@ public class AccessIPRecordAspect {
     //pjp.proceed()获取方法执行结果
     @Around("pointCut(accessIPRecord)")
     public Object around(ProceedingJoinPoint pjp, AccessIPRecord accessIPRecord) throws Throwable {
+        long start = System.currentTimeMillis();
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
@@ -47,7 +48,8 @@ public class AccessIPRecordAspect {
         String method = request.getMethod();
         String path = request.getServletPath();
         Object proceed = pjp.proceed();
-
+        long end = System.currentTimeMillis();
+        String timeConsumingStr = (end - start) + "ms";
 //        序列化servlet请求类、响应类和文件类时会报错。如果参数中包含上述类选择跳过
 //        Object[] args = pjp.getArgs();
 //        Object[] arguments  = new Object[args.length];
@@ -67,7 +69,7 @@ public class AccessIPRecordAspect {
 //        }
 //        logContnet.setContent(paramter);
 
-        LoggerUtil.ip_record.info("{}|{}|{}", ip, path, method);
+        LoggerUtil.ip_record.info("{}|{}|{}|{}", ip, path, method,timeConsumingStr);
         return proceed;
     }
 
