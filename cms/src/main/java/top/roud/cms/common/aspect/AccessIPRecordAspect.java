@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class AccessIPRecordAspect {
-    @Autowired
-    private LogContnet logContnet;
+//    @Autowired
+//    private LogContnet logContnet;
 
     @Pointcut("@annotation(accessIPRecord)")
     public void pointCut(AccessIPRecord accessIPRecord) {
@@ -48,26 +48,26 @@ public class AccessIPRecordAspect {
         String path = request.getServletPath();
         Object proceed = pjp.proceed();
 
-        //序列化servlet请求类、响应类和文件类时会报错。如果参数中包含上述类选择跳过
-        Object[] args = pjp.getArgs();
-        Object[] arguments  = new Object[args.length];
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof ServletRequest || args[i] instanceof ServletResponse || args[i] instanceof MultipartFile) {
-                continue;
-            }
-            arguments[i] = args[i];
-        }
-        String paramter = "";
-        if (arguments != null) {
-            try {
-                paramter = JSONObject.toJSONString(arguments);
-            } catch (Exception e) {
-                paramter = arguments.toString();
-            }
-        }
-        logContnet.setContent(paramter);
+//        序列化servlet请求类、响应类和文件类时会报错。如果参数中包含上述类选择跳过
+//        Object[] args = pjp.getArgs();
+//        Object[] arguments  = new Object[args.length];
+//        for (int i = 0; i < args.length; i++) {
+//            if (args[i] instanceof ServletRequest || args[i] instanceof ServletResponse || args[i] instanceof MultipartFile) {
+//                continue;
+//            }
+//            arguments[i] = args[i];
+//        }
+//        String paramter = "";
+//        if (arguments != null) {
+//            try {
+//                paramter = JSONObject.toJSONString(arguments);
+//            } catch (Exception e) {
+//                paramter = arguments.toString();
+//            }
+//        }
+//        logContnet.setContent(paramter);
 
-        LoggerUtil.ip_record.info("{}|{}|{}|{}|{}",ip,path,method,JSONObject.toJSONString(logContnet), JSONObject.toJSONString(proceed));
+        LoggerUtil.ip_record.info("{}|{}|{}", ip, path, method);
         return proceed;
     }
 
