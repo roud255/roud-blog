@@ -133,15 +133,18 @@ public class ManageController {
     @OperationAuth
     @AccessIPRecord
     @PutMapping("/article/update")
-    public Result updateArticle(@RequestBody Article article){
+    public Result updateArticle(@RequestBody ArticleWithValidateCode articleWithValidateCode){
         Integer count;
         try{
+            Article article = new Article();
+            BeanUtils.copyProperties(articleWithValidateCode, article);
             count = articleAndTagService.updateArticleById(article);
+            updateSelfArticleValidateCode(articleWithValidateCode);
         }catch (Exception e){
             return Result.failure(SYSTEM_ERROR);
         }
         if(count==1){
-            String key = ConstUtil.REDIS_ARTICLE_KEY+article.getId();
+            String key = ConstUtil.REDIS_ARTICLE_KEY+articleWithValidateCode.getId();
             String cache = (String) redisUtil.get(key);
             if(Optional.ofNullable(cache).isPresent()){
                 redisUtil.delete(key);
@@ -149,6 +152,19 @@ public class ManageController {
             return Result.success();
         }
         return Result.failure(SYSTEM_ERROR);
+    }
+
+    private void updateSelfArticleValidateCode(ArticleWithValidateCode a){
+        if(a.getSelf()==1){
+            SelfArticle selfArticle = new SelfArticle();
+            selfArticle.setId(AutoIdUtil.getId());
+            selfArticle.setArticleId(a.getId());
+            selfArticle.setValidateCode(a.getValidateCode());
+            Integer resInt = selfArticleValidateService.updateSelfArticleValidateCode(selfArticle);
+            if(resInt != 1){
+                LoggerUtil.ex.error("saveSelfArticleValidateCode|err|{}|{}",a.getId(),a.getValidateCode());
+            }
+        }
     }
 
     @OperationAuth

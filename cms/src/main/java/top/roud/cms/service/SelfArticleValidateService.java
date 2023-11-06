@@ -13,4 +13,6 @@ public interface SelfArticleValidateService {
     public Result validateSelfArticle(Long articleId, String validateCode);
     public String getValidateCodeByArticleId(Long articleId);
     Integer saveSelfArticleValidateCode(SelfArticle selfArticle);
+
+    Integer updateSelfArticleValidateCode(SelfArticle selfArticle);
 }
