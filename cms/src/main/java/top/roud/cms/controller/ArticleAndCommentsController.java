@@ -86,7 +86,7 @@ public class ArticleAndCommentsController {
         String motto = body.getString("motto");
         String email = body.getString("email");
         Comment c = new Comment();
-        c.setId(System.currentTimeMillis());
+        c.setId(AutoIdUtil.getId());
         Date date = new Date();
         c.setOp_time(date);
         c.setContent(comment);

@@ -54,6 +54,7 @@ public enum ResultCode {
 	/* 权限错误：70001-79999 */
 	PERMISSION_NO_ACCESS(70001, "无访问权限"),
 	USER_NO_ACCESS(70002, "用户无操作权限"),
+	VALIDATEF_FAIL(70003, "权限校验失败"),
 	USER_NO_ACCESS_COMMENT(70002, "用户无评论权限"),
 	TOKEN_NULL(80001,"token为空，无法登录"),
 	TOKEN_INVALID(80002, "无效token"),

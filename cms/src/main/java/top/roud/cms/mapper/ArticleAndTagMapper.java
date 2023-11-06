@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import top.roud.cms.entity.Article;
+import top.roud.cms.entity.ArticleWithValidateCode;
 import top.roud.cms.entity.Tag;
 
 import java.util.List;
@@ -26,7 +27,10 @@ public interface ArticleAndTagMapper extends BaseMapper<Article> {
     public List<Article> getAllArticleWithTag();
     //自定义分页查询
     public Page<Article> selectPage(Page<Article> page, @Param("ew") Wrapper<Article> queryWrapper);
+    public Page<ArticleWithValidateCode> selectPageWithValidateCode(Page<ArticleWithValidateCode> page, @Param("ew") Wrapper<ArticleWithValidateCode> queryWrapper);
+    public Page<Article> selectPageWithoutBody(Page<Article> page, @Param("ew") Wrapper<Article> queryWrapper);
     public List<Article> selectPageByTag(String tagname,Integer pagestart,Integer pagecount);
+    public List<Article> selectPageByTagWithoutBody(String tagname,Integer pagestart,Integer pagecount);
     public void delArticleWithTag(Long id);
     public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum);
     public Integer updateViewsnumByArticleId(Long id, Integer viewsnum);

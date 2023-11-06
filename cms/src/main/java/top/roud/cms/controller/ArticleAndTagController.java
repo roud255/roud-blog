@@ -18,8 +18,10 @@ import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
+import top.roud.cms.service.SelfArticleValidateService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +47,9 @@ public class ArticleAndTagController {
     private RedisUtil redisUtil;
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
+
+    @Autowired
+    private SelfArticleValidateService selfArticleValidateService;
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/add")
@@ -53,7 +58,7 @@ public class ArticleAndTagController {
         JSONObject jsonObject = JSON.parseObject(info);
         Article article = JSON.parseObject(info, Article.class);
         BeanUtils.copyProperties(article, a);
-        a.setId(System.currentTimeMillis());
+        a.setId(AutoIdUtil.getId());
         String publishtime = jsonObject.getString("publishtime");
         String dateTime = publishtime .replace("Z", " UTC"); //2019-06-27T16:00:00.000 UTC
         SimpleDateFormat format_z = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//转换时区格式
@@ -75,14 +80,14 @@ public class ArticleAndTagController {
             Tag tag_db = articleAndTagService.getTagByName((String) t);
             Optional<Tag> op = Optional.ofNullable(tag_db);
             if(op.isPresent()){
-                articleAndTagService.insertArticleAndTag(System.currentTimeMillis(), a, tag_db);
+                articleAndTagService.insertArticleAndTag(AutoIdUtil.getId(), a, tag_db);
             }else {
-                tag.setId(System.currentTimeMillis());
+                tag.setId(AutoIdUtil.getId());
                 tag.setAddtime(time);
                 tag.setTagname(((String) t).trim());
                 tag.setDescription("");
                 articleAndTagService.insertTag(tag);
-                articleAndTagService.insertArticleAndTag(System.currentTimeMillis(), a, tag);
+                articleAndTagService.insertArticleAndTag(AutoIdUtil.getId(), a, tag);
             }
         }
         return Result.success();
@@ -90,7 +95,7 @@ public class ArticleAndTagController {
 
     @AccessIPRecord
     @GetMapping("/getArticleById")
-    public Result getArticleById(Long id){
+    public Result getArticleById(Long id, HttpServletRequest request){
         if(!Optional.ofNullable(id).isPresent()){
             return Result.failure(PARAM_NOT_COMPLETE);
         }
@@ -99,6 +104,12 @@ public class ArticleAndTagController {
         String articleCacheStr = (String)redisUtil.get(key);
         if(StringUtils.isNotBlank(articleCacheStr)){
             Article articleCache = JSON.parseObject(articleCacheStr, Article.class);
+            if(articleCache.getSelf()==1){
+                String validateCode = request.getParameter("validateCode");
+                if(!selfArticleValidate(articleCache, validateCode)){
+                    return Result.failure(ResultCode.VALIDATEF_FAIL);
+                }
+            }
             saveViewsnum(id, articleCache);
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
             CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);
@@ -107,6 +118,12 @@ public class ArticleAndTagController {
         Article articleAndhTag = articleAndTagService.getArticleByIdWithTag(id);
         Optional<Article> op = Optional.ofNullable(articleAndhTag);
         if(op.isPresent()){
+            if(articleAndhTag.getSelf()==1){
+                String validateCode = request.getParameter("validateCode");
+                if(!selfArticleValidate(articleAndhTag, validateCode)){
+                    return Result.failure(ResultCode.VALIDATEF_FAIL);
+                }
+            }
             redisUtil.set(key, JSON.toJSONString(articleAndhTag), 10, TimeUnit.MINUTES);
             saveViewsnum(id, articleAndhTag);
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
@@ -116,6 +133,12 @@ public class ArticleAndTagController {
             Article article = articleAndTagService.getArticleById(id);
             Optional<Article> op_a = Optional.ofNullable(article);
             if(op_a.isPresent()){
+                if(article.getSelf()==1){
+                    String validateCode = request.getParameter("validateCode");
+                    if(!selfArticleValidate(article, validateCode)){
+                        return Result.failure(ResultCode.VALIDATEF_FAIL);
+                    }
+                }
                 redisUtil.set(key, JSON.toJSONString(article), 10, TimeUnit.MINUTES);
                 saveViewsnum(id, article);
                 StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
@@ -124,6 +147,22 @@ public class ArticleAndTagController {
             }
             return Result.failure(ResultCode.DATA_NONE);
         }
+    }
+
+    private boolean selfArticleValidate(Article article, String code){
+        if(StringUtils.isBlank(code)){
+            return false;
+        }
+        String cacheKey = ConstUtil.CACHE_SELF_ARTICLE_VALIDATECODE + article.getId();
+        String validateCode = threeCacheUtil.getByThreeCache(cacheKey);
+        if(StringUtils.isBlank(validateCode)){
+            validateCode = selfArticleValidateService.getValidateCodeByArticleId(article.getId());
+            threeCacheUtil.putStringToThreeCache(cacheKey, validateCode);
+        }
+        if(StringUtils.equals(code, validateCode)){
+            return true;
+        }
+        return false;
     }
 
     private void saveViewsnum(Long id, Article articleCache) {
@@ -175,6 +214,35 @@ public class ArticleAndTagController {
         return Result.success(page);
     }
 
+    /**
+     * 主页分页查询，type为2时候通过标签查询
+     * findPage_second为可以模糊查询的分页查询
+     * public为公共对外接口，不返回文章内容这样大的数据
+     * @param num
+     * @param size
+     * @param search
+     * @param type
+     * @return
+     */
+    @AccessIPRecord
+    @GetMapping("fp/public")
+    public Result fpWithoutBody(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
+        Page<Article> page;
+        String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGE_PRE2 + num + "." + size + "." + search + "." + type;
+        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        if(StringUtils.isNotBlank(resStringbyThreeCache)){
+            page = JSON.parseObject(resStringbyThreeCache, Page.class);
+            return Result.success(page, "数据来源于缓存");
+        }
+        if(StringUtils.equals(type, "2")){
+            page =  articleAndTagService.findPageByTagWithoutBody(num, size, search);
+        }else {
+            page =  articleAndTagService.findPage_secondWithoutBody(num, size, search);
+        }
+        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        return Result.success(page);
+    }
+
     @AccessIPRecord
     @GetMapping("fps")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
@@ -188,11 +256,32 @@ public class ArticleAndTagController {
         threeCacheUtil.putToThreeCache(threeCacheKey, page);
         return Result.success(page);
     }
+
+    @AccessIPRecord
+    @GetMapping("fps/public")
+    public Result findpagesWithoutBody(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGES_PRE2 + pageNum + "." + pageSize + "." + search;
+        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        if(StringUtils.isNotBlank(resStringbyThreeCache)){
+            Page<Article> page = JSON.parseObject(resStringbyThreeCache, Page.class);
+            return Result.success(page, "数据来源于缓存");
+        }
+        Page<Article> page =  articleAndTagService.findPage_secondWithoutBody(pageNum, pageSize, search);
+        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        return Result.success(page);
+    }
+
     @OperationAuth
     @AccessIPRecord
     @DeleteMapping("/del/{id}")
     public Result del(@PathVariable Long id){
         articleAndTagService.delArticleWithTag(id);
         return Result.success();
+    }
+
+    @AccessIPRecord
+    @GetMapping("/selfArticle/validate")
+    public Result validateSelfArticle(@RequestParam("articleId") Long articleId, @RequestParam("validateCode")String validateCode){
+        return selfArticleValidateService.validateSelfArticle(articleId, validateCode);
     }
 }

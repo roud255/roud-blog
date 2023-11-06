@@ -70,7 +70,7 @@ public class ImgController {
         if(file.isEmpty()){
             return Result.failure(FILE_IS_EMPTY);
         }
-        Long id = System.currentTimeMillis();
+        Long id = AutoIdUtil.getId();
         try {
             ImgFile imgFile = new ImgFile().setId(String.valueOf(id)).setFilename(file.getOriginalFilename()).setContent(new Binary(file.getBytes())).setCreateTime(LocalDateTime.now()).setContentType(file.getContentType()).setSize(file.getSize());
             mongoTemplate.save(imgFile);
@@ -98,7 +98,7 @@ public class ImgController {
         if(file.isEmpty()){
             return Result.failure(FILE_IS_EMPTY);
         }
-        Long id = System.currentTimeMillis();
+        Long id = AutoIdUtil.getId();
         try {
             ImgFile imgFile = new ImgFile().setId(String.valueOf(id)).setFilename(file.getOriginalFilename()).setContent(new Binary(file.getBytes())).setCreateTime(LocalDateTime.now()).setContentType(file.getContentType()).setSize(file.getSize());
             mongoTemplate.save(imgFile);

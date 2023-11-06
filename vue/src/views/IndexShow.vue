@@ -69,8 +69,8 @@
                         class="list"
                         :infinite-scroll-disabled="disabled"
                 >
-                    <li v-for="(item,count) in t_data" :key="count" class="list-item">
-                        <div class="common-layout" style="width: 100%; height: 100%" @click="forward(item.id)">
+                    <li v-for="(item,count) in t_data" :key="count" class="list-item" >
+                        <div class="common-layout" style="width: 100%; height: 100%" @click="forward(item.id, item.self)">
                             <el-container style="width: 100%; height: 100%">
                                 <el-aside  style="width: 210px; overflow: hidden;">
                                     <el-image :src="item.cover" class="roud-cover"/>
@@ -96,12 +96,16 @@
                                     </el-main>
                                 </el-container>
                             </el-container>
+                            <span class="self-span" v-if="item.self">专属</span>
                         </div>
                     </li>
                 </ul>
                 <p v-if="loading" style="padding: 20px 0">加载中...</p>
                 <p v-if="noMore" style="padding: 20px 0">我也是有底线的~</p>
             </div>
+        </div>
+        <div>
+          <SelfArticleValidate ref="sav"></SelfArticleValidate>
         </div>
         <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%)">
           <AccountInformation ref="aif"></AccountInformation>
@@ -114,10 +118,11 @@
     import request from "../utils/request";
     import { ElNotification as notify } from 'element-plus'
     import AccountInformation from "@/components/AccountInformation";
+    import SelfArticleValidate from "@/components/SelfArticleValidate";
 
     export default {
       name: "Index",
-      components: {AccountInformation},
+      components: {SelfArticleValidate, AccountInformation},
       data(){
             return{
                 loading : false,
@@ -135,17 +140,25 @@
             }
         },
         methods:{
-            forward(id){
-                //打开新窗口
-                window.open('/article/show?id='+id.toString(),'_blank');
-                //直接在
+            forward(id, self){
+                if(self){
+                  // this.selfArticleValidate();
+                  this.selfArticleValidateComplete(id)
+                }else {
+                  //打开新窗口
+                  window.open('/article/show?id='+id.toString(),'_blank');
+                }
+                //直接在当前页面打开
                 // this.$router.push('/article/show?id='+id.toString());
             },
             accountInformationShow(){
               this.$refs.aif.show_div();
             },
+            selfArticleValidateComplete(id){
+              this.$refs.sav.show_div2(id);
+            },
             inital(){
-                request.get("/aat/fp",{params:{
+                request.get("/aat/fp/public",{params:{
                         num : 1,
                         size : 5,
                         type : this.select_s,
@@ -161,7 +174,7 @@
             ,
             load(){
                 this.loading = true;
-                request.get("/aat/fp",{params:{
+                request.get("/aat/fp/public",{params:{
                         num : this.i,
                         size : 5,
                         type : this.select_s,
@@ -258,6 +271,8 @@
 
     .infinite-list-wrapper .list-item {
          display: flex;
+         position: relative;
+         overflow: hidden;
          align-items: center;
          width: 50%;
          min-width: 600px;
@@ -267,7 +282,17 @@
          background: #ffffff;;
          color: black;
          cursor: pointer;
-     }
+
+    }
+    .infinite-list-wrapper .list-item .self-span{
+      background: red;
+      color: white;
+      width: 50px;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      border-top-left-radius: 10px
+    }
     .infinite-list-wrapper .list-item + .list-item {
         margin-top: 10px;
     }

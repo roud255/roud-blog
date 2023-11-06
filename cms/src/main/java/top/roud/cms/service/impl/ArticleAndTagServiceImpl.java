@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.entity.Article;
+import top.roud.cms.entity.ArticleWithValidateCode;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.mapper.ArticleAndTagMapper;
 import top.roud.cms.service.ArticleAndTagService;
@@ -103,6 +104,27 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
         return result;
     }
 
+    @Override
+    public Page<Article> findPageWithoutBody(Integer pageNum, Integer pageSize) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        Page<Article> result = articleAndTagMapper.selectPageWithoutBody(new Page<>(pageNum, pageSize), wrapper);
+        List<Article> records = result.getRecords();
+        if(0 == records.size()){
+            return result;
+        }
+        List<Article> records_new = new LinkedList<>();
+        for(Article article : records){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        result.setRecords(records_new);
+        return result;
+    }
+
     /**
      * 该方法支持模糊查询
      * @param pageNum
@@ -135,9 +157,79 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     }
 
     @Override
+    public Page<ArticleWithValidateCode> findPage_three(Integer pageNum, Integer pageSize, String search) {
+        LambdaQueryWrapper<ArticleWithValidateCode> wrapper = Wrappers.<ArticleWithValidateCode>lambdaQuery();
+        if(StrUtil.isNotBlank(search)){
+            wrapper.like(ArticleWithValidateCode::getTitle, search);
+        }
+        Page<ArticleWithValidateCode> result = articleAndTagMapper.selectPageWithValidateCode(new Page<>(pageNum, pageSize), wrapper);
+        List<ArticleWithValidateCode> records = result.getRecords();
+        if(0 == records.size()){
+            return result;
+        }
+        List<ArticleWithValidateCode> records_new = new LinkedList<>();
+        for(ArticleWithValidateCode article : records){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        result.setRecords(records_new);
+        return result;
+    }
+
+    @Override
+    public Page<Article> findPage_secondWithoutBody(Integer pageNum, Integer pageSize, String search) {
+        LambdaQueryWrapper<Article> wrapper = Wrappers.<Article>lambdaQuery();
+        if(StrUtil.isNotBlank(search)){
+            wrapper.like(Article::getTitle, search);
+        }
+        Page<Article> result = articleAndTagMapper.selectPageWithoutBody(new Page<>(pageNum, pageSize), wrapper);
+        List<Article> records = result.getRecords();
+        if(0 == records.size()){
+            return result;
+        }
+        List<Article> records_new = new LinkedList<>();
+        for(Article article : records){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        result.setRecords(records_new);
+        return result;
+    }
+
+    @Override
     public Page<Article> findPageByTag(Integer pageNum, Integer pageSize, String search) {
         Integer pagestart = (pageNum-1)*pageSize;
         List<Article> records = articleAndTagMapper.selectPageByTag(search, pagestart, pageSize);
+        Integer total = (articleAndTagMapper.selectPageByTag(search, pagestart, 0)).size();
+        Page<Article> result = new Page<>();
+        List<Article> records_new = new LinkedList<>();
+        for(Article article : records){
+            List<Tag> tags = articleAndTagMapper.getTagByArticleId(article.getId());
+            if(0 == tags.size()){
+                continue;
+            }
+            article.setTags(tags);
+            records_new.add(article);
+        }
+        result.setPages((int)Math.ceil((double)total/pageSize));
+        result.setTotal(total);
+        result.setCurrent(pageNum);
+        result.setRecords(records_new);
+        return result;
+    }
+
+    @Override
+    public Page<Article> findPageByTagWithoutBody(Integer pageNum, Integer pageSize, String search) {
+        Integer pagestart = (pageNum-1)*pageSize;
+        List<Article> records = articleAndTagMapper.selectPageByTagWithoutBody(search, pagestart, pageSize);
         Integer total = (articleAndTagMapper.selectPageByTag(search, pagestart, 0)).size();
         Page<Article> result = new Page<>();
         List<Article> records_new = new LinkedList<>();

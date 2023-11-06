@@ -7,6 +7,7 @@ import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.utils.AutoIdUtil;
 import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.common.utils.JwtUtil;
 import top.roud.cms.common.utils.RedisUtil;
@@ -48,7 +49,7 @@ public class UserController {
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
-        UserInformation userInformation = new UserInformation().setUser(user).setId(System.currentTimeMillis()).setRecentlyip(IPUtil.getIpAddr(request));
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(IPUtil.getIpAddr(request));
         userInformationService.save(userInformation);
         return userService.save(user);
     }

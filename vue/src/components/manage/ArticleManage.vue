@@ -16,12 +16,14 @@
             <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="id" label="ID" width="180" />
             <el-table-column prop="title" label="标题" width="180" :show-overflow-tooltip="true"/>
-            <el-table-column prop="author" label="作者" width="180"/>
-            <el-table-column prop="description" label="摘要" :show-overflow-tooltip="true"/>
+            <el-table-column prop="author" label="作者" width="80"/>
+            <el-table-column prop="description" label="摘要" width="100" :show-overflow-tooltip="true"/>
             <el-table-column prop="cover" label="封面" width="100" :show-overflow-tooltip="true"/>
-            <el-table-column prop="postbody" label="内容" width="180" :show-overflow-tooltip="true"/>
+            <el-table-column prop="postbody" label="内容" :show-overflow-tooltip="true"/>
             <el-table-column prop="publishtime" label="发布时间" width="100" :show-overflow-tooltip="true"/>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column prop="self" label="是否专属" width="100" :show-overflow-tooltip="true"/>
+            <el-table-column prop="validateCode" label="访问秘钥" width="100" :show-overflow-tooltip="true"/>
+          <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
                     <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
@@ -59,6 +61,15 @@
           <el-date-picker v-model="form.publishtime" type="datetime" placeholder="选择日期和时间" disabled/>
         </el-form-item>
 
+        <el-form-item label="是否专属">
+          <el-radio-group v-model="form.self">
+            <el-radio v-model="form.self" :label="1">是</el-radio>
+            <el-radio v-model="form.self" :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="访问秘钥">
+          <el-input v-model="form.validateCode"/>
+        </el-form-item>
         <el-form-item label="内容" style="margin: 20px 0">
           <v-md-editor v-model="form.postbody" height="400px"></v-md-editor>
         </el-form-item>

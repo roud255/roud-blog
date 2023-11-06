@@ -32,4 +32,9 @@ public class ThreeCacheUtil {
         return res;
     }
 
+    public void putStringToThreeCache(String key, String o){
+        caffeineCache.put(key, o);
+        redisUtil.set(key, o, 60);
+    }
+
 }

@@ -72,8 +72,10 @@
                 let param_str = url.split('?')[1];
                 let params = new URLSearchParams('?'+param_str);
                 let get_id = params.get('id');
+                let get_validateCode = params.get('validateCode');
                 request.get("/aat/getArticleById",{params:{
                         id : get_id,
+                        validateCode: get_validateCode
                     }}).then(res=>{
                         if(res.code != "200"){
                             this.$router.push("/notfound");

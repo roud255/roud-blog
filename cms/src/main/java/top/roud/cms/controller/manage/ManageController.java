@@ -61,6 +61,9 @@ public class ManageController {
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
 
+    @Autowired
+    private SelfArticleValidateService selfArticleValidateService;
+
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/user/add")
@@ -70,7 +73,7 @@ public class ManageController {
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
-        UserInformation userInformation = new UserInformation().setUser(user).setId(System.currentTimeMillis()).setRecentlyip(IPUtil.getIpAddr(request));
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(IPUtil.getIpAddr(request));
         userInformationService.save(userInformation);
         user.setPassword(md5Util.md5(user.getPassword()));
         return userService.save(user);
@@ -123,7 +126,7 @@ public class ManageController {
     @AccessIPRecord
     @GetMapping("/article/fps")
     public Result fps(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
-        Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
+        Page<ArticleWithValidateCode> page =  articleAndTagService.findPage_three(pageNum, pageSize, search);
         return Result.success(page);
     }
 
@@ -184,7 +187,7 @@ public class ManageController {
         Article article = JSON.parseObject(jsonObject.toString(), Article.class);
         a = new Article();
         BeanUtils.copyProperties(article, a);
-        a.setId(System.currentTimeMillis());
+        a.setId(AutoIdUtil.getId());
         String publishtime = jsonObject.getString("publishtime");
         Date time = null;
         try {
@@ -202,17 +205,32 @@ public class ManageController {
             Tag tag_db = articleAndTagService.getTagByName((String) t);
             Optional<Tag> op = Optional.ofNullable(tag_db);
             if(op.isPresent()){
-                articleAndTagService.insertArticleAndTag(System.currentTimeMillis(), a, tag_db);
+                articleAndTagService.insertArticleAndTag(AutoIdUtil.getId(), a, tag_db);
+                saveSelfArticleValidateCode(a, jsonObject);
             }else {
-                tag.setId(System.currentTimeMillis());
+                tag.setId(AutoIdUtil.getId());
                 tag.setAddtime(time);
                 tag.setTagname(((String) t).trim());
                 tag.setDescription("");
                 articleAndTagService.insertTag(tag);
-                articleAndTagService.insertArticleAndTag(System.currentTimeMillis(), a, tag);
+                articleAndTagService.insertArticleAndTag(AutoIdUtil.getId(), a, tag);
+                saveSelfArticleValidateCode(a, jsonObject);
             }
         }
         return Result.success();
+    }
+    private void saveSelfArticleValidateCode(Article a, JSONObject jsonObject){
+        if(a.getSelf()==1){
+            SelfArticle selfArticle = new SelfArticle();
+            selfArticle.setId(AutoIdUtil.getId());
+            selfArticle.setArticleId(a.getId());
+            String validateCode = StringUtils.isNotBlank((String)jsonObject.get("validateCode"))?(String)jsonObject.get("validateCode"):"Va3xp6";
+            selfArticle.setValidateCode(validateCode);
+            Integer resInt = selfArticleValidateService.saveSelfArticleValidateCode(selfArticle);
+            if(resInt != 1){
+                LoggerUtil.ex.error("saveSelfArticleValidateCode|err|{}|{}",a.getId(),validateCode);
+            }
+        }
     }
     @AccessIPRecord
     @GetMapping("/user/info")
@@ -249,7 +267,7 @@ public class ManageController {
     public Result addip(@RequestBody String info){
         JSONObject jsonObject = JSON.parseObject(info);
         forbidIP = new ForbidIP();
-        forbidIP.setId(System.currentTimeMillis());
+        forbidIP.setId(AutoIdUtil.getId());
         String ip = jsonObject.getString("ip");
         ForbidIP forbidIP = forBidIPService.selectForBidIPByIp(ip);
         Optional<ForbidIP> op = Optional.ofNullable(forbidIP);

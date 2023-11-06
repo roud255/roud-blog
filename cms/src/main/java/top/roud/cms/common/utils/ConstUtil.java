@@ -22,9 +22,12 @@ public class ConstUtil {
     public static final String ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY = "roudblog.article_comments_count_isneed_update.";
     public static final String ARTICLE_VIEWSUM_ISNEED_UPDATE_KEY = "roudblog.article_comments_viewsum_isneed_update.";
     public static final String CACHE_ARTCLE_FINDPAGE_PRE = "roudblog.cache.artcle.findpage.pre.";
+    public static final String CACHE_ARTCLE_FINDPAGE_PRE2 = "roudblog.cache.artcle.findpage.pre2.";
     public static final String CACHE_ARTCLE_FINDPAGES_PRE = "roudblog.cache.artcle.findpages.pre.";
+    public static final String CACHE_ARTCLE_FINDPAGES_PRE2 = "roudblog.cache.artcle.findpages.pre2.";
     public static final String CACHE_IMGFILE_PRE = "roudblog.cache.imgfile.pre.";
     public static final String CACHE_USERINFO_PRE = "roudblog.cache.userinfo.pre.";
+    public static final String CACHE_SELF_ARTICLE_VALIDATECODE = "roudblog.cache.self.article.validatecode.";
     public static String getRealId(String key, String child){
         String[] arr = StringUtils.split(key, child);
         return arr[0];

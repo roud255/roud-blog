@@ -1,6 +1,7 @@
 package top.roud.cms.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import top.roud.cms.entity.Article;
+import top.roud.cms.entity.ArticleWithValidateCode;
 import top.roud.cms.entity.Tag;
 
 import java.util.List;
@@ -16,8 +17,19 @@ public interface ArticleAndTagService {
     public List<Tag> getAllTags();
     public List<Article> getAllArticleWithTag();
     public Page<Article> findPage(Integer pageNum, Integer pageSize);
+
+    Page<Article> findPageWithoutBody(Integer pageNum, Integer pageSize);
+
     public Page<Article> findPage_second(Integer pageNum, Integer pageSize, String search);
+
+    Page<ArticleWithValidateCode> findPage_three(Integer pageNum, Integer pageSize, String search);
+
+    Page<Article> findPage_secondWithoutBody(Integer pageNum, Integer pageSize, String search);
+
     public Page<Article> findPageByTag(Integer pageNum, Integer pageSize, String search);
+
+    Page<Article> findPageByTagWithoutBody(Integer pageNum, Integer pageSize, String search);
+
     public List<Tag> getTagByArticleId(Long id);
     public void delArticleWithTag(Long id);
     public Integer updateArticleById(Article article);

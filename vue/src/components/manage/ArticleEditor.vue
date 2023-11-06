@@ -23,6 +23,17 @@
                     <el-date-picker v-model="form.publishtime" type="datetime" placeholder="选择日期和时间"/>
                 </el-form-item>
 
+              <el-form-item label="是否专属">
+                <el-radio-group v-model="form.self">
+                  <el-radio v-model="form.self" :label="1">是</el-radio>
+                  <el-radio v-model="form.self" :label="0">否</el-radio>
+                </el-radio-group>
+              </el-form-item>
+
+              <el-form-item label="访问秘钥">
+                <el-input v-model="form.validateCode" />
+              </el-form-item>
+
                 <el-form-item label="内容" style="margin: 20px 0">
                     <v-md-editor v-model="form.postbody" :include-level="[1, 3]" :disabled-menus="[]" @upload-image="handleUploadImage" height="400px"></v-md-editor>
                 </el-form-item>
@@ -104,7 +115,9 @@
         name:"ArticleEditor",
         data() {
             return {
-                form: {},
+                form: {
+                  self:0
+                },
                 dynamicTags: [],
                 inputVisible: false,
                 inputValue: '',
@@ -190,6 +203,8 @@
                     this.showWarningMessage("标签不能为空")
                 }else if(this.form.tags.length>4){
                     this.showWarningMessage("标签数不能大于4个且不推荐标签过长！")
+                }else if(this.form.self==1 && (this.form.validateCode==null||this.form.validateCode.trim(" ")=="")){
+                  this.showWarningMessage("专属文章需要填入访问秘钥")
                 }else{
                     request.post("/manage/article/add", this.form).then(res => {
                         if(res.code!="200"){

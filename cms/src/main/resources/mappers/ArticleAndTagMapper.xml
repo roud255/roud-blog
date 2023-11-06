@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.roud.cms.mapper.ArticleAndTagMapper">
     <insert id="insertArticle" parameterType="top.roud.cms.entity.Article">
-        insert into rb_article(id,title,author,description,cover,postbody,publishtime) values
-        (#{id},#{title},#{author},#{description},#{cover},#{postbody},#{publishtime})
+        insert into rb_article(id,title,author,description,cover,postbody,publishtime,self) values
+        (#{id},#{title},#{author},#{description},#{cover},#{postbody},#{publishtime},#{self})
     </insert>
 
     <insert id="insertTag" parameterType="top.roud.cms.entity.Tag">
@@ -11,7 +11,7 @@
         (#{id},#{tagname},#{description},#{addtime})
     </insert>
 
-    <select id="getArticleById" parameterType="long" resultType="top.roud.cms.entity.Article">select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article where id=#{id}</select>
+    <select id="getArticleById" parameterType="long" resultType="top.roud.cms.entity.Article">select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article where id=#{id}</select>
 
     <select id="getTagById" parameterType="long" resultType="top.roud.cms.entity.Tag">select id,tagname,description,addtime from rb_tag where id=#{id}
      </select>
@@ -32,6 +32,7 @@
         <result property="publishtime" column="publishtime"/>
         <result property="viewsnum" column="viewsnum"/>
         <result property="commentsnum" column="commentsnum"/>
+        <result property="self" column="self"/>
     </resultMap>
 
     <resultMap id="TagResult" type="top.roud.cms.entity.Tag">
@@ -46,7 +47,7 @@
     </resultMap>
 
     <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
@@ -54,7 +55,7 @@
         where a.id=#{id} and a.id=at.article_id and t.id=at.tag_id
     </select>
     <select id="getAllArticleWithTag" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
@@ -63,11 +64,27 @@
     </select>
 
     <select id="selectPage" resultType="top.roud.cms.entity.Article">
-        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article ${ew.customSqlSegment} order by id desc
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article ${ew.customSqlSegment} order by id desc
+    </select>
+
+    <select id="selectPageWithValidateCode" resultType="top.roud.cms.entity.ArticleWithValidateCode">
+        select a.id,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,sa.validateCode from rb_article a
+            LEFT OUTER JOIN rb_selfarticle sa on a.id=sa.articleId and a.self=1 ${ew.customSqlSegment} order by id desc
+    </select>
+
+    <select id="selectPageWithoutBody" resultType="top.roud.cms.entity.Article">
+        select id,title,author,description,cover,publishtime,viewsnum,commentsnum,self from rb_article ${ew.customSqlSegment} order by id desc
     </select>
 
     <select id="selectPageByTag" resultType="top.roud.cms.entity.Article">
-        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
+        <if test="pagecount>0">
+            limit #{pagestart},#{pagecount}
+        </if>
+    </select>
+
+    <select id="selectPageByTagWithoutBody" resultType="top.roud.cms.entity.Article">
+        select id,title,author,description,cover,publishtime,viewsnum,commentsnum,self from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
         <if test="pagecount>0">
             limit #{pagestart},#{pagecount}
         </if>
