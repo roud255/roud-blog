@@ -47,6 +47,10 @@ public class SelfArticleValidateServicImpl implements SelfArticleValidateService
     @Override
     public Integer updateSelfArticleValidateCode(SelfArticle selfArticle) {
         SelfArticle sa = selfArticleMapper.selectSelfArticleByArticleId(selfArticle.getArticleId());
+        if(null == sa){
+            return selfArticleMapper.insert(selfArticle);
+        }
+        sa.setValidateCode(selfArticle.getValidateCode());
         return selfArticleMapper.updateById(sa);
     }
 }
