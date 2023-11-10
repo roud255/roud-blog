@@ -125,8 +125,18 @@ public class ManageController {
     }
     @AccessIPRecord
     @GetMapping("/article/fps")
-    public Result fps(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+    public Result fps(HttpServletRequest req, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Page<ArticleWithValidateCode> page =  articleAndTagService.findPage_three(pageNum, pageSize, search);
+        String token = req.getHeader("token");
+        Map<String, Object> info = JwtUtil.getInfo(token);
+        //暂定根据type判断操作权限
+        int type = (int)info.get("type");
+        if(0!=type){
+            List<ArticleWithValidateCode> records = page.getRecords();
+            for(ArticleWithValidateCode awvc : records){
+                awvc.setValidateCode("******");
+            }
+        }
         return Result.success(page);
     }
 
