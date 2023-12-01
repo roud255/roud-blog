@@ -97,8 +97,16 @@
                 }
             },
             logout() {
-                localStorage.clear();
-                this.$router.push("/index/login"); //跳回登录地址
+              request.get("/login/quit", {params:{
+                  token : localStorage.getItem('token'),
+                }}).then(res =>{
+                    if(res.code=="200"){
+                      localStorage.clear();
+                      this.$router.push("/index/login"); //跳回登录地址
+                    }else {
+                      this.showFailMessage(res.msg);
+                    }
+                })
             },
             _isMobile() {
                 let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
