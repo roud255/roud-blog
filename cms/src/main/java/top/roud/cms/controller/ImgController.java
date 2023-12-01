@@ -15,9 +15,7 @@ import top.roud.cms.entity.ImgFile;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -49,7 +47,7 @@ public class ImgController {
     @PostMapping("/upload")
     public Result upload(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
         String token = tokenUtil.getToken(request);
-        if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
+        if(!JwtUtil.checkSign(token)){
             return Result.failure(TOKEN_INVALID);
         }
         Map<String, Object> info = JwtUtil.getInfo(token);
@@ -86,7 +84,7 @@ public class ImgController {
     @PostMapping("/upload/editor")
     public Result uploadEditor(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
         String token = tokenUtil.getToken(request);
-        if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
+        if(!JwtUtil.checkSign(token)){
             return Result.failure(TOKEN_INVALID);
         }
         Map<String, Object> info = JwtUtil.getInfo(token);

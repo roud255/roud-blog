@@ -6,26 +6,19 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
-import top.roud.cms.common.utils.RandomCodeUtil;
-import top.roud.cms.common.utils.TokenUtil;
+import top.roud.cms.common.result.Result;
+import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.User;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
-import top.roud.cms.common.utils.IPUtil;
-import top.roud.cms.common.utils.JwtUtil;
-import top.roud.cms.common.utils.MD5Util;
-import top.roud.cms.common.utils.RedisUtil;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -128,12 +121,28 @@ public class LoginController {
 
     }
 
+    @NoRepeatRequest(seconds = 10, maxCount = 3)
+    @AccessIPRecord
+    @GetMapping("/quit")
+    public Result signOut(HttpServletRequest request){
+        try{
+            String token = request.getHeader("token");
+            if(StringUtils.isBlank(token)){
+                return Result.failure(PARAM_NOT_COMPLETE);
+            }
+            tokenUtil.signOutToken(token);
+        }catch (Exception e){
+            return Result.failure(SYSTEM_INNER_ERROR);
+        }
+        return Result.success();
+    }
+
     @AccessIPRecord
     @GetMapping("/updatetoken")
     public Result updateToken(HttpServletRequest request){
         try{
             String token = tokenUtil.getToken(request);
-            if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
+            if(!JwtUtil.checkSign(token)){
                 return Result.failure(TOKEN_INVALID);
             }
             Map<String, Object> info = JwtUtil.getInfo(token);

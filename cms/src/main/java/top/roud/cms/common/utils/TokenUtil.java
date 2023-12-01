@@ -1,7 +1,10 @@
 package top.roud.cms.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import top.roud.cms.common.exception.ServiceException;
+import top.roud.cms.common.result.ResultCode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -18,14 +21,21 @@ public class TokenUtil {
     private ThreeCacheUtil threeCacheUtil;
 
 
-    public String getLargeToken(String key){
-        return threeCacheUtil.getByCache(key);
+    public String getLargeToken(String outToken){
+        return threeCacheUtil.getByCache(outToken);
     }
 
     public String getToken(HttpServletRequest request){
-        String token = request.getHeader("token");
-        String largeToken = getLargeToken(token);
-        return largeToken;
+        try{
+            String token = request.getHeader("token");
+            String largeToken = getLargeToken(token);
+            if(StringUtils.isBlank(largeToken)){
+                throw new NullPointerException();
+            }
+            return largeToken;
+        }catch (NullPointerException e){
+            throw new ServiceException(ResultCode.TOKEN_INVALID, e);
+        }
     }
 
     public String getOutToken(String realToekn){
@@ -36,7 +46,7 @@ public class TokenUtil {
         return outToken;
     }
 
-    public void signOutToken(String key){
-        threeCacheUtil.delCache(key);
+    public void signOutToken(String largeToken){
+        threeCacheUtil.delCache(largeToken);
     }
 }

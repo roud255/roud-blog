@@ -4,14 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.entity.ForbidIP;
 import top.roud.cms.mapper.ForBidIPMapper;
 import top.roud.cms.service.ForBidIPService;
-
-import javax.annotation.Resource;
 
 /**
  * @ClassName: ForbidIPServiceImpl

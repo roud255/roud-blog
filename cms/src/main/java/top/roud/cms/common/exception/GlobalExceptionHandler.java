@@ -43,6 +43,13 @@ public class GlobalExceptionHandler {
         LoggerUtil.ex.error(String.valueOf(ex));
         return Result.failure(FILE_IS_OVERFLOW);
     }
+
+    @ExceptionHandler(ServiceException.class)
+    public Result handleServiceException(ServiceException ex){
+        LoggerUtil.ex.error(String.valueOf(ex));
+        return Result.failure(ex.resultCode);
+    }
+
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception ex){
         LoggerUtil.ex.error(String.valueOf(ex));

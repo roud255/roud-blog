@@ -1,7 +1,6 @@
 package top.roud.cms.common.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -24,8 +23,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     private JwtInterceptor jwtInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor).addPathPatterns("/manage/**").addPathPatterns("/user/**").addPathPatterns("/aat/del/**")
-                .addPathPatterns("/img/upload");
+        registry.addInterceptor(jwtInterceptor).addPathPatterns("/manage/**").addPathPatterns("/user/**").addPathPatterns("/aat/del/**").addPathPatterns("/login/quit").addPathPatterns("/img/upload");
         registry.addInterceptor(violentRequestInterceptor).addPathPatterns("/**");
     }
 }
