@@ -3,6 +3,7 @@ package top.roud.cms.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
@@ -11,6 +12,7 @@ import top.roud.cms.common.utils.AutoIdUtil;
 import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.common.utils.JwtUtil;
 import top.roud.cms.common.utils.RedisUtil;
+import top.roud.cms.common.utils.TokenUtil;
 import top.roud.cms.entity.User;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
@@ -40,6 +42,8 @@ public class UserController {
     private UserInformationService userInformationService;
     @Resource
     private RedisUtil redisUtil;
+    @Autowired
+    private TokenUtil tokenUtil;
     @OperationAuth
     @AccessIPRecord
     @PostMapping
@@ -81,7 +85,7 @@ public class UserController {
     @PostMapping("/updateinfo")
     public Result updateUserInfo(@RequestBody String info,HttpServletRequest request){
         try {
-            String token = request.getHeader("token");
+            String token = tokenUtil.getToken(request);
             if (StringUtils.isBlank(token) || !JwtUtil.checkSign(token)) {
                 return Result.failure(TOKEN_INVALID);
             }

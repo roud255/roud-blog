@@ -1,14 +1,7 @@
 package top.roud.cms.common.utils;
 
-import org.springframework.stereotype.Component;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Date;
 
 /**
  * @ClassName: CaptchaUtil
@@ -19,27 +12,7 @@ import java.util.Date;
  */
 public class CaptchaUtil {
     private static final long serialVersionUID = 1L;
-    public static final char[] ARR = new char[62];
-    static {
-        for(int i=48;i<58;i++) {
-            ARR[i-48]=(char)i;
-        }
-        for(int i=65;i<91;i++) {
-            ARR[i-55]=(char)i;
-        }
-        for(int i=97;i<123;i++) {
-            ARR[i-61]=(char)i;
-        }
-    }
 
-    public static String getCode() {
-        StringBuilder sb = new StringBuilder();
-        for(int i=0;i<4;i++) {
-            int rand=(int) (Math.random()*62);
-            sb.append(ARR[rand]);
-        }
-        return sb.toString();
-    }
     public static BufferedImage doDraw(String str, int w, int h, int amout){
         return doDraw(str, w, h, amout,"Fixedsys", 12, Color.darkGray, new Color[]{Color.white, new Color(128,206,235), Color.green, Color.CYAN, Color.yellow});
     }

@@ -8,11 +8,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
+import top.roud.cms.common.utils.RandomCodeUtil;
+import top.roud.cms.common.utils.TokenUtil;
 import top.roud.cms.entity.User;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
@@ -35,7 +38,6 @@ import java.util.Optional;
 
 import static top.roud.cms.common.result.ResultCode.*;
 import static top.roud.cms.common.utils.CaptchaUtil.doDraw;
-import static top.roud.cms.common.utils.CaptchaUtil.getCode;
 
 /**
  * @ClassName: LoginController
@@ -55,6 +57,8 @@ public class LoginController {
     private MD5Util md5Util;
     @Resource
     private UserInformationService userInformationService;
+    @Autowired
+    private TokenUtil tokenUtil;
     @AccessIPRecord
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
@@ -67,7 +71,7 @@ public class LoginController {
             response.setHeader("Pragma", "No-cache");//设置响应头信息，告诉浏览器不要缓存此内容
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", new Date().getTime());
-            String str = getCode();
+            String str = RandomCodeUtil.getRandomCode(4);
             String ip = IPUtil.getIpAddr(request);
             redisUtil.set("ip-"+ip+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
@@ -113,7 +117,7 @@ public class LoginController {
                 map.put("sex",userInformation.getSex());
                 map.put("motto",userInformation.getMotto()==null?"":userInformation.getMotto());
                 map.put("ip",userInformation.getRecentlyip());
-                String sign = JwtUtil.sign(String.valueOf(byEmailAndPwd.getId()), map);
+                String sign = tokenUtil.getOutToken(JwtUtil.sign(String.valueOf(byEmailAndPwd.getId()), map));
                 userInformationService.updateByUserId(userInformation);
                 return Result.success(new Token(sign));
             }
@@ -128,7 +132,7 @@ public class LoginController {
     @GetMapping("/updatetoken")
     public Result updateToken(HttpServletRequest request){
         try{
-            String token = request.getHeader("token");
+            String token = tokenUtil.getToken(request);
             if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
                 return Result.failure(TOKEN_INVALID);
             }
@@ -149,7 +153,7 @@ public class LoginController {
                 map.put("sex",userInformation.getSex());
                 map.put("motto",userInformation.getMotto()==null?"":userInformation.getMotto());
                 map.put("ip",userInformation.getRecentlyip());
-                String sign = JwtUtil.sign(String.valueOf(byEmailAndPwd.getId()), map);
+                String sign = tokenUtil.getOutToken(JwtUtil.sign(String.valueOf(byEmailAndPwd.getId()), map));
                 return Result.success(new Token(sign));
             }
             return Result.failure(USER_NOT_EXIST);

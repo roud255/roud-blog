@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -12,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.OperationAuth;
 import top.roud.cms.common.utils.JwtUtil;
+import top.roud.cms.common.utils.TokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -28,6 +30,9 @@ import static top.roud.cms.common.result.ResultCode.USER_NO_ACCESS;
 @Aspect
 @Component
 public class OperationAuthAspect {
+    @Autowired
+    private TokenUtil tokenUtil;
+
     @Pointcut("@annotation(operationAuth)")
     public void pointCut(OperationAuth operationAuth){
 
@@ -36,8 +41,7 @@ public class OperationAuthAspect {
     public Object around(ProceedingJoinPoint pjp,OperationAuth operationAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
-        Assert.notNull(request, "request can not null");
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
             return Result.failure(TOKEN_INVALID);
         }

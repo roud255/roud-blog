@@ -1,9 +1,11 @@
 package top.roud.cms.common.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.utils.JwtUtil;
+import top.roud.cms.common.utils.TokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +20,11 @@ import static top.roud.cms.common.result.ResultCode.TOKEN_INVALID;
  * @Version 1.0
  */
 public class JwtInterceptor implements HandlerInterceptor {
+    @Autowired
+    private TokenUtil tokenUtil;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         JSONObject json;
 
         boolean flag = JwtUtil.checkSign(token);

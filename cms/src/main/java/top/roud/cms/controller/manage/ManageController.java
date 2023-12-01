@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.bson.types.Binary;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static top.roud.cms.common.result.ResultCode.*;
 
@@ -54,6 +52,8 @@ public class ManageController {
     private ArticleAndCommentService articleAndCommentService;
     @Resource
     private RedisUtil redisUtil;
+    @Autowired
+    private TokenUtil tokenUtil;
 
     private ForbidIP forbidIP;
     private Article a;
@@ -82,7 +82,7 @@ public class ManageController {
     @GetMapping("/user/select")
     public Result findpages(HttpServletRequest req, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Result page = userService.findPage(pageNum, pageSize, search);
-        String token = req.getHeader("token");
+        String token = tokenUtil.getToken(req);
         Map<String, Object> info = JwtUtil.getInfo(token);
         //暂定根据type判断操作权限
         int type = (int)info.get("type");
@@ -127,7 +127,7 @@ public class ManageController {
     @GetMapping("/article/fps")
     public Result fps(HttpServletRequest req, @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         Page<ArticleWithValidateCode> page =  articleAndTagService.findPage_three(pageNum, pageSize, search);
-        String token = req.getHeader("token");
+        String token = tokenUtil.getToken(req);
         Map<String, Object> info = JwtUtil.getInfo(token);
         //暂定根据type判断操作权限
         int type = (int)info.get("type");
@@ -262,7 +262,7 @@ public class ManageController {
     @GetMapping("/user/info")
     public Result getUserInfo(@RequestParam String token){
         String threeCacheKey = ConstUtil.CACHE_USERINFO_PRE + token;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             Map<String,Object> map = JSON.parseObject(resStringbyThreeCache, Map.class);
             LoggerUtil.cacheLog.info("从缓存中获取用户信息|{}", token);

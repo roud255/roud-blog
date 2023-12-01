@@ -1,7 +1,6 @@
 package top.roud.cms.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.roud.cms.common.annotation.AccessIPRecord;
-import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.utils.*;
-import top.roud.cms.entity.Article;
 import top.roud.cms.entity.ImgFile;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
@@ -45,11 +42,13 @@ public class ImgController {
     private UserInformationService userInformationService;
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
+    @Autowired
+    private TokenUtil tokenUtil;
 
     @AccessIPRecord
     @PostMapping("/upload")
     public Result upload(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
             return Result.failure(TOKEN_INVALID);
         }
@@ -113,7 +112,7 @@ public class ImgController {
     public byte[] downloadImage(@PathVariable("id")String id) {
         byte[] data = null;
         String threeCacheKey = ConstUtil.CACHE_IMGFILE_PRE + id;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             Binary binary = JSON.parseObject(resStringbyThreeCache, Binary.class);
             LoggerUtil.cacheLog.info("从缓存中获取图片|{}", id);
@@ -122,7 +121,7 @@ public class ImgController {
         ImgFile img = mongoTemplate.findById(id, ImgFile.class);
         if(img!=null){
             Binary content = img.getContent();
-            threeCacheUtil.putToThreeCache(threeCacheKey, content);
+            threeCacheUtil.putToCache(threeCacheKey, content);
             data = content.getData();
         }
         return data;

@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
@@ -154,10 +153,10 @@ public class ArticleAndTagController {
             return false;
         }
         String cacheKey = ConstUtil.CACHE_SELF_ARTICLE_VALIDATECODE + article.getId();
-        String validateCode = threeCacheUtil.getByThreeCache(cacheKey);
+        String validateCode = threeCacheUtil.getByCache(cacheKey);
         if(StringUtils.isBlank(validateCode)){
             validateCode = selfArticleValidateService.getValidateCodeByArticleId(article.getId());
-            threeCacheUtil.putStringToThreeCache(cacheKey, validateCode);
+            threeCacheUtil.putStringToCache(cacheKey, validateCode);
         }
         if(StringUtils.equals(code, validateCode)){
             return true;
@@ -200,7 +199,7 @@ public class ArticleAndTagController {
     public Result fp(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
         Page<Article> page;
         String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGE_PRE + num + "." + size + "." + search + "." + type;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             page = JSON.parseObject(resStringbyThreeCache, Page.class);
             return Result.success(page, "数据来源于缓存");
@@ -210,7 +209,7 @@ public class ArticleAndTagController {
         }else {
             page =  articleAndTagService.findPage_second(num, size, search);
         }
-        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        threeCacheUtil.putToCache(threeCacheKey, page);
         return Result.success(page);
     }
 
@@ -229,7 +228,7 @@ public class ArticleAndTagController {
     public Result fpWithoutBody(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
         Page<Article> page;
         String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGE_PRE2 + num + "." + size + "." + search + "." + type;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             page = JSON.parseObject(resStringbyThreeCache, Page.class);
             return Result.success(page, "数据来源于缓存");
@@ -239,7 +238,7 @@ public class ArticleAndTagController {
         }else {
             page =  articleAndTagService.findPage_secondWithoutBody(num, size, search);
         }
-        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        threeCacheUtil.putToCache(threeCacheKey, page);
         return Result.success(page);
     }
 
@@ -247,13 +246,13 @@ public class ArticleAndTagController {
     @GetMapping("fps")
     public Result findpages(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGES_PRE + pageNum + "." + pageSize + "." + search;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             Page<Article> page = JSON.parseObject(resStringbyThreeCache, Page.class);
             return Result.success(page, "数据来源于缓存");
         }
         Page<Article> page =  articleAndTagService.findPage_second(pageNum, pageSize, search);
-        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        threeCacheUtil.putToCache(threeCacheKey, page);
         return Result.success(page);
     }
 
@@ -261,13 +260,13 @@ public class ArticleAndTagController {
     @GetMapping("fps/public")
     public Result findpagesWithoutBody(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         String threeCacheKey = ConstUtil.CACHE_ARTCLE_FINDPAGES_PRE2 + pageNum + "." + pageSize + "." + search;
-        String resStringbyThreeCache = threeCacheUtil.getByThreeCache(threeCacheKey);
+        String resStringbyThreeCache = threeCacheUtil.getByCache(threeCacheKey);
         if(StringUtils.isNotBlank(resStringbyThreeCache)){
             Page<Article> page = JSON.parseObject(resStringbyThreeCache, Page.class);
             return Result.success(page, "数据来源于缓存");
         }
         Page<Article> page =  articleAndTagService.findPage_secondWithoutBody(pageNum, pageSize, search);
-        threeCacheUtil.putToThreeCache(threeCacheKey, page);
+        threeCacheUtil.putToCache(threeCacheKey, page);
         return Result.success(page);
     }
 

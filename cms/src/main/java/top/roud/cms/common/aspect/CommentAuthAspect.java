@@ -15,6 +15,7 @@ import top.roud.cms.common.annotation.CommentAuth;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.utils.JwtUtil;
 import top.roud.cms.common.utils.RedisUtil;
+import top.roud.cms.common.utils.TokenUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -28,6 +29,10 @@ import static top.roud.cms.common.utils.ConstUtil.REDIS_USER_DAILYCOMMENTSCOUNT_
 public class CommentAuthAspect {
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private TokenUtil tokenUtil;
+
     @Pointcut("@annotation(commentAuth)")
     public void pointCut(CommentAuth commentAuth){
 
@@ -36,9 +41,8 @@ public class CommentAuthAspect {
     public Object around(ProceedingJoinPoint pjp, CommentAuth commentAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
-        Assert.notNull(request, "request can not null");
         int maxCount = commentAuth.dailyMaxCount();
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         if(StringUtils.isBlank(token)){
             return Result.failure(USER_NOT_LOGIN);
         }
