@@ -21,11 +21,11 @@
 ##### 1、简介
 该项目为一个个人个性化博客项目，项目结构分为前台文章展示部分和后台管理部分，角色目前分为管理员和演示用户。</br>
 ##### 2、演示站
-项目演示地址: </br><a href="http://8.134.71.114/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
-<a href="http://8.134.71.114/">点我或者点击上面的图标访问演示站</a></br>
+项目演示地址: </br><a href="http://124.71.130.54/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
+<a href="http://124.71.130.54/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
-<p><a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
+<p><a href="http://124.71.130.54/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
 项目前台展示:</br>
 <p><img src="http://roud.top/img/20230506004212.png" alt="前台"></p></br>
 文章展示:</br>
