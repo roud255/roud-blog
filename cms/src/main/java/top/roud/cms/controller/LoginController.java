@@ -49,13 +49,13 @@ import static top.roud.cms.common.utils.CaptchaUtil.doDraw;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private MD5Util md5Util;
-    @Resource
+    @Autowired
     private UserInformationService userInformationService;
     @Autowired
     private TokenUtil tokenUtil;

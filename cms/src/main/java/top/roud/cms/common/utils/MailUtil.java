@@ -1,9 +1,9 @@
 package top.roud.cms.common.utils;
 
 import cn.hutool.core.lang.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @Component
 public class MailUtil {
-    @Resource
+    @Autowired
     private MD5Util md5Util;
     public static final String CA = "-request-roud-mail-";
     private String CONTENT_FIRST = "<!DOCTYPE html>\n" +

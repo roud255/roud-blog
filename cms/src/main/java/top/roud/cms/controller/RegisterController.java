@@ -3,6 +3,7 @@ package top.roud.cms.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.annotation.AccessIPRecord;
@@ -13,7 +14,6 @@ import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Optional;
@@ -30,15 +30,15 @@ import static top.roud.cms.common.result.ResultCode.*;
 @RestController
 @RequestMapping("/reg")
 public class RegisterController {
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private MailUtil mailUtil;
-    @Resource
+    @Autowired
     private MD5Util md5Util;
-    @Resource
+    @Autowired
     private UserInformationService userInformationService;
 
     @NoRepeatRequest(seconds = 60, maxCount = 1)

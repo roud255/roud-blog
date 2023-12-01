@@ -40,9 +40,9 @@ import static top.roud.cms.common.result.ResultCode.PARAM_NOT_COMPLETE;
 @RestController
 @RequestMapping("/aat")
 public class ArticleAndTagController {
-    @Resource
+    @Autowired
     private ArticleAndTagService articleAndTagService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
     @Autowired
     private ThreeCacheUtil threeCacheUtil;

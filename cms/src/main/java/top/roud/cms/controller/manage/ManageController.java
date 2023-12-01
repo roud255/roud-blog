@@ -36,21 +36,21 @@ import static top.roud.cms.common.result.ResultCode.*;
 @RestController
 @RequestMapping("/manage")
 public class ManageController {
-    @Resource
+    @Autowired
     private ArticleAndTagService articleAndTagService;
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private ForBidIPService forBidIPService;
-    @Resource
+    @Autowired
     private TimeTransUtil timeTransUtil;
-    @Resource
+    @Autowired
     private MD5Util md5Util;
-    @Resource
+    @Autowired
     private UserInformationService userInformationService;
-    @Resource
+    @Autowired
     private ArticleAndCommentService articleAndCommentService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
     @Autowired
     private TokenUtil tokenUtil;
@@ -268,9 +268,10 @@ public class ManageController {
             LoggerUtil.cacheLog.info("从缓存中获取用户信息|{}", token);
             return Result.success(map);
         }
-        boolean flag = JwtUtil.checkSign(token);
+        String largeToken = tokenUtil.getLargeToken(token);
+        boolean flag = JwtUtil.checkSign(largeToken);
         if(flag){
-            return Result.success(JwtUtil.getInfo(token));
+            return Result.success(JwtUtil.getInfo(largeToken));
         }
         return Result.failure(TOKEN_INVALID);
     }

@@ -17,6 +17,7 @@ public class TokenUtil {
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
 
+
     public String getLargeToken(String key){
         return threeCacheUtil.getByCache(key);
     }

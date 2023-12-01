@@ -34,11 +34,11 @@ import static top.roud.cms.common.result.ResultCode.*;
 @RestController
 @RequestMapping("/img")
 public class ImgController {
-    @Resource
+    @Autowired
     private MongoTemplate mongoTemplate;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
-    @Resource
+    @Autowired
     private UserInformationService userInformationService;
     @Autowired
     private ThreeCacheUtil threeCacheUtil;
@@ -85,7 +85,7 @@ public class ImgController {
     @AccessIPRecord
     @PostMapping("/upload/editor")
     public Result uploadEditor(@RequestParam(value = "file")MultipartFile file, HttpServletRequest request){
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         if(StringUtils.isBlank(token) || !JwtUtil.checkSign(token)){
             return Result.failure(TOKEN_INVALID);
         }

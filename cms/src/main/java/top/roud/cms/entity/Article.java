@@ -41,8 +41,4 @@ public class Article implements Serializable {
     private int viewsnum;
     private int commentsnum;
     private int self;
-//    public boolean isSelf(){
-//        return self == 1;
-//    }
-
 }

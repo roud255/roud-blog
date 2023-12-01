@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.entity.Article;
@@ -13,7 +14,6 @@ import top.roud.cms.entity.Tag;
 import top.roud.cms.mapper.ArticleAndTagMapper;
 import top.roud.cms.service.ArticleAndTagService;
 
-import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
 @Transactional
 @Service
 public class ArticleAndTagServiceImpl implements ArticleAndTagService {
-    @Resource
+    @Autowired
     private ArticleAndTagMapper articleAndTagMapper;
     @Override
     public void insertArticle(Article article) {

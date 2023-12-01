@@ -4,22 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import top.roud.cms.common.annotation.NoRepeatRequest;
-import top.roud.cms.common.result.Result;
+import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
-import top.roud.cms.common.utils.AutoIdUtil;
-import top.roud.cms.common.utils.IPUtil;
-import top.roud.cms.common.utils.JwtUtil;
-import top.roud.cms.common.utils.RedisUtil;
-import top.roud.cms.common.utils.TokenUtil;
+import top.roud.cms.common.result.Result;
+import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.User;
 import top.roud.cms.entity.UserInformation;
 import top.roud.cms.service.UserInformationService;
 import top.roud.cms.service.UserService;
-import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
@@ -36,11 +30,11 @@ import static top.roud.cms.common.result.ResultCode.*;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private UserInformationService userInformationService;
-    @Resource
+    @Autowired
     private RedisUtil redisUtil;
     @Autowired
     private TokenUtil tokenUtil;

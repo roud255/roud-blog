@@ -33,6 +33,9 @@ public class ArticleAndCommentsController {
     private ArticleAndCommentService articleAndCommentService;
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private TokenUtil tokenUtil;
     @RequestMapping
     public Result selectComments(@RequestParam Long id){
         Optional<Long> op = Optional.ofNullable(id);
@@ -53,10 +56,10 @@ public class ArticleAndCommentsController {
         return Result.success(commentsByArticle);
     }
 
-    @CommentAuth(dailyMaxCount = 3)
+    @CommentAuth(dailyMaxCount = 5)
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
-        String token = request.getHeader("token");
+        String token = tokenUtil.getToken(request);
         boolean flag = JwtUtil.checkSign(token);
         if(!flag){
             return Result.failure(TOKEN_INVALID);

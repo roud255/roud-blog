@@ -1,11 +1,12 @@
 package top.roud.cms.common.utils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisUtil {
-    @Resource
+    @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     public Object get(final String key) {

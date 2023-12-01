@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 @Transactional
 @Service
 public class ForbidIPServiceImpl implements ForBidIPService {
-    @Resource
+    @Autowired
     private ForBidIPMapper forBidIPMapper;
     @Override
     public Result save(ForbidIP forbidIP) {

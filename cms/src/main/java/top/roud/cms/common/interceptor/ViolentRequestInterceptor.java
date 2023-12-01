@@ -3,6 +3,7 @@ package top.roud.cms.common.interceptor;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.utils.ConstUtil;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static top.roud.cms.common.result.ResultCode.HAVIOR_INVOKE_ERROR;
 
+@Component
 public class ViolentRequestInterceptor implements HandlerInterceptor {
     @Value("${violentRequest.maxCount}")
     private int maxCount;

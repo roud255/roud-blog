@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @Transactional
 @Service
 public class UserInformationServiceImpl implements UserInformationService {
-    @Resource
+    @Autowired
     private UserInformationMapper userInformationMapper;
 
     @Override

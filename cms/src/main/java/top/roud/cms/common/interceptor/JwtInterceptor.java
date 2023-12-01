@@ -2,6 +2,7 @@ package top.roud.cms.common.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.utils.JwtUtil;
@@ -19,9 +20,10 @@ import static top.roud.cms.common.result.ResultCode.TOKEN_INVALID;
  * @Date 2022/9/24
  * @Version 1.0
  */
+@Component
 public class JwtInterceptor implements HandlerInterceptor {
     @Autowired
-    private TokenUtil tokenUtil;
+    public TokenUtil tokenUtil;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = tokenUtil.getToken(request);
@@ -32,13 +34,6 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
         json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_INVALID));
-
-//        catch (SignatureException e){
-//            json=(JSONObject) JSONObject.toJSON(Result.failure(SIGN_INVALID));
-//        } catch (TokenExpiredException e){
-//            json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_EXPIRED));
-//        } catch (ArithmeticException e){
-//            json=(JSONObject) JSONObject.toJSON(Result.failure(TOKEN_ARITHMETERROR));
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(json);
         return false;
