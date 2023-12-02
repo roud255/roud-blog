@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class IPUtil {
@@ -60,9 +58,9 @@ public class IPUtil {
     }
     public String getRealAddr(String ip) {
         try {
-            Map<String, String> map = new HashMap<>();
-            map.put("Host","whois.pconline.com.cn");
-            map.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
+//            Map<String, String> map = new HashMap<>();
+//            map.put("Host","whois.pconline.com.cn");
+//            map.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
             String json;
             try {
                 byte[] bytes = httpUtil.get("http://whois.pconline.com.cn/ipJson.jsp?ip=" + ip + "&json=true", byte[].class);
@@ -73,7 +71,11 @@ public class IPUtil {
             JSONObject jsonObject = JSON.parseObject(json);
             String pro = jsonObject.getString("pro");
             String city = jsonObject.getString("city");
+            String addr = jsonObject.getString("addr");
             if(StringUtils.isBlank(pro+city)){
+                if(StringUtils.isNotBlank(addr)){
+                    return addr;
+                }
                 return "未知地区";
             }
             return pro+city;
