@@ -8,18 +8,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.roud.cms.common.result.Result;
-import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.NoRepeatRequest;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.result.Result;
+import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.Article;
 import top.roud.cms.entity.Tag;
 import top.roud.cms.service.ArticleAndTagService;
 import top.roud.cms.service.SelfArticleValidateService;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -123,7 +122,7 @@ public class ArticleAndTagController {
                     return Result.failure(ResultCode.VALIDATEF_FAIL);
                 }
             }
-            redisUtil.set(key, JSON.toJSONString(articleAndhTag), 10, TimeUnit.MINUTES);
+            redisUtil.set(key, JSON.toJSONString(articleAndhTag), 1, TimeUnit.MINUTES);
             saveViewsnum(id, articleAndhTag);
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
             CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);
@@ -138,7 +137,7 @@ public class ArticleAndTagController {
                         return Result.failure(ResultCode.VALIDATEF_FAIL);
                     }
                 }
-                redisUtil.set(key, JSON.toJSONString(article), 10, TimeUnit.MINUTES);
+                redisUtil.set(key, JSON.toJSONString(article), 1, TimeUnit.MINUTES);
                 saveViewsnum(id, article);
                 StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
                 CacheUtil.booleanConMap.put(viewNumNeedUpdateKey, true);

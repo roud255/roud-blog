@@ -15,6 +15,7 @@ import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.utils.*;
 import top.roud.cms.entity.*;
 import top.roud.cms.service.*;
+import top.roud.cms.service.impl.CommonService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -22,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static top.roud.cms.common.result.ResultCode.*;
 
@@ -66,6 +66,9 @@ public class ManageController {
 
     @Autowired
     private IPUtil ipUtil;
+
+    @Autowired
+    private CommonService commonService;
 
 
     @OperationAuth
@@ -339,13 +342,7 @@ public class ManageController {
             if(Optional.ofNullable(redisUtil.get(key)).isPresent()){
                 redisUtil.delete(key);
             }
-            String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+articleIdById;
-            List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(articleIdById);
-            redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
-            CacheUtil.intConMap.put(countKey,commentsByArticle.size());
-            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
-            String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+articleIdById;
-            CacheUtil.booleanConMap.put(commentCountNeedUpdateKey, true);
+            commonService.updateCommentCache(articleIdById);
             return Result.success();
         }
         return Result.failure(SYSTEM_INNER_ERROR);
