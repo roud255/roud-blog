@@ -34,7 +34,7 @@ public class TokenUtil {
             }
             return largeToken;
         }catch (NullPointerException e){
-            throw new ServiceException(ResultCode.TOKEN_INVALID, e);
+            throw new ServiceException(ResultCode.TOKEN_INVALID);
         }
     }
 
