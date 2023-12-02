@@ -14,6 +14,7 @@
         <result property="motto" column="motto"/>
         <result property="sex" column="sex"/>
         <result property="email" column="email"/>
+        <result property="address" column="address"/>
         <collection property="child_comments" resultMap="CommentResult"/>
     </resultMap>
     <resultMap id="CommentResult" type="top.roud.cms.entity.Comment">
@@ -28,18 +29,19 @@
         <result property="email" column="sub_email"/>
         <result property="motto" column="sub_motto"/>
         <result property="sex" column="sub_sex"/>
+        <result property="address" column="sub_address"/>
     </resultMap>
 
     <insert id="insertComment" parameterType="top.roud.cms.entity.Comment">
-        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id, headimg, sex, email, motto) values (#{id}, #{content},#{op_time}, #{from_name}, #{parent_id}, #{to_name}, #{article_id}, #{headimg},#{sex}, #{email}, #{motto});
+        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id, headimg, sex, email, motto, address) values (#{id}, #{content},#{op_time}, #{from_name}, #{parent_id}, #{to_name}, #{article_id}, #{headimg},#{sex}, #{email}, #{motto}, #{address});
     </insert>
 
     <select id="findAllCommentsByArticle" resultType="List" resultMap="CommentWithSubResult" parameterType="Long">
         select
-            id, op_time,content,from_name,to_name,parent_id,article_id,headimg,sex,email,motto,sub_id, sub_op_time,sub_content,sub_from_name,sub_to_name,sub_parent_id,sub_article_id,sub_headimg,sub_sex,sub_email,sub_motto
+            id, op_time,content,from_name,to_name,parent_id,article_id,headimg,sex,email,motto,address,sub_id, sub_op_time,sub_content,sub_from_name,sub_to_name,sub_parent_id,sub_article_id,sub_headimg,sub_sex,sub_email,sub_motto,sub_address
         from
             (select
-                 c.id id,c.op_time,c.content,c.from_name,c.to_name, c.parent_id, c.article_id,c.headimg,c.sex,c.email,c.motto,c1.id sub_id, c1.op_time sub_op_time,c1.content sub_content,c1.from_name sub_from_name,c1.to_name sub_to_name, c1.parent_id sub_parent_id, c1.article_id sub_article_id,c1.headimg sub_headimg,c1.sex sub_sex,c1.email sub_email,c1.motto sub_motto
+                 c.id id,c.op_time,c.content,c.from_name,c.to_name, c.parent_id, c.article_id,c.headimg,c.sex,c.email,c.motto,c.address,c1.id sub_id, c1.op_time sub_op_time,c1.content sub_content,c1.from_name sub_from_name,c1.to_name sub_to_name, c1.parent_id sub_parent_id, c1.article_id sub_article_id,c1.headimg sub_headimg,c1.sex sub_sex,c1.email sub_email,c1.motto sub_motto,c1.address sub_address
              from
                  rb_comment c
                      LEFT OUTER JOIN

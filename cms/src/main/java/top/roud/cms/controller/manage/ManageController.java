@@ -63,6 +63,10 @@ public class ManageController {
     @Autowired
     private SelfArticleValidateService selfArticleValidateService;
 
+    @Autowired
+    private IPUtil ipUtil;
+
+
     @OperationAuth
     @AccessIPRecord
     @PostMapping("/user/add")
@@ -72,7 +76,7 @@ public class ManageController {
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
-        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(IPUtil.getIpAddr(request));
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(ipUtil.getIpAddr(request));
         userInformationService.save(userInformation);
         user.setPassword(md5Util.md5(user.getPassword()));
         return userService.save(user);

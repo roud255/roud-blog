@@ -38,6 +38,10 @@ public class UserController {
     private RedisUtil redisUtil;
     @Autowired
     private TokenUtil tokenUtil;
+
+    @Autowired
+    private IPUtil ipUtil;
+
     @OperationAuth
     @AccessIPRecord
     @PostMapping
@@ -47,7 +51,7 @@ public class UserController {
         if(op.isPresent()){
             return Result.failure(EMAIL_HAS_EXISTED);
         }
-        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(IPUtil.getIpAddr(request));
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(ipUtil.getIpAddr(request));
         userInformationService.save(userInformation);
         return userService.save(user);
     }

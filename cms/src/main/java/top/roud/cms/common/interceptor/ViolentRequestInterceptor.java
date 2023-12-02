@@ -22,9 +22,13 @@ public class ViolentRequestInterceptor implements HandlerInterceptor {
     private int maxCount;
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private IPUtil ipUtil;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ipAddr = IPUtil.getIpAddr(request);
+        String ipAddr = ipUtil.getIpAddr(request);
         String key = ConstUtil.REDIS_PREVENT_VIOLENT_REQUESTS_KEY + ipAddr;
         Integer count = (Integer) redisUtil.get(key);
         if(!Optional.ofNullable(count).isPresent()){

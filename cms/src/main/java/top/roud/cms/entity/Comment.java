@@ -71,4 +71,5 @@ public class Comment implements Serializable {
     private String email;
     private String motto;
     private String sex;
+    private String address;
 }

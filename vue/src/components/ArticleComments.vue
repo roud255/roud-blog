@@ -45,8 +45,9 @@
                   class="demo-rich-content__name"
                   style="margin: 0; font-weight: 500"
               >
-                {{item.name}}<span style="display: inline-block; margin-left: 20px" v-if="item.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
-                <span style="display: inline-block; margin-left: 20px" v-if="item.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
+                {{item.name}}<span style="display: inline-block; margin:0 20px" v-if="item.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
+                <span style="display: inline-block; margin:0 20px" v-if="item.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
+                {{item.address}}
               </p>
               <p
                   class="demo-rich-content__mention"
@@ -108,8 +109,9 @@
                       class="demo-rich-content__name"
                       style="margin: 0; font-weight: 500"
                   >
-                    {{reply.from}}<span style="display: inline-block; margin-left: 20px" v-if="reply.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
-                    <span style="display: inline-block; margin-left: 20px" v-if="reply.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
+                    {{reply.from}}<span style="display: inline-block; margin: 0 20px" v-if="reply.sex==`男`"><el-icon color="blue"><Male /></el-icon></span>
+                    <span style="display: inline-block; margin: 0 20px; " v-if="reply.sex==`女`"><el-icon color="pink"><Female /></el-icon></span>
+                    {{reply.address}}
                   </p>
                   <p
                       class="demo-rich-content__mention"
@@ -204,6 +206,7 @@ export default {
       email :'',
       motto :'',
       sex :'',
+      address:'',
       comments:[]
           // [
           // {
@@ -215,7 +218,8 @@ export default {
           //   commentNum:2,
           //   like:15,
           //   inputShow:false,
-          //   reply:[
+      //       address:'未知地区',
+      //   reply:[
           //     {
           //       from:'Taylor Swift',
           //       id:19891221,
@@ -226,8 +230,9 @@ export default {
           //       time:'2019年9月16日 18:43',
           //       commentNum:1,
           //       like:15,
-          //       inputShow:false
-          //     },
+          //       inputShow:false,
+          //       address:'未知地区'
+      //     },
           //     {
           //       from:'Ariana Grande',
           //       id:1123,
@@ -238,7 +243,8 @@ export default {
           //       time:'2019年9月16日 18:43',
           //       commentNum:0,
           //       like:5,
-          //       inputShow:false
+          //       inputShow:false,
+          //       address:'未知地区'
           //     }
           //   ]
           // },
@@ -251,7 +257,8 @@ export default {
           //       commentNum:1,
           //       like:5,
           //       inputShow:false,
-          //       reply:[
+      //       address:'未知地区',
+      //       reply:[
           //         {
           //           from:'Lana Del Rey',
           //           id:19870621,
@@ -262,9 +269,10 @@ export default {
           //           time:'2019年9月16日 18:43',
           //           commentNum:25,
           //           like:5,
-          //           inputShow:false
-          //
-          //         }
+          //           inputShow:false,
+         //       address:'未知地区'
+
+      //         }
           //       ]
           //     },
           //     {
@@ -276,7 +284,8 @@ export default {
           //       commentNum:0,
           //       like:5,
           //       inputShow:false,
-          //       reply:[]
+      //       address:'未知地区',
+      //       reply:[]
           //     },
           // ]
     }
@@ -508,6 +517,10 @@ export default {
             j.id = data[i].id;
             j.parent_id = data[i].parent_id;
             j.inputShow = false;
+            if(data[i].address==null || data[i].address==""){
+              data[i].address = "未知地区"
+            }
+            j.address = data[i].address;
             let reply = data[i].child_comments
             let r2 = []
             if(reply.length>0){
@@ -525,6 +538,10 @@ export default {
                 j2.to=reply[flag].to_name;
                 j2.parent_id = reply[flag].parent_id;
                 j2.inputShow = false;
+                if(reply[flag].address==null || reply[flag].address==""){
+                  reply[flag].address = "未知地区"
+                }
+                j2.address = reply[flag].address;
                 r2.push(j2)
               }
             }

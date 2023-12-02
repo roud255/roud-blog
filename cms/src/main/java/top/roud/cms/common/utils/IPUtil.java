@@ -3,19 +3,23 @@ package top.roud.cms.common.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
-import top.roud.cms.common.result.HttpResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class IPUtil {
 
-    public static String getIpAddr(HttpServletRequest request) {
-        String ipAddress = null;
+    @Autowired
+    private HttpUtil httpUtil;
+
+    public String getIpAddr(HttpServletRequest request) {
+        String ipAddress;
         try {
             ipAddress = request.getHeader("x-forwarded-for");
             if (ipAddress == null || ipAddress.length() == 0
@@ -54,25 +58,33 @@ public class IPUtil {
 
         return ipAddress;
     }
-    public static String getIPAddress(String ip) {
-        Map<String, String> map = new HashMap<>();
-        map.put("Host","whois.pconline.com.cn");
-        map.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
-        HttpResult httpResult = null;
+    public String getRealAddr(String ip) {
         try {
-            httpResult = HttpUtil_static.get("http://whois.pconline.com.cn/ipJson.jsp?ip="+ip+"&json=true", null, map, null);
-        } catch (IOException e) {
-            return "";
-        }
-        String body = httpResult.getBody();
-        JSONObject jsonObject = JSON.parseObject(body);
-        String pro = jsonObject.getString("pro");
-        String city = jsonObject.getString("city");
-        if(StringUtils.isBlank(pro+city)){
+            Map<String, String> map = new HashMap<>();
+            map.put("Host","whois.pconline.com.cn");
+            map.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
+            String json;
+            try {
+                byte[] bytes = httpUtil.get("http://whois.pconline.com.cn/ipJson.jsp?ip=" + ip + "&json=true", byte[].class);
+                json = new String(bytes, "GBK");
+            } catch (Exception e) {
+                return "未知地区";
+            }
+            JSONObject jsonObject = JSON.parseObject(json);
+            String pro = jsonObject.getString("pro");
+            String city = jsonObject.getString("city");
+            if(StringUtils.isBlank(pro+city)){
+                return "未知地区";
+            }
+            return pro+city;
+        }catch (Exception e){
             return "未知地区";
         }
-        return pro+city;
+    }
 
+    public String getRealAddr(HttpServletRequest request) {
+        String ip = getIpAddr(request);
+        return getRealAddr(ip);
     }
 
 }

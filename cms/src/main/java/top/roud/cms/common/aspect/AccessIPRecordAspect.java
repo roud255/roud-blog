@@ -1,6 +1,5 @@
 package top.roud.cms.common.aspect;
 
-import com.alibaba.fastjson.JSONObject;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,14 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 import top.roud.cms.common.annotation.AccessIPRecord;
-import top.roud.cms.entity.LogContnet;
 import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.common.utils.LoggerUtil;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -31,7 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 public class AccessIPRecordAspect {
 //    @Autowired
 //    private LogContnet logContnet;
-
+    @Autowired
+    private IPUtil ipUtil;
     @Pointcut("@annotation(accessIPRecord)")
     public void pointCut(AccessIPRecord accessIPRecord) {
     }
@@ -44,7 +40,7 @@ public class AccessIPRecordAspect {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = ra.getRequest();
         Assert.notNull(request, "request can not null");
-        String ip= IPUtil.getIpAddr(request);;
+        String ip= ipUtil.getIpAddr(request);;
         String method = request.getMethod();
         String path = request.getServletPath();
         Object proceed = pjp.proceed();

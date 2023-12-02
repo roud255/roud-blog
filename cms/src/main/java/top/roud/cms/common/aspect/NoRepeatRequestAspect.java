@@ -30,6 +30,10 @@ import java.util.Optional;
 public class NoRepeatRequestAspect {
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private IPUtil ipUtil;
+
     @Pointcut("@annotation(noRepeatRequest)")
     public void pointCut(NoRepeatRequest noRepeatRequest) {
     }
@@ -41,7 +45,7 @@ public class NoRepeatRequestAspect {
         Assert.notNull(request, "request can not null");
         int seconds = noRepeatRequest.seconds();
         int maxCount = noRepeatRequest.maxCount();
-        String ip= IPUtil.getIpAddr(request);
+        String ip= ipUtil.getIpAddr(request);
         String key = request.getServletPath() + "-" + ip ;
         Integer count = (Integer) redisUtil.get(key);
         Optional<Integer> op = Optional.ofNullable(count);

@@ -36,6 +36,11 @@ public class ArticleAndCommentsController {
 
     @Autowired
     private TokenUtil tokenUtil;
+
+    @Autowired
+    private IPUtil ipUtil;
+
+
     @RequestMapping
     public Result selectComments(@RequestParam Long id){
         Optional<Long> op = Optional.ofNullable(id);
@@ -56,7 +61,7 @@ public class ArticleAndCommentsController {
         return Result.success(commentsByArticle);
     }
 
-    @CommentAuth(dailyMaxCount = 5)
+    @CommentAuth(dailyMaxCount = 3)
     @PostMapping
     public Result insert(@RequestBody String info, HttpServletRequest request){
         String token = tokenUtil.getToken(request);
@@ -101,6 +106,7 @@ public class ArticleAndCommentsController {
         c.setSex(sex);
         c.setMotto(motto);
         c.setEmail(email);
+        c.setAddress(ipUtil.getRealAddr(request));
         Integer res = articleAndCommentService.addComment(c);
         String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+article_id;
         if(1==res){

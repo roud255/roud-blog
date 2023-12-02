@@ -41,6 +41,9 @@ public class RegisterController {
     @Autowired
     private UserInformationService userInformationService;
 
+    @Autowired
+    private IPUtil ipUtil;
+
     @NoRepeatRequest(seconds = 60, maxCount = 1)
     @AccessIPRecord
     @PostMapping("/code")
@@ -92,7 +95,7 @@ public class RegisterController {
         user.setRegistertime(new Date());
         user.setType(1);
         user.setPower("1");
-        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(IPUtil.getIpAddr(request));
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(ipUtil.getIpAddr(request));
         userInformationService.save(userInformation);
         return userService.save(user);
 //        return Result.failure(ResultCode.REGISTER_CLOSED, "系统未开放注册功能，请联系管理员。");

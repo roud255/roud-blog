@@ -52,6 +52,10 @@ public class LoginController {
     private UserInformationService userInformationService;
     @Autowired
     private TokenUtil tokenUtil;
+
+    @Autowired
+    private IPUtil ipUtil;
+
     @AccessIPRecord
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public Result getCaptcha(HttpServletRequest request, HttpServletResponse response){
@@ -65,7 +69,7 @@ public class LoginController {
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", new Date().getTime());
             String str = RandomCodeUtil.getRandomCode(4);
-            String ip = IPUtil.getIpAddr(request);
+            String ip = ipUtil.getIpAddr(request);
             redisUtil.set("ip-"+ip+"-captcha",str,60);
             BufferedImage img = doDraw(str,imgWidth, imgHeight, interferenceLineCount);
             ServletOutputStream out = response.getOutputStream();
@@ -86,7 +90,7 @@ public class LoginController {
             String phonenumber = jsonObject.getString("email");
             String password = jsonObject.getString("password");
             String captcha = jsonObject.getString("vertifycode");
-            String ip = IPUtil.getIpAddr(request);
+            String ip = ipUtil.getIpAddr(request);
             String captcha_sys = (String) redisUtil.get("ip-"+ip+"-captcha");
             if(StringUtils.isBlank(captcha_sys)){
                 return Result.failure(CAPTCHA_TIMEOUT);
@@ -99,7 +103,7 @@ public class LoginController {
             Map<String, Object> map = new HashMap();
             if(op.isPresent()){
                 UserInformation userInformation = userInformationService.selectByUserId(byEmailAndPwd.getId());
-                userInformation.setRecentlyip(IPUtil.getIpAddr(request));
+                userInformation.setRecentlyip(ipUtil.getIpAddr(request));
                 map.put("id",byEmailAndPwd.getId());
                 map.put("name", byEmailAndPwd.getNickname());
                 map.put("time", byEmailAndPwd.getRegistertime());
