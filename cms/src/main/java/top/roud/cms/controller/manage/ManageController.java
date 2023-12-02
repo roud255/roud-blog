@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static top.roud.cms.common.result.ResultCode.*;
 
@@ -338,6 +339,13 @@ public class ManageController {
             if(Optional.ofNullable(redisUtil.get(key)).isPresent()){
                 redisUtil.delete(key);
             }
+            String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+id;
+            List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(id);
+            redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
+            CacheUtil.intConMap.put(countKey,commentsByArticle.size());
+            StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
+            String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+id;
+            CacheUtil.booleanConMap.put(commentCountNeedUpdateKey, true);
             return Result.success();
         }
         return Result.failure(SYSTEM_INNER_ERROR);
