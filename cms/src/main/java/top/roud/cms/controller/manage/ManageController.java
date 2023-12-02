@@ -339,12 +339,12 @@ public class ManageController {
             if(Optional.ofNullable(redisUtil.get(key)).isPresent()){
                 redisUtil.delete(key);
             }
-            String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+id;
-            List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(id);
+            String countKey = ConstUtil.REDIS_COMMENTS_COUNT_KEY+articleIdById;
+            List<Comment> commentsByArticle = articleAndCommentService.findCommentByArticle(articleIdById);
             redisUtil.set(key, JSON.toJSONString(commentsByArticle), 10, TimeUnit.MINUTES);
             CacheUtil.intConMap.put(countKey,commentsByArticle.size());
             StaticVarUtil.updateViewsnumAndCommentsnumFlag.set(true);
-            String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+id;
+            String commentCountNeedUpdateKey = ConstUtil.ARTICLE_COMMENTS_COUNT_ISNEED_UPDATE_KEY+articleIdById;
             CacheUtil.booleanConMap.put(commentCountNeedUpdateKey, true);
             return Result.success();
         }
