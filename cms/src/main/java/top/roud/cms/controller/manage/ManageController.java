@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.roud.cms.common.annotation.AccessIPRecord;
 import top.roud.cms.common.annotation.OperationAuth;
+import top.roud.cms.common.exception.ServiceException;
 import top.roud.cms.common.result.Result;
 import top.roud.cms.common.result.ResultCode;
 import top.roud.cms.common.utils.*;
@@ -335,9 +336,12 @@ public class ManageController {
     @AccessIPRecord
     @DeleteMapping("/comment/del/{id}")
     public Result delCommentById(@PathVariable(value = "id") Long id){
+        Long articleIdById = articleAndCommentService.findArticleIdById(id);
+        if(null == articleIdById){
+            throw new ServiceException(DATA_NONE);
+        }
         Integer res = articleAndCommentService.delById(id);
         if(res==1){
-            Long articleIdById = articleAndCommentService.findArticleIdById(id);
             String key = ConstUtil.REDIS_COMMENTS_KEY+articleIdById;
             if(Optional.ofNullable(redisUtil.get(key)).isPresent()){
                 redisUtil.delete(key);
