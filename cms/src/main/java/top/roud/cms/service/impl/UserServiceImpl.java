@@ -8,9 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.roud.cms.common.result.Result;
+import top.roud.cms.common.utils.AutoIdUtil;
+import top.roud.cms.common.utils.IPUtil;
 import top.roud.cms.entity.User;
+import top.roud.cms.entity.UserInformation;
+import top.roud.cms.mapper.UserInformationMapper;
 import top.roud.cms.mapper.UserMapper;
 import top.roud.cms.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
+
+import static top.roud.cms.common.result.ResultCode.EMAIL_HAS_EXISTED;
 
 /**
  * @ClassName: UserServiceImpl
@@ -24,6 +33,10 @@ import top.roud.cms.service.UserService;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserInformationMapper userInformationMapper;
+    @Autowired
+    private IPUtil ipUtil;
     @Override
     public Result save(User user) {
         //用户权限暂时根据type判断，power全部设置为1
@@ -63,6 +76,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByPhonenumber(String phonenumber) {
         return userMapper.selectUserByPhonenumber(phonenumber);
+    }
+
+    @Override
+    public Result saveUser(User user, HttpServletRequest request) {
+        User userByPhonenumber = userMapper.selectUserByPhonenumber(user.getPhonenumber());
+        Optional<User> op = Optional.ofNullable(userByPhonenumber);
+        if(op.isPresent()){
+            return Result.failure(EMAIL_HAS_EXISTED);
+        }
+        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(ipUtil.getIpAddr(request));
+        userInformationMapper.insert(userInformation);
+        return save(user);
     }
 
 }

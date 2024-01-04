@@ -1,6 +1,9 @@
 package top.roud.cms.service;
 
+import top.roud.cms.common.result.Result;
 import top.roud.cms.entity.UserInformation;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @description : TODO
@@ -14,4 +17,5 @@ public interface UserInformationService {
     public UserInformation selectByUserId(Long id);
     public UserInformation selectById(Long id);
     public Integer deleteByUserId(Long id);
+    public Result updateUserinfo(String info, HttpServletRequest request);
 }

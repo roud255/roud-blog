@@ -34,26 +34,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserInformationService userInformationService;
-    @Autowired
-    private RedisUtil redisUtil;
-    @Autowired
-    private TokenUtil tokenUtil;
 
-    @Autowired
-    private IPUtil ipUtil;
 
     @OperationAuth
     @AccessIPRecord
     @PostMapping
     public Result save(@RequestBody User user, HttpServletRequest request){
-        User userByPhonenumber = userService.findUserByPhonenumber(user.getPhonenumber());
-        Optional<User> op = Optional.ofNullable(userByPhonenumber);
-        if(op.isPresent()){
-            return Result.failure(EMAIL_HAS_EXISTED);
-        }
-        UserInformation userInformation = new UserInformation().setUser(user).setId(AutoIdUtil.getId()).setRecentlyip(ipUtil.getIpAddr(request));
-        userInformationService.save(userInformation);
-        return userService.save(user);
+        return userService.saveUser(user, request);
     }
     @AccessIPRecord
     @GetMapping
@@ -82,30 +69,6 @@ public class UserController {
     @AccessIPRecord
     @PostMapping("/updateinfo")
     public Result updateUserInfo(@RequestBody String info,HttpServletRequest request){
-        try {
-            String token = tokenUtil.getToken(request);
-            if (StringUtils.isBlank(token) || !JwtUtil.checkSign(token)) {
-                return Result.failure(TOKEN_INVALID);
-            }
-            Map<String, Object> tokeninfo = JwtUtil.getInfo(token);
-            Long u_id = (Long) tokeninfo.get("id");
-            Integer count = (Integer) redisUtil.get(u_id + "-updateinfo");
-            Optional<Integer> op = Optional.ofNullable(count);
-            if(op.isPresent()){
-                return Result.failure(COUNT_LIMIT);
-            }
-            UserInformation userInformation = userInformationService.selectByUserId(u_id);
-            JSONObject jsonObject = JSON.parseObject(info);
-            String sex = jsonObject.getString("sex");
-            String motto = jsonObject.getString("motto");
-            int s = StringUtils.equals("女",sex)?1:0;
-            userInformation.setSex(s);
-            userInformation.setMotto(motto);
-            userInformationService.updateByUserId(userInformation);
-            redisUtil.set(u_id+"-updateinfo",1,60*60*24);
-            return Result.success();
-        }catch (Exception e){
-            return Result.failure(SYSTEM_ERROR);
-        }
+        return userInformationService.updateUserinfo(info, request);
     }
 }
