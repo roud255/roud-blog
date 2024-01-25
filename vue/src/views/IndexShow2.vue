@@ -210,7 +210,7 @@
         width: 100%;
         min-width: 800px;
         padding: 0 30px;
-        z-index: 9999;
+        z-index: 999;
     }
     .all-page{
         width: 100%;

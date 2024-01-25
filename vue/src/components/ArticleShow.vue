@@ -1,6 +1,6 @@
 <template>
     <el-scrollbar height="100vh">
-        <div style="position : relative; height:100%;min-width: 800px; margin: 0 auto; text-align: center" class="sa—m">
+        <div style="position : relative; height:100%;min-width: 800px; margin: 0 auto; text-align: center" class="sa—m" v-loading="inLoading">
             <div class="show-header">
                 <h1 class="show-title">{{title}}</h1>
                 <p class="show-tags">
@@ -26,7 +26,7 @@
               </el-divider>
               <article-comments></article-comments>
             </div>
-            <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>
+            <p class="copyright">Copyright © 2024 roud.top All rights reserved.  粤ICP备2024161340号</p>
         </div>
         <el-backtop :right="100" :bottom="100" target=".el-scrollbar__wrap">
           <div
@@ -63,12 +63,14 @@
                 title : '',
                 tags : [],
                 author : '',
-                publishtime : ''
+                publishtime : '',
+                inLoading: false,
             };
         },
         methods:{
             getPostBody(){
-                let url = window.location.href;
+              this.inLoading = true;
+              let url = window.location.href;
                 let param_str = url.split('?')[1];
                 let params = new URLSearchParams('?'+param_str);
                 let get_id = params.get('id');
@@ -87,6 +89,7 @@
                         this.tags = t_data.tags;
                         this.author = t_data.author;
                         this.publishtime = t_data.publishtime;
+                        this.inLoading = false;
                 })
             }
         },
