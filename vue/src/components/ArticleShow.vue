@@ -101,7 +101,7 @@
         position: relative;
         height: 40vh;
         width: 100%;
-        background: url("http://roud.top/img/20220904235709.png") center center / cover no-repeat rgb(34, 34, 34);
+        background: url("http://qny.roud.top/img/20220904235709.png") center center / cover no-repeat rgb(34, 34, 34);
         text-align: center;
     }
     .show-title{

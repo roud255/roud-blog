@@ -4,22 +4,22 @@
             <div class="pic-404">
                 <img
                         class="pic-404__parent"
-                        src="http://roud.top/img/404.png"
+                        src="http://qny.roud.top/img/404.png"
                         alt="404"
                 />
                 <img
                         class="pic-404__child left"
-                        src="http://roud.top/img/404_cloud.png"
+                        src="http://qny.roud.top/img/404_cloud.png"
                         alt="404"
                 />
                 <img
                         class="pic-404__child mid"
-                        src="http://roud.top/img/404_cloud.png"
+                        src="http://qny.roud.top/img/404_cloud.png"
                         alt="404"
                 />
                 <img
                         class="pic-404__child right"
-                        src="http://roud.top/img/404_cloud.png"
+                        src="http://qny.roud.top/img/404_cloud.png"
                         alt="404"
                 />
             </div>

@@ -27,13 +27,13 @@
 演示站后台演示账号&密码:</br>
 <p><a href="http://124.71.130.54/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
 项目前台展示:</br>
-<p><img src="http://roud.top/img/20230506004212.png" alt="前台"></p></br>
+<p><img src="http://qny.roud.top/img/20230506004212.png" alt="前台"></p></br>
 文章展示:</br>
-<p><img src="http://roud.top/img/20230506091055.png" alt="文章"></p></br>
+<p><img src="http://qny.roud.top/img/20230506091055.png" alt="文章"></p></br>
 登录注册页展示:</br>
-<p><img src="http://roud.top/img/20230506090505.png" alt="登录注册"></p></br>
+<p><img src="http://qny.roud.top/img/20230506090505.png" alt="登录注册"></p></br>
 后台文章编辑展示:</br>
-<p><img src="http://roud.top/img/20230506005056.png" alt="后台页"></p></br>
+<p><img src="http://qny.roud.top/img/20230506005056.png" alt="后台页"></p></br>
 项目后端健康检查:</br>
 http://域名或者服务器地址:8989/actuator/health
 
@@ -43,9 +43,9 @@ http://域名或者服务器地址:8989/actuator/health
 >代码拉取: git clone https://gitee.com/roud/roud-blog.git
 
 <p>拉取后的主体项目结构如下：</p>
-<p><img src="http://roud.top/img/20230506092641.png"></p>
+<p><img src="http://qny.roud.top/img/20230506092641.png"></p>
 <p>拉取后的前端项目结构如下：</p>
-<p><img src="http://roud.top/img/20230506094725.png"></p>
+<p><img src="http://qny.roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤
 1. <p>将sqlfiles目录下的sql文件导入数据库</p>

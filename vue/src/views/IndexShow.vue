@@ -3,7 +3,7 @@
     <el-scrollbar height="100vh">
         <div class="all-page">
             <div class="page-header">
-                    <img src="http://roud.top/img/selfstyle.png" style="height: 60px" v-if="styleimgshow"/>
+                    <img src="http://qny.roud.top/img/selfstyle.png" style="height: 60px" v-if="styleimgshow"/>
 <!--                    <el-input-->
 <!--                            v-model="input_search"-->
 <!--                            class="w-50 m-2"-->
