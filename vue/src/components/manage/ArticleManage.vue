@@ -11,7 +11,7 @@
         <el-button type="primary" style="margin: 0 10px" @click="load">查询</el-button>
     </div>
 
-    <div style="margin-bottom: 10px">
+    <div style="margin-bottom: 10px" v-loading="inLoading">
         <el-table :data="tableData" border height="67vh" style="width: 100%">
             <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="id" label="ID" width="180" />
@@ -118,7 +118,8 @@
                 total : 0,
                 tableData : [],
                 dialogVisible: false,
-                rules: {
+                inLoading : false,
+              rules: {
                   //邮箱校验规则
                   title: [
                     { required: true, message: "必填", trigger: "blur" },
@@ -159,7 +160,8 @@
             }
             ,
             load(){
-                request.get("/manage/article/fps", {params:{
+              this.inLoading = true;
+              request.get("/manage/article/fps", {params:{
                         pageNum : this.currentPage,
                         pageSize : this.pageSize,
                         search : this.search
@@ -169,7 +171,8 @@
                         }
                         this.total = res.data.total;
                         this.tableData = res.data.records;
-                })
+                        this.inLoading = false;
+              })
             },
             //改变页数时加载一次数据
             handleSizeChange(){

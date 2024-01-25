@@ -4,15 +4,6 @@
         <div class="all-page">
             <div class="page-header">
                     <img src="http://qny.roud.top/img/selfstyle.png" style="height: 60px" v-if="styleimgshow"/>
-<!--                    <el-input-->
-<!--                            v-model="input_search"-->
-<!--                            class="w-50 m-2"-->
-<!--                            placeholder="想搜就搜~"-->
-<!--                            prefix-icon="search"-->
-<!--                            clearable-->
-<!--                            @keyup.enter="inital"-->
-<!--                            style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);"-->
-<!--                    />-->
               <div class="mt-4" style="position: absolute; width: 30%; height: 30px; top:50%; left: 50%; transform: translate(-50%,-50%);">
                 <el-input
                     v-model="input_search"
@@ -31,7 +22,6 @@
                   </template>
                 </el-input>
               </div>
-<!--                    <span class="go_manage_btn" @click="this.$router.push(`/manage/user`)">进入后台</span>-->
                 <el-dropdown class="my_workplace">
                     <span class="el-dropdown-link">
                       更多
@@ -50,7 +40,7 @@
                 </el-dropdown>
             </div>
 
-            <div class="infinite-list-wrapper" style="overflow:visible;">
+            <div class="infinite-list-wrapper" style="overflow:visible;" v-loading="inLoading">
               <ul>
                     <li v-for="(item,count) in t_data" :key="count" class="list-item" >
                         <div class="common-layout" style="width: 100%; height: 100%" @click="forward(item.id, item.self)">
@@ -83,7 +73,13 @@
                         </div>
                     </li>
                 </ul>
-              <el-pagination background layout="prev, pager, next" :total="1000" />
+                <div class="bottom-box">
+                  <el-pagination background layout="prev, pager, next" :total="total" v-model:currentPage="currentPage" v-model:page-size="psize" @current-change="handleCurrentChange"/>
+                  <div class="copyrightidx bottom-box-i-c ">
+                    <p>Copyright © 2024 roud.top All rights reserved.</p>
+                    <p @click="goToTargetPage('https://beian.miit.gov.cn/')" class="p2">粤ICP备2024161340号</p>
+                  </div>
+                </div>
             </div>
         </div>
         <div>
@@ -103,25 +99,31 @@
     import SelfArticleValidate from "@/components/SelfArticleValidate";
 
     export default {
-      name: "Index2",
+      name: "IndexShow2",
       components: {SelfArticleValidate, AccountInformation},
       data(){
             return{
                 loading : false,
                 t_data : [],
                 t_data_t : [],
-                total:5,
-                count : 5,
-                i : 2,
                 pages : 0,
                 tagtype : "success",
                 activeIndex : '1',
                 input_search : '',
                 styleimgshow : true,
                 select_s: '1',
+                total: 0,
+                psize: 10,
+                currentPage: 1,
+                inLoading: false,
             }
         },
         methods:{
+            goToTargetPage(url) {
+              // 使用$router对象的push方法进行页面跳转
+              // this.$router.push(url);
+              window.open(url,'_blank');
+            },
             forward(id, self){
                 if(self){
                   // this.selfArticleValidate();
@@ -140,39 +142,24 @@
               this.$refs.sav.show_div2(id);
             },
             inital(){
+                this.inLoading = true
                 request.get("/aat/fp/public",{params:{
-                        num : 1,
-                        size : 5,
+                        num : this.currentPage,
+                        size : this.psize,
                         type : this.select_s,
                         search : this.input_search
                     }}).then(res=>{
-                        this.count = 5;
-                        this.i = 2;
-                        this.t_data = res.data.records;
-                        this.total = res.data.total;
-                        this.pages = res.data.pages;
+                      if(res.code === 200){
+                          this.t_data = res.data.records;
+                          this.pages = res.data.pages;
+                          this.total = res.data.total;
+                          this.inLoading = false;
+                      }
                 });
-            }
-            ,
-            load(){
-                // this.loading = true;
-                // request.get("/aat/fp/public",{params:{
-                //         num : this.i,
-                //         size : 5,
-                //         type : this.select_s,
-                //         search : this.input_search
-                //     }}).then(res=>{
-                //     this.t_data_t = this.t_data.concat(res.data.records);
-                // });
-                // if(this.i<this.pages){
-                //     this.i = this.i+1;
-                // }
-                // setTimeout(() => {
-                //     this.t_data = this.t_data_t;
-                //     this.count = this.t_data.length;
-                //     this.loading = false;
-                // }, 1000);
             },
+          handleCurrentChange(){
+            this.inital()
+          },
             _isMobile() {
                 let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
                 return flag;
@@ -188,14 +175,6 @@
             dev_ing_show(){
                 notify('该功能尚在开发中，敬请期待!');
             }
-        },
-        computed:{
-            // noMore:function () {
-            //     return this.count >= this.total;
-            // },
-            // disabled:function () {
-            //     return this.loading || this.noMore
-            // }
         },
         created() {
             if(this._isMobile()){
@@ -231,7 +210,7 @@
         width: 100%;
         min-width: 800px;
         padding: 0 30px;
-        z-index: 999;
+        z-index: 9999;
     }
     .all-page{
         width: 100%;
@@ -241,9 +220,12 @@
         background: #f4f4f4;
     }
     .infinite-list-wrapper {
+        position: relative;
         padding-top: 80px;
+        padding-bottom: 100px;
         height: 100%;
         text-align: center;
+        min-height: 100vh;
     }
     .infinite-list-wrapper .list {
         padding: 0;
@@ -277,6 +259,9 @@
     }
     .infinite-list-wrapper .list-item + .list-item {
         margin-top: 10px;
+    }
+    .infinite-list-wrapper .list-item:hover .roud-cover{
+      transform: scale(1.05);
     }
     .el-main-text{
         padding-top: 0;
@@ -312,9 +297,6 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .infinite-list-wrapper .list-item:hover .roud-cover{
-        transform: scale(1.05);
-    }
     .go_manage_btn{
          position: absolute;
          color: #757a77;
@@ -335,6 +317,39 @@
     }
     .my_workplace:hover{
         color: #0095ec;
+    }
+    .bottom-box{
+      position: absolute;
+      /*position: sticky;*/
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .bottom-box-i-c{
+      width: 100%;
+      text-align: center;
+      margin: 10px 0;
+    }
+    .bottom-box-i-c p{
+      display: inline-block;
+      margin: 0 10px;
+    }
+    .bottom-box-i-c .p2{
+      cursor: pointer;
+    }
+    .bottom-box-i-c .p2:hover{
+      color: #0095ec;
+    }
+    .copyrightidx{
+      display: block;
+      /*color: #0095ec;*/
+      color: #757a77;
+      font-size: 16px;
+      font-weight: 100;
     }
 
 </style>

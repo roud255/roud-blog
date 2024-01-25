@@ -93,7 +93,7 @@ const routes = [
     {
         path: '/',
         name: 'default',
-        component: IndexShow,
+        component: IndexShow2,
     },
     {
         path: '/errorcomputermodel',

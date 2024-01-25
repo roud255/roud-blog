@@ -24,7 +24,7 @@
                     padding: 50px 50px;">
             <router-view></router-view>
         </div>
-        <p class="copyright">Copyright © 2022 roud.top. All rights reserved</p>
+        <p class="copyright">Copyright © 2024 roud.top All rights reserved.  粤ICP备2024161340号</p>
     </div>
 
 </template>

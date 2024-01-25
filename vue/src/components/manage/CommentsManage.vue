@@ -11,7 +11,7 @@
     <el-button type="primary" style="margin: 0 10px" @click="load">查询</el-button>
   </div>
 
-  <div style="margin-bottom: 10px">
+  <div style="margin-bottom: 10px" v-loading="inLoading">
     <el-table :data="tableData" border height="67vh" style="width: 100%">
       <el-table-column type="index" label="序号" width="60" />
       <el-table-column prop="id" label="ID" width="180" />
@@ -66,6 +66,7 @@ export default {
       pageSize : 10,
       total : 0,
       tableData : [],
+      inLoading : false,
     }
   },
   // 自定义指令
@@ -92,6 +93,7 @@ export default {
     }
     ,
     load(){
+      this.inLoading = true;
       request.get("/manage/comment/findall", {params:{
           pageNum : this.currentPage,
           pageSize : this.pageSize,
@@ -102,6 +104,7 @@ export default {
         }
         this.total = res.data.total;
         this.tableData = res.data.records;
+        this.inLoading = false;
       })
     },
     //改变页数时加载一次数据

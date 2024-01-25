@@ -15,7 +15,7 @@
         <el-button type="primary" style="margin: 0 10px" @click="load">查询</el-button>
     </div>
 
-    <div style="margin-bottom: 10px">
+    <div style="margin-bottom: 10px" v-loading="inLoading">
         <el-table :data="tableData" border height="67vh" style="width: 100%">
             <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="id" label="ID" width="180" />
@@ -114,6 +114,7 @@
                 isIndeterminate : true,
                 checkedItems : ["文章-查看"],
                 items : ['用户-查看', '用户-新增', '用户-修改', '用户-删除','文章-查看', '文章-新增', '文章-修改', '文章-删除'],
+                inLoading: false,
                 rules: {
                     //邮箱校验规则
                     phonenumber: [
@@ -177,6 +178,7 @@
             }
             ,
             load(){
+                this.inLoading = true;
                 request.get("/manage/user/select", {params:{
                     pageNum : this.currentPage,
                     pageSize : this.pageSize,
@@ -187,6 +189,7 @@
                     }
                     this.total = res.data.total;
                     this.tableData = res.data.records;
+                    this.inLoading = false;
                 })
             },
             //改变页数时加载一次数据
