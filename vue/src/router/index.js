@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Manage from "@/views/Manage";
 import Index from "@/views/Index";
 import IndexShow from "@/views/IndexShow";
+import IndexShow2 from "@/views/IndexShow2";
 import Editor from "@/views/Article";
 import NotFound from "@/views/NotFound";
 import ForBidIPManage from "@/components/manage/ForBidIPManage";
@@ -64,8 +65,8 @@ const routes = [
     },
     {
         path: '/show',
-        name: 'IndexShow',
-        component: IndexShow,
+        name: 'IndexShow2',
+        component: IndexShow2,
     },
     {
         path: '/article',
