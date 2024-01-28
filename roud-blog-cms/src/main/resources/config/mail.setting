@@ -1,0 +1,6 @@
+host = smtp.163.com
+port = 465
+from = your email<your email>
+user = your email
+pass = your email password
+sslEnable = true

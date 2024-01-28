@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.roud.roudblogcms.mapper.ArticleAndTagMapper">
+    <insert id="insertArticle" parameterType="top.roud.roudblogcms.entity.Article">
+        insert into rb_article(id,title,author,description,cover,postbody,publishtime,self) values
+        (#{id},#{title},#{author},#{description},#{cover},#{postbody},#{publishtime},#{self})
+    </insert>
+
+    <insert id="insertTag" parameterType="top.roud.roudblogcms.entity.Tag">
+        insert into rb_tag(id,tagname,description,addtime) values
+        (#{id},#{tagname},#{description},#{addtime})
+    </insert>
+
+    <select id="getArticleById" parameterType="long" resultType="top.roud.roudblogcms.entity.Article">select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article where id=#{id}</select>
+
+    <select id="getTagById" parameterType="long" resultType="top.roud.roudblogcms.entity.Tag">select id,tagname,description,addtime from rb_tag where id=#{id}
+     </select>
+
+    <select id="getTagByName" parameterType="String" resultType="top.roud.roudblogcms.entity.Tag">select id,tagname,description,addtime from rb_tag where tagname=#{name}</select>
+
+    <select id="getAllTags" resultType="top.roud.roudblogcms.entity.Tag">select id,tagname,description,addtime from rb_tag</select>
+
+    <insert id="insertArticleAndTag">insert into rb_article_tag(id, article_id, tag_id) values (#{param1},#{param2},#{param3})</insert>
+
+    <resultMap id="ArticleResult" type="top.roud.roudblogcms.entity.Article">
+        <id property="id" column="aid"/>
+        <result property="title" column="title"/>
+        <result property="author" column="author"/>
+        <result property="description" column="description"/>
+        <result property="cover" column="cover"/>
+        <result property="postbody" column="postbody"/>
+        <result property="publishtime" column="publishtime"/>
+        <result property="viewsnum" column="viewsnum"/>
+        <result property="commentsnum" column="commentsnum"/>
+        <result property="self" column="self"/>
+    </resultMap>
+
+    <resultMap id="TagResult" type="top.roud.roudblogcms.entity.Tag">
+        <id property="id" column="tid"/>
+        <result property="tagname" column="tagname"/>
+        <result property="description" column="description"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+    <resultMap id="ArticleResultWithTag" type="top.roud.roudblogcms.entity.Article" extends="ArticleResult">
+        <collection property="tags" resultMap="TagResult"></collection>
+    </resultMap>
+
+    <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,
+        t.id as tid,t.tagname,t.description,t.addtime
+        from rb_article a,
+        rb_tag t,
+        rb_article_tag at
+        where a.id=#{id} and a.id=at.article_id and t.id=at.tag_id
+    </select>
+    <select id="getAllArticleWithTag" resultMap="ArticleResultWithTag">
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,
+        t.id as tid,t.tagname,t.description,t.addtime
+        from rb_article a,
+        rb_tag t,
+        rb_article_tag at
+        where a.id=at.article_id and t.id=at.tag_id order by a.id desc
+    </select>
+
+    <select id="selectPage" resultType="top.roud.roudblogcms.entity.Article">
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article ${ew.customSqlSegment} order by id desc
+    </select>
+
+    <select id="selectPageWithValidateCode" resultType="top.roud.roudblogcms.entity.ArticleWithValidateCode">
+        select a.id,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,sa.validateCode from rb_article a
+            LEFT OUTER JOIN rb_selfarticle sa on a.id=sa.articleId and a.self=1 ${ew.customSqlSegment} order by id desc
+    </select>
+
+    <select id="selectPageWithoutBody" resultType="top.roud.roudblogcms.entity.Article">
+        select id,title,author,description,cover,publishtime,viewsnum,commentsnum,self from rb_article ${ew.customSqlSegment} order by id desc
+    </select>
+
+    <select id="selectPageByTag" resultType="top.roud.roudblogcms.entity.Article">
+        select id,title,author,description,cover,postbody,publishtime,viewsnum,commentsnum,self from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
+        <if test="pagecount>0">
+            limit #{pagestart},#{pagecount}
+        </if>
+    </select>
+
+       <select id="selectPageByTagWithoutBody" resultType="top.roud.roudblogcms.entity.Article">
+        select id,title,author,description,cover,publishtime,viewsnum,commentsnum,self from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
+        <if test="pagecount>0">
+            limit #{pagestart},#{pagecount}
+        </if>
+    </select>
+
+    <select id="getTagByArticleId" parameterType="long" resultType="top.roud.roudblogcms.entity.Tag">
+        select id,tagname,description,addtime from rb_tag t where exists (select tag_id from rb_article_tag where article_id=#{id} and tag_id=t.id)
+    </select>
+
+    <delete id="delArticleWithTag" parameterType="long">
+        DELETE rb_article,rb_article_tag from rb_article LEFT JOIN rb_article_tag ON rb_article.id=rb_article_tag.article_id WHERE rb_article.id=#{id}
+    </delete>
+
+    <update id="updateViewsnumAndCommentsnumByArticleId">
+        update rb_article
+        <set>
+            viewsnum=#{viewsnum},commentsnum=#{commentsnum}
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateViewsnumByArticleId">
+        update rb_article
+        <set>
+            viewsnum=#{viewsnum}
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateCommentsnumByArticleId">
+        update rb_article
+        <set>
+            commentsnum=#{commentsnum}
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

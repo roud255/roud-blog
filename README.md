@@ -17,12 +17,17 @@
 <a href=""><img src="https://img.shields.io/badge/Druid-FFCC33.svg"></a>
 </p>
 
+### 后端项目目录：
+##### 1、cms（初态后端项目，部分接口已经不兼容前端）
+#### 2、roud-blog-cms（重构后的项目，性能优化和代码规范化处理）
+
 ### 项目简介(Project Introduction)
 ##### 1、简介
 该项目为一个个人个性化博客项目，项目结构分为前台文章展示部分和后台管理部分，角色目前分为管理员和演示用户。</br>
+
 ##### 2、演示站
 项目演示地址: </br><a href="http://124.71.130.54/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
-<a href="http://124.71.130.54/">点我或者点击上面的图标访问演示站</a></br>
+<a href="http://blog.roud.top/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
 <p><a href="http://124.71.130.54/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
@@ -129,5 +134,8 @@ http://域名或者服务器地址:8989/actuator/health
 <p>单点登录完善，优化登录成功后返回给前端的token样式</p>
 <p>…</p>
 
-
+<p>2024.1.28</p>
+<p>本次更新内容：</p>
+<p>项目重构（主要是后端）。主要对代码进行了规范化修改和优化了项目缓存</p>
+<p>…</p>
 >该项目为个人项目，仅在有空时进行更新完善，目前功能十分不完善，只满足了主要功能，欢迎各位提出宝贵意见。联系QQ：2273459453
