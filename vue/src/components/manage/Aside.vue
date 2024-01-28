@@ -32,6 +32,9 @@
                     <el-menu-item index="edit">
                         文章编辑
                     </el-menu-item>
+                    <el-menu-item index="tags">
+                          标签列表
+                    </el-menu-item>
                     <el-menu-item index="comment">
                           评论列表
                     </el-menu-item>

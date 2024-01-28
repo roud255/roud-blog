@@ -33,6 +33,11 @@ const routes = [
               component: ()=>import("@/components/manage/ArticleEditor")
           },
           {
+              path: 'tags',
+              name: 'TagManage',
+              component: ()=>import("@/components/manage/TagManage")
+          },
+          {
               path: 'forbidip',
               name: 'ForbidIP',
               component: ForBidIPManage
