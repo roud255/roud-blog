@@ -16,11 +16,11 @@
       <el-table-column type="index" label="序号" width="60" />
       <el-table-column prop="id" label="ID" width="180" />
       <el-table-column prop="content" label="内容" width="180" :show-overflow-tooltip="true"/>
-      <el-table-column prop="from_name" label="作者" width="180"/>
-      <el-table-column prop="op_time" label="操作时间" :show-overflow-tooltip="true"/>
-      <el-table-column prop="parent_id" label="父评论ID" width="100" :show-overflow-tooltip="true"/>
-      <el-table-column prop="article_id" label="来源文章" width="180" :show-overflow-tooltip="true"/>
-      <el-table-column prop="to_name" label="被评论者名" width="100" :show-overflow-tooltip="true"/>
+      <el-table-column prop="fromTame" label="作者" width="180"/>
+      <el-table-column prop="opTime" label="操作时间" :show-overflow-tooltip="true"/>
+      <el-table-column prop="parentId" label="父评论ID" width="100" :show-overflow-tooltip="true"/>
+      <el-table-column prop="articleId" label="来源文章" width="180" :show-overflow-tooltip="true"/>
+      <el-table-column prop="toName" label="被评论者名" width="100" :show-overflow-tooltip="true"/>
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
           <!--                    <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>-->

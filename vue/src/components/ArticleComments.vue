@@ -73,7 +73,7 @@
         <span class="author-time">{{item.time}}</span>
       </div>
       <div class="icon-btn">
-        <span @click="showReplyInput(i,item.name,item.id,item.parent_id,0)"><el-icon><ChatDotSquare /></el-icon></span>
+        <span @click="showReplyInput(i,item.name,item.id,item.parentId,0)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--        <span @click="showReplyInput(i,item.name,item.id)"><el-icon><Comment /></el-icon>{{item.commentNum}}</span>-->
 <!--        <el-icon><Promotion /></el-icon>{{item.like}}-->
       </div>
@@ -133,7 +133,7 @@
             <span class="author-time">{{reply.time}}</span>
           </div>
           <div class="icon-btn">
-            <span @click="showReplyInput(i,reply.from,reply.id,reply.parent_id,1)"><el-icon><ChatDotSquare /></el-icon></span>
+            <span @click="showReplyInput(i,reply.from,reply.id,reply.parentId,1)"><el-icon><ChatDotSquare /></el-icon></span>
 <!--            <span @click="showReplyInput(i,reply.from,reply.id)"><el-icon><Comment /></el-icon>{{reply.commentNum}}</span>-->
 <!--            <el-icon><Promotion /></el-icon>{{reply.like}}-->
           </div>
@@ -314,7 +314,7 @@ export default {
       replyInput.style.padding= "10px"
       replyInput.style.border ="none"
     },
-    showReplyInput(i,name,id,parent_id,flag){
+    showReplyInput(i,name,id,parentId,flag){
       this.comments[this.index].inputShow = false
       this.index =i
       this.comments[i].inputShow = true
@@ -322,7 +322,7 @@ export default {
       if(flag==0){
         this.toId = id
       }else {
-        this.toId = parent_id
+        this.toId = parentId
       }
     },
     _inputShow(i){
@@ -379,15 +379,17 @@ export default {
         a.time = time
         a.commentNum = 0
         a.like = 0
-        a.article_id = this.getArticleId()
-        a.parent_id = this.toId
+        a.articleId = this.getArticleId()
+        a.parentId = this.toId
         request.post("/aac",a).then(res =>{
           if(res.code != "200"){
             this.showFailMessage(res.msg);
           }else {
             //后台成功才添加评论
-            this.comments.push(a)
+            //this.comments.push(a)
+            this.initload();
             this.showSuccessMessage("成功！");
+            this.initload();
           }
         });
         this.toId = -1
@@ -422,13 +424,14 @@ export default {
         a.time = time
         // a.commentNum = 0
         // a.like = 0
-        a.article_id = this.getArticleId()
-        a.parent_id = this.toId
+        a.articleId = this.getArticleId()
+        a.parentId = this.toId
         request.post("/aac",a).then(res =>{
           if(res.code != "200"){
             this.showFailMessage(res.msg);
           }else {
-            this.comments[i].reply.push(a)
+            //this.comments[i].reply.push(a);
+            this.initload();
             this.showSuccessMessage("成功！");
           }
         });
@@ -506,22 +509,22 @@ export default {
           let comment = [];
           for(var i=0;i<data.length;i++){
             let j = {};
-            j.name=data[i].from_name;
+            j.name=data[i].fromName;
             j.id = data[i].id;
             j.headimg = data[i].headimg;
             j.sex = data[i].sex;
             j.motto = data[i].motto;
             j.email = data[i].email;
             j.comment = data[i].content;
-            j.time = data[i].op_time;
+            j.time = data[i].opTime;
             j.id = data[i].id;
-            j.parent_id = data[i].parent_id;
+            j.parentId = data[i].parentId;
             j.inputShow = false;
             if(data[i].address==null || data[i].address==""){
               data[i].address = "未知地区"
             }
             j.address = data[i].address;
-            let reply = data[i].child_comments
+            let reply = data[i].childComments
             let r2 = []
             if(reply.length>0){
               for(var flag=0;flag<reply.length;flag++){
@@ -532,11 +535,11 @@ export default {
                 j2.motto = reply[flag].motto;
                 j2.sex = reply[flag].sex;
                 j2.comment = reply[flag].content;
-                j2.time = reply[flag].op_time;
+                j2.time = reply[flag].opTime;
                 j2.id = reply[flag].id;
-                j2.from=reply[flag].from_name;
-                j2.to=reply[flag].to_name;
-                j2.parent_id = reply[flag].parent_id;
+                j2.from=reply[flag].fromName;
+                j2.to=reply[flag].toName;
+                j2.parentId = reply[flag].parentId;
                 j2.inputShow = false;
                 if(reply[flag].address==null || reply[flag].address==""){
                   reply[flag].address = "未知地区"

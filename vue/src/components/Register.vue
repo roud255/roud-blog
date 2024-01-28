@@ -125,7 +125,7 @@
                 return curTime;
             },
             getUserEmailVertifyCode(){
-                let ca = "-request-roud-mail-";
+                let ca = "roudblog.mail.";
                 let userEmailVertifyCode = this.reg_form.email+ca+this.getCurrentTime();
                 return userEmailVertifyCode;
             },

@@ -53,6 +53,7 @@
                 notice: false,
                 login_form : {
                 },
+                flagCode : "",
                 rules: {
                     //邮箱校验规则
                     email: [
@@ -123,7 +124,18 @@
                     + "-" + hour;
                 return curTime;
             },
+             getRandCode(){
+               const array = new Uint32Array(4);
+               window.crypto.getRandomValues(array);
+               let uuid = '';
+               array.forEach((num) => {
+                 uuid += num.toString(16).padStart(8, '0');
+               });
+               return uuid;
+             },
+
             onSubmit(){
+                this.login_form.flag = this.flagCode
                 this.$refs['login_form'].validate(valid => {
                     if (valid) {
                         if(this.notice){
@@ -145,7 +157,9 @@
                 });
             },
             loadImage(){
-                this.imageUrl = "/api/login?t="+Date.now();
+                let flag = ""+this.getRandCode()+Date.now()
+                this.flagCode = flag
+                this.imageUrl = "/api/login?flag="+flag;
             },
         }
     }
