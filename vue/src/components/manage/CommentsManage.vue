@@ -99,7 +99,7 @@ export default {
           pageSize : this.pageSize,
           search : this.search
         }}).then(res =>{
-        if(res.code != "200"){
+        if(res.code !== 200){
           return;
         }
         this.total = res.data.total;
@@ -124,7 +124,7 @@ export default {
       let parse = JSON.parse(JSON.stringify(row));
       let id = parse.id;
       request.delete("/manage/comment/del/"+id).then(res =>{
-        if(res.code != "200"){
+        if(res.code !== 200){
           this.showFailMessage(res.msg);
           return;
         }

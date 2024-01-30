@@ -131,7 +131,7 @@ export default {
         request.get("/login/updatetoken", {params:{
             token : localStorage.getItem('token'),
           }}).then(res =>{
-          if(res.code=="200"){
+          if(res.code===200){
             localStorage.setItem('token',res.data.token);
             this.imgUploadUrl = "/api/img/upload?token=" + res.data.token
             this.load()
@@ -139,7 +139,7 @@ export default {
       },
       save() {
         request.post("/user/updateinfo",this.form).then(res =>{
-          if(res.code=="200"){
+          if(res.code===200){
             this.$message.success(res.msg);
             this.updateToken();
           }else {
@@ -149,7 +149,7 @@ export default {
       },
       // 头像上传
       handleSuccess(response){
-        if(response.code=="200"){
+        if(response.code===200){
           this.head_img = "/api/img/show/"+response.data;
           this.form.file = this.head_img;
           this.updateToken();

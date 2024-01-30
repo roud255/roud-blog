@@ -144,8 +144,8 @@
             inital(){
                 this.inLoading = true
                 request.get("/aat/fp/public",{params:{
-                        num : this.currentPage,
-                        size : this.psize,
+                        pageNum : this.currentPage,
+                        pageSize : this.psize,
                         type : this.select_s,
                         search : this.input_search
                     }}).then(res=>{

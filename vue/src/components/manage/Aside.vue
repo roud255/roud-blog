@@ -47,11 +47,27 @@
                     <span>黑名单管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="forbidip" disabled>
+                    <!--<el-menu-item index="forbidip" disabled>-->
+                    <el-menu-item index="forbidip">
                         黑名单列表
+                    </el-menu-item>
+                  <el-menu-item index="forbidipHistory">
+                        封禁历史
                     </el-menu-item>
                 </el-menu-item-group>
             </el-sub-menu>
+
+<!--            <el-sub-menu index="4">-->
+<!--              <template #title>-->
+<!--                <el-icon><Location /></el-icon>-->
+<!--                <span>数据面板</span>-->
+<!--              </template>-->
+<!--              <el-menu-item-group>-->
+<!--                <el-menu-item index="xxx1" disabled>-->
+<!--                  注册用户数-->
+<!--                </el-menu-item>-->
+<!--              </el-menu-item-group>-->
+<!--            </el-sub-menu>-->
 
 <!--            <el-sub-menu index="3">-->
 <!--                <template #title>-->

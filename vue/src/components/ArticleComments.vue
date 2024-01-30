@@ -382,7 +382,7 @@ export default {
         a.articleId = this.getArticleId()
         a.parentId = this.toId
         request.post("/aac",a).then(res =>{
-          if(res.code != "200"){
+          if(res.code !== 200){
             this.showFailMessage(res.msg);
           }else {
             //后台成功才添加评论
@@ -427,7 +427,7 @@ export default {
         a.articleId = this.getArticleId()
         a.parentId = this.toId
         request.post("/aac",a).then(res =>{
-          if(res.code != "200"){
+          if(res.code !== 200){
             this.showFailMessage(res.msg);
           }else {
             //this.comments[i].reply.push(a);
@@ -486,7 +486,7 @@ export default {
       request.get("/manage/user/info", {params:{
           token : localStorage.getItem('token'),
         }}).then(res =>{
-        if(res.code=="200"){
+        if(res.code===200){
           this.myName = res.data.name
           this.email = res.data.phone
           this.motto = res.data.motto
@@ -502,7 +502,7 @@ export default {
       request.get("/aac",{params:{
           id : get_id,
         }}).then(res =>{
-        if(res.code != "200"){
+        if(res.code !== 200){
           this.showFailMessage("初始化评论区失败！");
         }else {
           let data = res.data;

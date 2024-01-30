@@ -1,15 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Manage from "@/views/Manage";
 import Index from "@/views/Index";
-import IndexShow from "@/views/IndexShow";
 import IndexShow2 from "@/views/IndexShow2";
 import Editor from "@/views/Article";
 import NotFound from "@/views/NotFound";
 import ForBidIPManage from "@/components/manage/ForBidIPManage";
 import ErrorComputerModel from "@/views/ErrorComputerModel";
-import ArticleComments from "@/components/ArticleComments";
 import AccountInformation from "@/components/AccountInformation";
 import CommentsManage from "@/components/manage/CommentsManage";
+import ForBidIPHistory from "@/components/manage/ForBidIPHistory";
 
 const routes = [
     {
@@ -41,6 +40,11 @@ const routes = [
               path: 'forbidip',
               name: 'ForbidIP',
               component: ForBidIPManage
+          },
+          {
+              path: 'forbidipHistory',
+              name: 'ForBidIPHistory',
+              component: ForBidIPHistory
           },
           {
               path: 'comment',

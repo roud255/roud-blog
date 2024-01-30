@@ -20,8 +20,9 @@
             <el-table-column type="index" label="序号" width="60" />
             <el-table-column prop="id" label="ID" width="180" />
             <el-table-column prop="ip" label="IP" width="180" />
-            <el-table-column prop="reason" label="原因" width="180px"/>
-            <el-table-column prop="time" label="时间"/>
+            <el-table-column prop="seconds" label="封禁时长（秒）" width="180"/>
+            <el-table-column prop="time" label="时间" width="180"/>
+            <el-table-column prop="reason" label="原因"/>
             <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
                     <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
@@ -56,6 +57,9 @@
                 </el-form-item>
                 <el-form-item label="原因" prop="reason">
                     <el-input v-model="form.reason"/>
+                </el-form-item>
+              <el-form-item label="时长" prop="seconds">
+                    <el-input v-model="form.seconds"/>
                 </el-form-item>
                 <el-form-item label="时间" prop="time">
                     <el-date-picker v-model="form.time" type="datetime" placeholder="选择日期和时间"/>
@@ -98,6 +102,10 @@
                     reason:[
                         { required: true, message: "请输入拉黑原因", trigger: "blur" },
                     ],
+                    seconds:[
+                          { required: true, message: "请输入封禁时长（秒）", trigger: "blur" },
+                          { pattern:/^(\d+)$/g, message: "时长格式错误", trigger: "blur"}
+                      ],
                     time:[
                         { required: true, message: "请选择时间", trigger: "blur" },
                     ]
@@ -134,7 +142,7 @@
                         pageSize : this.pageSize,
                         search : this.search
                     }}).then(res =>{
-                    if(!res.code ==="200"){
+                    if(!res.code === 200){
                         return;
                     }
                     this.total = res.data.total;
@@ -161,7 +169,7 @@
                     if (valid) {
                         if(this.form.id){//更新
                             request.put("/manage/ip/update", this.form).then(res =>{
-                                if(res.code != "200"){
+                                if(res.code !== 200){
                                     this.showFailMessage(res.msg);
                                     return;
                                 }
@@ -173,7 +181,7 @@
                         }else{//新增
                             this.form["id"] = (new Date()).getTime();
                             request.post("/manage/ip/add", this.form).then(res =>{
-                                if(res.code==="200"){
+                                if(res.code === 200){
                                     this.showSuccessMessage(res.msg);
                                 }else{
                                     this.showFailMessage(res.msg);
@@ -200,7 +208,7 @@
                 let parse = JSON.parse(JSON.stringify(row));
                 let id = parse.id;
                 request.delete("/manage/ip/del/"+id).then(res =>{
-                    if(res.code != "200"){
+                    if(res.code !== 200){
                         this.showFailMessage(res.msg);
                         return;
                     }

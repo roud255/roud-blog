@@ -159,7 +159,7 @@
             },
             loadTags(){
                 request.get("/manage/tags/select").then(res=>{
-                    if(res.code != "200"){
+                    if(res.code !== 200){
                         return;
                     }
                     let data = res.data;
