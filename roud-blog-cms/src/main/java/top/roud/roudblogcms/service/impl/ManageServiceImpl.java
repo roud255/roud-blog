@@ -27,10 +27,7 @@ import top.roud.roudblogcms.entity.User;
 import top.roud.roudblogcms.entity.UserInformation;
 import top.roud.roudblogcms.mapper.UserInformationMapper;
 import top.roud.roudblogcms.mapper.UserMapper;
-import top.roud.roudblogcms.service.ArticleAndCommentService;
-import top.roud.roudblogcms.service.ArticleAndTagService;
-import top.roud.roudblogcms.service.ManageService;
-import top.roud.roudblogcms.service.SelfArticleValidateService;
+import top.roud.roudblogcms.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -39,12 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static top.roud.roudblogcms.common.result.ResultCode.DATA_NONE;
-import static top.roud.roudblogcms.common.result.ResultCode.EMAIL_HAS_EXISTED;
-import static top.roud.roudblogcms.common.result.ResultCode.SPECIFIED_QUESTIONED_USER_NOT_EXIST;
-import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
-import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_INNER_ERROR;
-import static top.roud.roudblogcms.common.result.ResultCode.TAG_NAME_FORMAT_ERROR;
+import static top.roud.roudblogcms.common.result.ResultCode.*;
 
 /**
  * @description:
@@ -72,6 +64,8 @@ public class ManageServiceImpl implements ManageService {
     private SelfArticleValidateService selfArticleValidateService;
     @Autowired
     private ArticleAndCommentService articleAndCommentService;
+    @Autowired
+    private ForBidIPService forBidIPService;
 
     @Override
     public Result addUser(User user, HttpServletRequest request) {
@@ -269,22 +263,44 @@ public class ManageServiceImpl implements ManageService {
 
     @Override
     public Result selectIPs(Integer pageNum, Integer pageSize, String search) {
-        return null;
+        return forBidIPService.findPages(pageNum, pageSize, search);
     }
 
     @Override
     public Result delIP(Long id) {
-        return null;
+        return forBidIPService.del(id);
     }
 
     @Override
     public Result updateIP(ForbidIP ip) {
-        return null;
+        return forBidIPService.update(ip);
     }
 
     @Override
     public Result addIP(String ipInfo) {
-        return null;
+        JSONObject jsonObject = JSON.parseObject(ipInfo);
+        String ip = jsonObject.getString("ip");
+        ForbidIP forbidIPSys = forBidIPService.selectForBidIPByIp(ip);
+        Optional<ForbidIP> op = Optional.ofNullable(forbidIPSys);
+        if(op.isPresent()){
+            return Result.failure(DATA_EXISTED);
+        }
+        String reason = jsonObject.getString("reason");
+        Long seconds = Long.parseLong(jsonObject.getString("seconds"));
+        String time = jsonObject.getString("time");
+        Date t;
+        try {
+            t = timeTransUtil.transUTCToZ(time);
+        } catch (ParseException e) {
+            return Result.failure(e.getMessage());
+        }
+        ForbidIP forbidIP = new ForbidIP();
+        forbidIP.setId(AutoIdUtil.getId());
+        forbidIP.setIp(ip);
+        forbidIP.setReason(reason);
+        forbidIP.setSeconds(seconds);
+        forbidIP.setTime(t);
+        return forBidIPService.save(forbidIP);
     }
 
     @Override

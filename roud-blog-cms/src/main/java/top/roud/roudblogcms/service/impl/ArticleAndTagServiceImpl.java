@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static top.roud.roudblogcms.common.result.ResultCode.PARAM_NOT_COMPLETE;
 import static top.roud.roudblogcms.common.utils.ConstUtil.*;
@@ -234,6 +236,63 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public List<Tag> getAllTags() {
         return articleAndTagMapper.getAllTags();
+    }
+
+    @Override
+    public Result delTagById(Long id) {
+        List<Long> aids = articleAndTagMapper.selectAllArticleIdByTagId(id);
+        if(aids.size()>0){
+            StringBuilder sb = new StringBuilder("");
+            aids.forEach(o->sb.append(o).append(";"));
+            String s = sb.toString();
+            return Result.failure(50001, "操作失败，存在关联文章id："+ s );
+        }
+        if(1 == articleAndTagMapper.delTagById(id)){
+            return Result.success();
+        }
+        return Result.failure(ResultCode.SYSTEM_ERROR);
+    }
+
+    @Override
+    public Result updateTagById(Tag tag) {
+        if(null == tag.getId() || StringUtils.isBlank(tag.getTagname())){
+            return Result.failure(ResultCode.PARAM_IS_INVALID);
+        }
+        if(1 == articleAndTagMapper.updateTagnameById(tag)){
+            return Result.success();
+        }
+        return Result.failure(ResultCode.SYSTEM_ERROR);
+    }
+
+    @Override
+    public Page<TagExt> findTagsPage(Integer pageNum, Integer pageSize, String search) {
+        Integer pagestart = (pageNum-1)*pageSize;
+        List<Tag> tagsPage = articleAndTagMapper.getTagsPage(pagestart, pageSize, search);
+        List<TagExt> collect = tagsPage.stream().map(o -> {
+                    TagExt tagExt = new TagExt();
+                    BeanUtils.copyProperties(o, tagExt);
+                    StringBuilder sb = new StringBuilder("");
+                    o.getArticles().forEach(i -> {
+                        if(null != i.getId()){
+                            sb.append(i.getId()).append(";");
+                        }
+                    });
+                    tagExt.setInvolveArticles(sb.toString());
+                    return tagExt;
+                }
+        ).collect(Collectors.toList());
+        Page<TagExt> result = new Page<>();
+        int total = (articleAndTagMapper.getTagsPage(pagestart, 0, search)).size();
+        result.setPages((int)Math.ceil((double)total/pageSize));
+        result.setTotal(total);
+        result.setCurrent(pageNum);
+        result.setRecords(collect);
+        return result;
+    }
+
+    @Data
+    public class TagExt extends Tag{
+        private String involveArticles;
     }
 
     @Override

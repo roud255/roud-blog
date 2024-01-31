@@ -1,10 +1,10 @@
 package top.roud.roudblogcms.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.checkerframework.checker.units.qual.A;
 import top.roud.roudblogcms.common.result.Result;
 import top.roud.roudblogcms.entity.Article;
 import top.roud.roudblogcms.entity.ArticleWithValidateCode;
 import top.roud.roudblogcms.entity.Tag;
+import top.roud.roudblogcms.service.impl.ArticleAndTagServiceImpl;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public interface ArticleAndTagService {
     Article getArticleByIdWithTag(Long id);
     Tag getTagByName(String name);
     List<Tag> getAllTags();
+    Result delTagById(Long id);
+    Result updateTagById(Tag tag);
+    Page<ArticleAndTagServiceImpl.TagExt> findTagsPage(Integer pageNum, Integer pageSize, String search);
     List<Article> getAllArticleWithTag();
     Page<ArticleWithValidateCode> findPageWithValidatecode(Integer pageNum, Integer pageSize, String search);
     Result findPageWithoutBody(Integer pageNum, Integer pageSize, String search, String type);

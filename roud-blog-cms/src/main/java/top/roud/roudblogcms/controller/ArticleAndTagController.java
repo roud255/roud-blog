@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -83,8 +84,8 @@ public class ArticleAndTagController {
      * 主页分页查询，type为2时候通过标签查询
      * findPage_second为可以模糊查询的分页查询
      * public为公共对外接口，不返回文章内容这样大的数据
-     * @param num
-     * @param size
+     * @param pageNum
+     * @param pageSize
      * @param search
      * @param type
      * @return
@@ -92,8 +93,8 @@ public class ArticleAndTagController {
     @ApiOperation("分页获取文章及标签-公共对外")
     @AccessIPRecord
     @GetMapping("fp/public")
-    public Result fpWithoutBody(@RequestParam(defaultValue = "1") Integer num, @RequestParam(defaultValue = "10")Integer size, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
-        return articleAndTagService.findPageWithoutBody(num, size, search, type);
+    public Result fpWithoutBody( @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search, @RequestParam(defaultValue = "1")String type){
+        return articleAndTagService.findPageWithoutBody(pageNum, pageSize, search, type);
     }
 
     @ApiOperation("删除文章及标签")
@@ -110,4 +111,28 @@ public class ArticleAndTagController {
     public Result validateSelfArticle(@RequestParam("articleId") Long articleId, @RequestParam("validateCode")String validateCode){
         return selfArticleValidateService.validateSelfArticle(articleId, validateCode);
     }
+
+    @ApiOperation("分页获取文章标签")
+    @AccessIPRecord
+    @GetMapping("/tag/fp")
+    public Result findTagsPage( @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
+        return Result.success(articleAndTagService.findTagsPage(pageNum, pageSize, search));
+    }
+
+    @ApiOperation("根据标签id删除标签")
+    @AccessIPRecord
+    @OperationAuth
+    @DeleteMapping("/tag/del/{id}")
+    public Result findTagsPage(@PathVariable Long id){
+        return articleAndTagService.delTagById(id);
+    }
+
+    @ApiOperation("更新标签名称")
+    @AccessIPRecord
+    @OperationAuth
+    @PutMapping("/tag/update")
+    public Result updateTag(@RequestBody Tag tag){
+        return articleAndTagService.updateTagById(tag);
+    }
+
 }

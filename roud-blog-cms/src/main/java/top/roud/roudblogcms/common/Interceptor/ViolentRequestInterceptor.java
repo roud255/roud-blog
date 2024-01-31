@@ -1,6 +1,7 @@
 package top.roud.roudblogcms.common.Interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,9 @@ import top.roud.roudblogcms.common.result.Result;
 import top.roud.roudblogcms.common.utils.ConstUtil;
 import top.roud.roudblogcms.common.utils.IPUtil;
 import top.roud.roudblogcms.common.utils.RedisUtil;
+import top.roud.roudblogcms.common.utils.VisitControlUtil;
+import top.roud.roudblogcms.mapper.ForBidIPMapper;
+import top.roud.roudblogcms.service.ForBidIPService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +28,10 @@ public class ViolentRequestInterceptor implements HandlerInterceptor {
     private RedisUtil redisUtil;
     @Autowired
     private IPUtil ipUtil;
+    @Autowired
+    private VisitControlUtil visitControlUtil;
+    @Autowired
+    private ForBidIPService forBidIPService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -34,6 +42,9 @@ public class ViolentRequestInterceptor implements HandlerInterceptor {
         }else {
             long count = Long.parseLong(redisUtil.get(key));
             if(count>maxCount){
+                if(StringUtils.isNotBlank(ipAddr) && !forBidIPService.exists(ipAddr)){
+                    visitControlUtil.ban(ipAddr, 60*60*24L);
+                }
                 JSONObject json = (JSONObject) JSONObject.toJSON(Result.failure(HAVIOR_INVOKE_ERROR));
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().println(json);

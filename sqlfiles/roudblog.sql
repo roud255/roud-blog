@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localmysql
+ Source Server         : mysql_roud
  Source Server Type    : MySQL
- Source Server Version : 50744
+ Source Server Version : 50736
  Source Host           : localhost:3306
- Source Schema         : roudblog
+ Source Schema         : roudblog2
 
  Target Server Type    : MySQL
- Target Server Version : 50744
+ Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 28/01/2024 15:15:55
+ Date: 31/01/2024 10:26:21
 */
 
 SET NAMES utf8mb4;
@@ -35,6 +35,10 @@ CREATE TABLE `rb_article`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of rb_article
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for rb_article_tag
 -- ----------------------------
 DROP TABLE IF EXISTS `rb_article_tag`;
@@ -44,6 +48,10 @@ CREATE TABLE `rb_article_tag`  (
   `tag_id` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of rb_article_tag
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for rb_comment
@@ -66,6 +74,10 @@ CREATE TABLE `rb_comment`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of rb_comment
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for rb_forbidip
 -- ----------------------------
 DROP TABLE IF EXISTS `rb_forbidip`;
@@ -74,8 +86,13 @@ CREATE TABLE `rb_forbidip`  (
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `time` datetime(0) NULL DEFAULT NULL,
+  `seconds` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of rb_forbidip
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for rb_selfarticle
@@ -89,6 +106,10 @@ CREATE TABLE `rb_selfarticle`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of rb_selfarticle
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for rb_tag
 -- ----------------------------
 DROP TABLE IF EXISTS `rb_tag`;
@@ -99,6 +120,10 @@ CREATE TABLE `rb_tag`  (
   `addtime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of rb_tag
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for rb_user
@@ -116,6 +141,11 @@ CREATE TABLE `rb_user`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of rb_user
+-- ----------------------------
+INSERT INTO `rb_user` VALUES (12345678910, 'admin', 'admin@roud.top', '9D3AA98720813362B99C5626DB91186C', '2024-01-31 10:24:08', 0, '0');
+
+-- ----------------------------
 -- Table structure for rb_user_extends
 -- ----------------------------
 DROP TABLE IF EXISTS `rb_user_extends`;
@@ -128,5 +158,9 @@ CREATE TABLE `rb_user_extends`  (
   `recentlyip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of rb_user_extends
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -19,7 +19,7 @@
 
 ### 后端项目目录：
 ##### 1、cms（初态后端项目，部分接口已经不兼容前端）
-#### 2、roud-blog-cms（重构后的项目，性能优化和代码规范化处理）
+#### 2、roud-blog-cms（推荐使用，重构后的项目，性能优化和代码规范化处理）
 
 ### 项目简介(Project Introduction)
 ##### 1、简介
@@ -30,7 +30,7 @@
 <a href="http://blog.roud.top/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
-<p><a href="http://124.71.130.54/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
+<p><a href="http://blog.roud.top/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
 项目前台展示:</br>
 <p><img src="http://qny.roud.top/img/20230506004212.png" alt="前台"></p></br>
 文章展示:</br>
@@ -48,12 +48,14 @@ http://域名或者服务器地址:8989/actuator/health
 >代码拉取: git clone https://gitee.com/roud/roud-blog.git
 
 <p>拉取后的主体项目结构如下：</p>
+
+> 后端项目请使用重构后的roud-blog-cms
 <p><img src="http://qny.roud.top/img/20230506092641.png"></p>
 <p>拉取后的前端项目结构如下：</p>
 <p><img src="http://qny.roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤
-1. <p>将sqlfiles目录下的sql文件导入数据库</p>
+1. <p>将sqlfiles目录下的sql文件导入数据库（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa）</p>
 1. <p>定位到./cms/pom.xml，导入maven依赖</p>
 1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
 1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
@@ -61,6 +63,7 @@ http://域名或者服务器地址:8989/actuator/health
 1. <p>启动redis服务</p>
 1. <p>启动springboot项目服务</p>
 1. <p>启动vue服务，启动完成自动跳转至主页</p>
+1. <p>使用管理员账号密码登录后台（（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa））</p>
 
 ##### 其他
 1. <p>目前角色权限仅通过type进行划分，type类型分别为：</p>
@@ -75,35 +78,15 @@ http://域名或者服务器地址:8989/actuator/health
 - <p>进入后台-登录-回到首页-个人信息-上传头像成功-修改拓展信息-点击保存（注意：修改头像和修改拓展信息一天仅限一次）</p>
 4...
 
-### 页面路由
-##### 首页
->http://localhost:8081/index/show
 
-##### 登录页
->http://localhost:8081/index/login
-
-##### 注册页
->http://localhost:8081/index/reg
-
-##### 后台管理用户管理页面
->http://localhost:8081/manage/user
-
-##### 后台管理文章管理页面
->http://localhost:8081/manage/article
-
-##### 博客编辑页
->http://localhost:8081/manage/edit
-
-##### 适配错误页
->http://localhost:8081/errorcomputermodel
 
 
 ### 该项目目前在不断完善，计划完善功能：
-1. 小黑屋（废弃，打算在nginx中配置）
+1. 小黑屋（~~废弃，打算在nginx中配置~~）2024.1.31通过Java IO流+nginx+redis实现
 2. 主页广告植入及后台广告发布
 3. 角色权限细化
 4. 商城页面（文章页可以展示商城商品及跳转至商城）
-5. 个人资料页
+5. 个人资料(已实现)
 6. 资源共享
 ...
 
@@ -136,6 +119,7 @@ http://域名或者服务器地址:8989/actuator/health
 
 <p>2024.1.28</p>
 <p>本次更新内容：</p>
-<p>项目重构（主要是后端）。主要对代码进行了规范化修改和优化了项目缓存</p>
+<p>（重大更新）项目重构（主要是后端）。主要对代码进行了规范化修改、优化部分页面ui、完善后台管理、引入swagger和优化了项目缓存</p>
 <p>…</p>
->该项目为个人项目，仅在有空时进行更新完善，目前功能十分不完善，只满足了主要功能，欢迎各位提出宝贵意见。联系QQ：2273459453
+
+> 该项目为个人项目，仅在有空时进行更新完善，目前功能十分不完善，只满足了主要功能，欢迎各位提出宝贵意见。联系QQ：2273459453

@@ -4,9 +4,11 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.roud.roudblogcms.common.config.CustomLongSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Article implements Serializable {
     private static final long serialVersionUID = 1L;
+    @JsonSerialize(using = CustomLongSerializer.class)
     private Long id;
     private String title;
     private String author;

@@ -3,6 +3,7 @@ package top.roud.roudblogcms.controller.manage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.roud.roudblogcms.common.annotation.AccessIPRecord;
 import top.roud.roudblogcms.common.annotation.OperationAuth;
 import top.roud.roudblogcms.common.result.Result;
+import top.roud.roudblogcms.common.utils.VisitControlUtil;
 import top.roud.roudblogcms.entity.ArticleWithValidateCode;
 import top.roud.roudblogcms.entity.ForbidIP;
 import top.roud.roudblogcms.entity.User;
@@ -22,6 +24,8 @@ import top.roud.roudblogcms.service.ManageService;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,6 +41,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ManageController {
     @Autowired
     private ManageService manageService;
+
+    @Autowired
+    private VisitControlUtil visitControlUtil;
 
     @ApiOperation("保存用户")
     @OperationAuth
@@ -131,6 +138,7 @@ public class ManageController {
 
     @ApiOperation("添加封禁ip")
     @AccessIPRecord
+    @OperationAuth
     //时间传入重构
     @PostMapping("/ip/add")
     public Result addip(@RequestBody String info){
@@ -158,6 +166,14 @@ public class ManageController {
     @GetMapping("/comment/findall")
     public Result findAll(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, @RequestParam(defaultValue = "")String search){
         return manageService.selectComment(pageNum, pageSize, search);
+    }
+
+    @ApiOperation("根据日期获取封禁IP日志, 返回map")
+    @OperationAuth
+    @GetMapping("/ip/blockinglog")
+    public Result getBlockinglog(){
+        List<Map> list = visitControlUtil.getBlockingIPLog();
+        return Result.success(list);
     }
 
 }

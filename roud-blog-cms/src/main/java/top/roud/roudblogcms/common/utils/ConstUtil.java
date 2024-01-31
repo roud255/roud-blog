@@ -38,6 +38,11 @@ public class ConstUtil {
      */
     public static final String ARTICLE_COMMENT_CACHE = "roudblog.article.comment.";
 
+    /**
+     * ip相关
+     */
+    public static final String IP_EXISTS_CACHE = "roudblog.ip.exists.";
+
 
     //用户当天已经评论标识
     public static final String USER_DAILYCOMMENTSCOUNT = "user.dailycommentscount.";

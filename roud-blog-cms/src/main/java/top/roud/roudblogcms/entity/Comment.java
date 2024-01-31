@@ -4,9 +4,11 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import top.roud.roudblogcms.common.config.CustomLongSerializer;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -51,6 +53,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Comment implements Serializable {
     private static final long serialVersionUID = 1L;
+    @JsonSerialize(using = CustomLongSerializer.class)
     private Long id;
     private String content;
     @TableField("from_name")
@@ -61,10 +64,12 @@ public class Comment implements Serializable {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date opTime;
+    @JsonSerialize(using = CustomLongSerializer.class)
     @TableField("parent_id")
     private Long parentId;
     @TableField(exist = false)
     private List<Comment> childComments;
+    @JsonSerialize(using = CustomLongSerializer.class)
     @TableField("article_id")
     private Long articleId;
     private String headimg;

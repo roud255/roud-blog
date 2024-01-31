@@ -1,7 +1,9 @@
 package top.roud.roudblogcms.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import top.roud.roudblogcms.common.config.CustomLongSerializer;
 
 /**
  * @author roud
@@ -13,7 +15,9 @@ import lombok.Data;
 @Data
 public class SelfArticle {
     private static final long serialVersionUID = 1L;
+    @JsonSerialize(using = CustomLongSerializer.class)
     private Long id;
+    @JsonSerialize(using = CustomLongSerializer.class)
     private Long articleId;
     private String validateCode;
 }

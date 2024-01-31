@@ -1,6 +1,9 @@
 spring:
   application:
     name: roudblog-cms
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 server:
   port: 8989
   tomcat:
@@ -38,19 +41,19 @@ logging:
   #指定日志配置文件路径
   config: 'classpath:logback-spring.xml'
 
-swagger:
-  basic:
-    enable: true
-    username: roud
-    password: 12345671
-
 token:
   inner:
     expiredtime: 3
     secret: "roud;@a^m*art%$hur&blog"
 
-
 roudblog:
   cache:
     save:
       days: 3
+  visitcontrol:
+    blacklist:
+      path: /www/server/nginx/conf/roudblog-blockingip.conf
+      logpath: /opt/tomcat/roudblog/cms/logs/blockingIP.log
+    nginx:
+      reloadscript:
+        path: /www/server/nginx/conf/nginx-reload.sh

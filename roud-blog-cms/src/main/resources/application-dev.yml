@@ -22,3 +22,9 @@ spring:
     timeout: 5000
 violentRequest:
   maxCount: 1000
+
+swagger:
+  basic:
+    enable: true
+    username: roud
+    password: 12345671

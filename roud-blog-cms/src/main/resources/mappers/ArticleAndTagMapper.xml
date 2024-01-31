@@ -46,6 +46,31 @@
         <collection property="tags" resultMap="TagResult"></collection>
     </resultMap>
 
+    <resultMap id="TagsResult" type="top.roud.roudblogcms.entity.Tag" extends="TagResult">
+        <collection property="articles" resultMap="ArticleResult"></collection>
+    </resultMap>
+
+    <select id="getTagsPage" resultType="List" resultMap="TagsResult">
+        select rt.id as tid,rt.tagname,rt.description,rt.addtime,rat.article_id as aid FROM rb_tag rt LEFT JOIN rb_article_tag rat on rat.tag_id=rt.id <where><if test="search!=null">and rt.tagname like "%"#{search}"%"</if></where> <if test="pagecount>0">limit #{pagestart},#{pagecount}</if>
+    </select>
+
+    <select id="selectAllArticleIdByTagId" resultType="long">
+        select article_id from rb_article_tag  where tag_id = #{tagId}
+    </select>
+
+    <update id="updateTagnameById" parameterType="top.roud.roudblogcms.entity.Tag">
+        update rb_tag
+        <set>
+            <if test="tagname != null">
+                tagname=#{tagname},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
     <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
         select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,
         t.id as tid,t.tagname,t.description,t.addtime
@@ -83,7 +108,11 @@
         </if>
     </select>
 
-       <select id="selectPageByTagWithoutBody" resultType="top.roud.roudblogcms.entity.Article">
+    <delete id="delTagById" parameterType="long">
+        DELETE from rb_tag  WHERE id=#{id}
+    </delete>
+
+    <select id="selectPageByTagWithoutBody" resultType="top.roud.roudblogcms.entity.Article">
         select id,title,author,description,cover,publishtime,viewsnum,commentsnum,self from rb_article ra where exists (select distinct rat.article_id from rb_article_tag rat where exists (select rt.id from rb_tag rt where tagname like "%"#{tagname}"%" and rat.tag_id=rt.id) and rat.article_id=ra.id)  order by ra.id desc
         <if test="pagecount>0">
             limit #{pagestart},#{pagecount}

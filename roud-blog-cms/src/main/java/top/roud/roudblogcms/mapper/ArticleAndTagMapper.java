@@ -25,6 +25,7 @@ public interface ArticleAndTagMapper extends BaseMapper<Article> {
     Article getArticleByIdWithTag(Long id);
     Tag getTagByName(String name);
     List<Tag> getAllTags();
+    List<Tag> getTagsPage(Integer pagestart,Integer pagecount, String search);
     List<Article> getAllArticleWithTag();
     //自定义分页查询
     Page<Article> selectPage(Page<Article> page, @Param("ew") Wrapper<Article> queryWrapper);
@@ -34,6 +35,9 @@ public interface ArticleAndTagMapper extends BaseMapper<Article> {
     List<Article> selectPageByTag(String tagname,Integer pagestart,Integer pagecount);
     List<Article> selectPageByTagWithoutBody(String tagname,Integer pagestart,Integer pagecount);
     void delArticleWithTag(Long id);
+    Integer delTagById(Long id);
+    List<Long> selectAllArticleIdByTagId(Long tagId);
+    Integer updateTagnameById(Tag tag);
     Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer viewsnum, Integer commentsnum);
     Integer updateViewsnumByArticleId(Long id, Integer viewsnum);
     Integer updateCommentsnumByArticleId(Long id, Integer commentsnum);
