@@ -30,17 +30,11 @@
 <a href="http://blog.roud.top/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
-<p><a href="http://blog.roud.top/index/login"><img src="https://img.shields.io/badge/账号-demo@roud.top-greed.svg"></a>&nbsp;<a href="http://8.134.71.114:8081/index/login"><img src="https://img.shields.io/badge/密码-Demo123456-red.svg"></a></p></br>
-项目前台展示:</br>
-<p><img src="http://qny.roud.top/img/20230506004212.png" alt="前台"></p></br>
-文章展示:</br>
-<p><img src="http://qny.roud.top/img/20230506091055.png" alt="文章"></p></br>
-登录注册页展示:</br>
-<p><img src="http://qny.roud.top/img/20230506090505.png" alt="登录注册"></p></br>
-后台文章编辑展示:</br>
-<p><img src="http://qny.roud.top/img/20230506005056.png" alt="后台页"></p></br>
-项目后端健康检查:</br>
-http://域名或者服务器地址:8989/actuator/health
+
+项目接口及其作用：
+- 请以开发环境启动项目后打开swaggerui查看
+- 地址：http://localhost:8989/swagger-ui.html
+- 账号：roud  密码：12345671（可自行在配置文件中修改）
 
 ### 项目搭建(Project construction)
 <p>项目准备：jdk、mysql、maven、redis、mogodb、node.js等相关环境需要提前配置好</p>
@@ -49,16 +43,16 @@ http://域名或者服务器地址:8989/actuator/health
 
 <p>拉取后的主体项目结构如下：</p>
 
-> 后端项目请使用重构后的roud-blog-cms
+> 后端项目请使用重构后的roud-blog-cms,图片示例的旧的项目结构，不用管
 <p><img src="http://qny.roud.top/img/20230506092641.png"></p>
 <p>拉取后的前端项目结构如下：</p>
 <p><img src="http://qny.roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤
 1. <p>将sqlfiles目录下的sql文件导入数据库（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa）</p>
-1. <p>定位到./cms/pom.xml，导入maven依赖</p>
-1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
-1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
+1. <p>定位到./roud-blog-cms/pom.xml，导入maven依赖</p>
+1. <p>定位到./roud-blog-cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
+1. <p>定位到./roud-blog-cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
 1. <p>切换到./vue目录下，执行npm install命令安装vue项目所需依赖</p>
 1. <p>启动redis服务</p>
 1. <p>启动springboot项目服务</p>
