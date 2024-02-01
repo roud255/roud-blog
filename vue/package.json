@@ -6,6 +6,9 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build"
   },
+  "vue": {
+    "productionSourceMap": false
+  },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.4",
     "@kangc/v-md-editor": "next",

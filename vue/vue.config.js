@@ -4,6 +4,7 @@ module.exports = defineConfig({
 });
 // 跨域配置
 module.exports = {
+  productionSourceMap: true,
   devServer: {
     open: true,
     host: 'localhost',
