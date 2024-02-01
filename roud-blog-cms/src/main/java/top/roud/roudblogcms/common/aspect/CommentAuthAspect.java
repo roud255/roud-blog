@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static top.roud.roudblogcms.common.result.ResultCode.COMMENTS_DAILY_OVERFLOW;
+import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
 import static top.roud.roudblogcms.common.result.ResultCode.USER_NO_ACCESS_COMMENT;
 import static top.roud.roudblogcms.common.utils.ConstUtil.USER_DAILYCOMMENTSCOUNT;
 
@@ -39,6 +40,9 @@ public class CommentAuthAspect {
     @Around("pointCut(commentAuth)")
     public Object around(ProceedingJoinPoint pjp, CommentAuth commentAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(null == ra){
+            return Result.failure(SYSTEM_ERROR);
+        }
         HttpServletRequest request = ra.getRequest();
         int maxCount = commentAuth.dailyMaxCount();
         Map<String, Object> info = tokenUtil.getUserInfoByRequest(request);

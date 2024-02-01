@@ -15,6 +15,7 @@ import top.roud.roudblogcms.common.utils.TokenUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
 import static top.roud.roudblogcms.common.result.ResultCode.USER_NO_ACCESS;
 
 /**
@@ -36,6 +37,9 @@ public class OperationAuthAspect {
     @Around("pointCut(operationAuth)")
     public Object around(ProceedingJoinPoint pjp,OperationAuth operationAuth) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(null == ra){
+            return Result.failure(SYSTEM_ERROR);
+        }
         HttpServletRequest request = ra.getRequest();
 
         Map<String, Object> info = tokenUtil.getUserInfoByRequest(request);

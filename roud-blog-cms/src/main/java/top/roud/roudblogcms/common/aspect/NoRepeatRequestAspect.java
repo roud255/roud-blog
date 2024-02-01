@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
+
 /**
  * @ClassName: NoRepeatRequestAspect
  * @Description:
@@ -41,6 +43,9 @@ public class NoRepeatRequestAspect {
     @Around("pointCut(noRepeatRequest)")
     public Object around(ProceedingJoinPoint pjp, NoRepeatRequest noRepeatRequest) throws Throwable {
         ServletRequestAttributes ra= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(null == ra){
+            return Result.failure(SYSTEM_ERROR);
+        }
         HttpServletRequest request = ra.getRequest();
         int seconds = noRepeatRequest.seconds();
         int maxCount = noRepeatRequest.maxCount();
