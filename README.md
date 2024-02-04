@@ -30,13 +30,14 @@
 <a href="http://blog.roud.top/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
-账号：<strong>demo@roud.top</strong>
-密码：<strong>Demo123456</strong>
-</br>
+
+<p>账号：<strong>demo@roud.top</strong></p>
+<p>密码：<strong>Demo123456</strong></p>
+
 项目接口及其作用：
 - 请以开发环境启动项目后打开swaggerui查看
 - 地址：http://localhost:8989/swagger-ui.html
-- 账号：roud  密码：12345671（可自行在配置文件中修改）
+- swaggerui配置（开发环境）账号：roud  密码：12345671（可自行在配置文件中修改）
 
 ### 项目搭建(Project construction)
 <p>项目准备：jdk、mysql、maven、redis、mogodb、node.js等相关环境需要提前配置好</p>
