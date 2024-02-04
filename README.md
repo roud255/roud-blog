@@ -26,11 +26,13 @@
 该项目为一个个人个性化博客项目，项目结构分为前台文章展示部分和后台管理部分，角色目前分为管理员和演示用户。</br>
 
 ##### 2、演示站
-项目演示地址: </br><a href="http://124.71.130.54/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
+项目演示地址: </br><a href="http://blog.roud.top/"><img src="https://img.shields.io/badge/roud--blog-1.0-greed.svg"></a> &nbsp; &nbsp; &nbsp;</br>
 <a href="http://blog.roud.top/">点我或者点击上面的图标访问演示站</a></br>
 
 演示站后台演示账号&密码:</br>
-
+账号：<strong>demo@roud.top</strong>
+密码：<strong>Demo123456</strong>
+</br>
 项目接口及其作用：
 - 请以开发环境启动项目后打开swaggerui查看
 - 地址：http://localhost:8989/swagger-ui.html
