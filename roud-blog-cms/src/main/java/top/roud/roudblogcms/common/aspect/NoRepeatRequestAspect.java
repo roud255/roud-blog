@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -29,6 +30,7 @@ import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
  * @Date 2022/9/5
  * @Version 1.0
  */
+@Order(2)
 @Aspect
 @Component
 public class NoRepeatRequestAspect {

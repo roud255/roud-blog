@@ -5,6 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,6 +25,7 @@ import static top.roud.roudblogcms.common.result.ResultCode.USER_NO_ACCESS;
  * @date: 2023/4/25
  * @version:
  */
+@Order(3)
 @Aspect
 @Component
 public class OperationAuthAspect {

@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,7 +24,7 @@ import static top.roud.roudblogcms.common.result.ResultCode.COMMENTS_DAILY_OVERF
 import static top.roud.roudblogcms.common.result.ResultCode.SYSTEM_ERROR;
 import static top.roud.roudblogcms.common.result.ResultCode.USER_NO_ACCESS_COMMENT;
 import static top.roud.roudblogcms.common.utils.ConstUtil.USER_DAILYCOMMENTSCOUNT;
-
+@Order(4)
 @Aspect
 @Component
 public class CommentAuthAspect {
