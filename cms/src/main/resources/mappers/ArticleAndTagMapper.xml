@@ -72,7 +72,7 @@
     </update>
 
     <select id="getArticleByIdWithTag" parameterType="long" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,a.sort
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,a.sort,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
@@ -80,7 +80,7 @@
         where a.id=#{id} and a.id=at.article_id and t.id=at.tag_id
     </select>
     <select id="getAllArticleWithTag" resultMap="ArticleResultWithTag">
-        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,a.sort
+        select a.id as aid,a.title,a.author,a.description,a.cover,a.postbody,a.publishtime,a.viewsnum,a.commentsnum,a.self,a.sort,
         t.id as tid,t.tagname,t.description,t.addtime
         from rb_article a,
         rb_tag t,
