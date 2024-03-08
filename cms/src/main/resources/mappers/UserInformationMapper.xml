@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.roud.cms.mapper.UserInformationMapper">
-    <resultMap id="UserResultMap" type="top.roud.cms.entity.User">
+<mapper namespace="top.roud.roudblogcms.mapper.UserInformationMapper">
+    <resultMap id="UserResultMap" type="top.roud.roudblogcms.entity.User">
         <id column="u_id" property="id"/>
         <result column="u_nickname" property="nickname"/>
         <result column="u_phonenumber" property="phonenumber"/>
@@ -9,9 +9,9 @@
         <result column="u_type" property="type"/>
         <result column="u_power" property="power"/>
     </resultMap>
-    <resultMap id="UserInformationResultMap" type="top.roud.cms.entity.UserInformation">
+    <resultMap id="UserInformationResultMap" type="top.roud.roudblogcms.entity.UserInformation">
         <id column="id" property="id" />
-        <result column="img_id" property="img_id"/>
+        <result column="img_id" property="imgId"/>
         <result column="sex" property="sex"/>
         <result column="motto" property="motto"/>
         <result column="recentlyip" property="recentlyip"/>
@@ -41,13 +41,13 @@
         where
               u.id=#{id}
     </select>
-    <insert id="insert" parameterType="top.roud.cms.entity.UserInformation">
+    <insert id="insert" parameterType="top.roud.roudblogcms.entity.UserInformation">
         insert into rb_user_extends(id, user_id,img_id,sex,motto,recentlyip) values(#{id}, #{user.id},#{img_id},#{sex},#{motto},#{recentlyip})
     </insert>
-    <update id="updateByUserId" parameterType="top.roud.cms.entity.UserInformation">
+    <update id="updateByUserId" parameterType="top.roud.roudblogcms.entity.UserInformation">
         update rb_user_extends
         <set>
-            img_id=#{img_id},sex=#{sex},motto=#{motto},recentlyip=#{recentlyip}
+            img_id=#{imgId},sex=#{sex},motto=#{motto},recentlyip=#{recentlyip}
         </set>
         where user_id=#{user.id}
     </update>

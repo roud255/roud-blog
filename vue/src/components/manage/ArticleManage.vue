@@ -21,8 +21,9 @@
             <el-table-column prop="cover" label="封面" width="100" :show-overflow-tooltip="true"/>
             <el-table-column prop="postbody" label="内容" :show-overflow-tooltip="true"/>
             <el-table-column prop="publishtime" label="发布时间" width="100" :show-overflow-tooltip="true"/>
-            <el-table-column prop="self" label="是否专属" width="100" :show-overflow-tooltip="true"/>
+            <el-table-column prop="self" label="是否专属（1是0否）" width="100" :show-overflow-tooltip="true " align="center"/>
             <el-table-column prop="validateCode" label="访问秘钥" width="100" :show-overflow-tooltip="true"/>
+            <el-table-column prop="sort" label="是否置顶（1是2否）" width="100" :show-overflow-tooltip="true" align="center"/>
           <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
                     <el-button link type="primary" @click="handleEdit(scope.row)">编辑</el-button>
@@ -69,6 +70,12 @@
         </el-form-item>
         <el-form-item label="访问秘钥">
           <el-input v-model="form.validateCode"/>
+        </el-form-item>
+        <el-form-item label="是否置顶">
+          <el-radio-group v-model="form.sort">
+            <el-radio v-model="form.sort" :label="1">是</el-radio>
+            <el-radio v-model="form.sort" :label="2">否</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="内容" style="margin: 20px 0">
           <v-md-editor v-model="form.postbody" height="400px"></v-md-editor>

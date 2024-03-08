@@ -12,8 +12,8 @@
             <level>error</level>
         </filter>
         <encoder>
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
-            </pattern>            <!--输出格式-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -  %msg%n %n</pattern>
+            <!--输出格式-->
             <!--%d{HH:mm:ss.SSS} 输出时间-->
             <!--[%thread] 输出的线程名称-->
             <!--%-5level 输出的日志级别 靠左占5个字符-->
@@ -60,23 +60,7 @@
             <FileNamePattern>${logPath}/ip_record.log.%d{yyyy-MM-dd}</FileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
-            </pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-
-    <appender name="cache_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>info</level>
-        </filter>
-        <file>${logPath}/cache_log.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${logPath}/cache_log.log.%d{yyyy-MM-dd}</FileNamePattern>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -90,8 +74,21 @@
             <FileNamePattern>${logPath}/ex_log.%d{yyyy-MM-dd}</FileNamePattern>
         </rollingPolicy>
         <encoder>
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %red([%thread]) %highlight(%-5level) %cyan(%logger{50}) - %magenta(%msg) %n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="blockingIP" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+        </filter>
+        <file>${logPath}/blockingIP.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logPath}/blockingIP.log.%d{yyyy-MM-dd}</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -144,12 +141,12 @@
         <appender-ref ref="ip_record"/>
     </logger>
 
-    <logger level="info" addtivity="false" name="cache_log">
-        <appender-ref ref="cache_log"/>
+    <logger level="info" addtivity="false" name="ex_log">
+        <appender-ref ref="ex_log"/>
     </logger>
 
-    <logger level="error" addtivity="false" name="ex_log">
-        <appender-ref ref="ex_log"/>
+    <logger level="info" addtivity="false" name="blockingIP">
+        <appender-ref ref="blockingIP"/>
     </logger>
 
     <!-- 将文件输出设置成异步输出 -->

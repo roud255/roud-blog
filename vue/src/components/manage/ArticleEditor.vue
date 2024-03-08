@@ -23,6 +23,13 @@
                     <el-date-picker v-model="form.publishtime" type="datetime" placeholder="选择日期和时间"/>
                 </el-form-item>
 
+              <el-form-item label="是否置顶">
+                <el-radio-group v-model="form.sort">
+                  <el-radio v-model="form.sort" :label="1">是</el-radio>
+                  <el-radio v-model="form.sort" :label="2">否</el-radio>
+                </el-radio-group>
+              </el-form-item>
+
               <el-form-item label="是否专属">
                 <el-radio-group v-model="form.self">
                   <el-radio v-model="form.self" :label="1">是</el-radio>
@@ -116,6 +123,7 @@
         data() {
             return {
                 form: {
+                  sort:2,
                   self:0
                 },
                 dynamicTags: [],

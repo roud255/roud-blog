@@ -1,3 +1,4 @@
+<!--分页式首页布局-->
 <link rel="stylesheet" href="src/assets/css/reg_login.css">
 <template>
     <el-scrollbar height="100vh">
@@ -69,7 +70,8 @@
                                     </el-main>
                                 </el-container>
                             </el-container>
-                            <span class="self-span" v-if="item.self">专属</span>
+                            <span class="self-top-span self-span" v-if="item.self">专属</span>
+                            <span class="self-top-span top-span" v-if="item.sort === 1">置顶</span>
                         </div>
                     </li>
                 </ul>
@@ -248,14 +250,19 @@
          cursor: pointer;
 
     }
-    .infinite-list-wrapper .list-item .self-span{
-      background: red;
+    .infinite-list-wrapper .list-item .self-top-span{
       color: white;
       width: 50px;
       bottom: 0;
       right: 0;
       position: absolute;
       border-top-left-radius: 10px
+    }
+    .self-span{
+       background: #0095ec;
+    }
+    .top-span{
+       background: red;
     }
     .infinite-list-wrapper .list-item + .list-item {
         margin-top: 10px;

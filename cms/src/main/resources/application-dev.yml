@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: springboot
   data:
     mongodb:
       uri: mongodb://127.0.0.1:27017/roudblog
@@ -24,3 +22,9 @@ spring:
     timeout: 5000
 violentRequest:
   maxCount: 1000
+
+swagger:
+  basic:
+    enable: true
+    username: roud
+    password: 12345671

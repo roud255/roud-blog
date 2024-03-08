@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.roud.cms.mapper.ArticleAndCommentMapper">
+<mapper namespace="top.roud.roudblogcms.mapper.ArticleAndCommentMapper">
 
-    <resultMap id="CommentWithSubResult" type="top.roud.cms.entity.Comment">
+    <resultMap id="CommentWithSubResult" type="top.roud.roudblogcms.entity.Comment">
         <id property="id" column="id"/>
         <result property="content" column="content"/>
-        <result property="op_time" column="op_time"/>
-        <result property="article_id" column="article_id"/>
-        <result property="parent_id" column="parent_id"/>
-        <result property="from_name" column="from_name"/>
-        <result property="to_name" column="to_name"/>
+        <result property="opTime" column="op_time"/>
+        <result property="articleId" column="article_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="fromName" column="from_name"/>
+        <result property="toName" column="to_name"/>
         <result property="headimg" column="headimg"/>
         <result property="motto" column="motto"/>
         <result property="sex" column="sex"/>
         <result property="email" column="email"/>
         <result property="address" column="address"/>
-        <collection property="child_comments" resultMap="CommentResult"/>
+        <collection property="childComments" resultMap="CommentResult"/>
     </resultMap>
-    <resultMap id="CommentResult" type="top.roud.cms.entity.Comment">
+    <resultMap id="CommentResult" type="top.roud.roudblogcms.entity.Comment">
         <id property="id" column="sub_id"/>
         <result property="content" column="sub_content"/>
-        <result property="op_time" column="sub_op_time"/>
-        <result property="article_id" column="sub_article_id"/>
-        <result property="parent_id" column="sub_parent_id"/>
-        <result property="from_name" column="sub_from_name"/>
-        <result property="to_name" column="sub_to_name"/>
+        <result property="opTime" column="sub_op_time"/>
+        <result property="articleId" column="sub_article_id"/>
+        <result property="parentId" column="sub_parent_id"/>
+        <result property="fromName" column="sub_from_name"/>
+        <result property="toName" column="sub_to_name"/>
         <result property="headimg" column="sub_headimg"/>
         <result property="email" column="sub_email"/>
         <result property="motto" column="sub_motto"/>
@@ -32,8 +32,8 @@
         <result property="address" column="sub_address"/>
     </resultMap>
 
-    <insert id="insertComment" parameterType="top.roud.cms.entity.Comment">
-        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id, headimg, sex, email, motto, address) values (#{id}, #{content},#{op_time}, #{from_name}, #{parent_id}, #{to_name}, #{article_id}, #{headimg},#{sex}, #{email}, #{motto}, #{address});
+    <insert id="insertComment" parameterType="top.roud.roudblogcms.entity.Comment">
+        insert into rb_comment(id, content, op_time, from_name, parent_id, to_name, article_id, headimg, sex, email, motto, address) values (#{id}, #{content},#{opTime}, #{fromName}, #{parentId}, #{toName}, #{articleId}, #{headimg},#{sex}, #{email}, #{motto}, #{address});
     </insert>
 
     <select id="findAllCommentsByArticle" resultType="List" resultMap="CommentWithSubResult" parameterType="Long">
@@ -45,13 +45,13 @@
              from
                  rb_comment c
                      LEFT OUTER JOIN
-                     rb_comment c1
-                     on
-                         c.id=c1.parent_id) c
+                 rb_comment c1
+                 on
+                     c.id=c1.parent_id) c
         where
             c.parent_id='-1'
-            and
-            c.article_id=#{article_id}
+          and
+            c.article_id=#{articleId}
         order by
             id desc
     </select>
@@ -65,7 +65,15 @@
     </delete>
 
     <delete id="delByArticleId" parameterType="long">
-        delete from rb_comment where article_id=#{article_id}
+        delete from rb_comment where article_id=#{articleId}
     </delete>
 
+    <select id="selectCommentsnumByArticleId" resultType="int">
+        select count(*) from rb_comment
+        <where>
+            <if test="id != null">
+                article_id=#{id}
+            </if>
+        </where>
+    </select>
 </mapper>
