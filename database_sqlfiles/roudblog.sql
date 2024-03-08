@@ -31,7 +31,8 @@ CREATE TABLE `rb_article`  (
   `publishtime` datetime(0) NULL DEFAULT NULL,
   `viewsnum` int(10) NULL DEFAULT NULL,
   `commentsnum` int(10) NULL DEFAULT NULL,
-  `self` int(2) NULL DEFAULT NULL
+  `self` int(2) NULL DEFAULT NULL,
+  `sort` int(2) NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------

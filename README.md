@@ -18,8 +18,7 @@
 </p>
 
 ### 后端项目目录：
-##### 1、cms（初态后端项目，部分接口已经不兼容前端）
-#### 2、roud-blog-cms（推荐使用，重构后的项目，性能优化和代码规范化处理）
+cms
 
 ### 项目简介(Project Introduction)
 ##### 1、简介
@@ -46,21 +45,21 @@
 
 <p>拉取后的主体项目结构如下：</p>
 
-> 后端项目请使用重构后的roud-blog-cms,图片示例的旧的项目结构，不用管
+
 <p><img src="http://qny.roud.top/img/20230506092641.png"></p>
 <p>拉取后的前端项目结构如下：</p>
 <p><img src="http://qny.roud.top/img/20230506094725.png"></p>
 
 ##### 推荐步骤
-1. <p>将sqlfiles目录下的sql文件导入数据库（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa）</p>
-1. <p>定位到./roud-blog-cms/pom.xml，导入maven依赖</p>
-1. <p>定位到./roud-blog-cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
-1. <p>定位到./roud-blog-cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
+1. <p>将database_sqlfiles目录下的sql文件导入数据库（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa）</p>
+1. <p>定位到./cms/pom.xml，导入maven依赖</p>
+1. <p>定位到./cms/src/main/resources/application.yml，修改数据库、redis、mogodb及项目端口配置</p>
+1. <p>定位到./cms/src/main/resources/config/mail.setting，此处修改邮箱配置（用于注册时发送邮箱验证码）。默认使用网易163邮箱，user填入邮箱，pass填入授权码（授权码获取：登录网易免费邮网页版-设置-POP3/SMTP/IMAP-开启POP3/SMTP-新增授权码）</p>
 1. <p>切换到./vue目录下，执行npm install命令安装vue项目所需依赖</p>
 1. <p>启动redis服务</p>
 1. <p>启动springboot项目服务</p>
 1. <p>启动vue服务，启动完成自动跳转至主页</p>
-1. <p>使用管理员账号密码登录后台（（sql文件中预设一个超级管理员账号数据，用于管理后台管理系统，可自行修改。账号：admin@roud.top 密码：123456Aa））</p>
+1. <p>使用管理员账号密码登录后台（sql文件中预设一个超级管理员账号数据，用于管理后台，可自行修改。账号：admin@roud.top 密码：123456Aa）</p>
 
 ##### 其他
 1. <p>目前角色权限仅通过type进行划分，type类型分别为：</p>
@@ -117,6 +116,11 @@
 <p>2024.1.28</p>
 <p>本次更新内容：</p>
 <p>（重大更新）项目重构（主要是后端）。主要对代码进行了规范化修改、优化部分页面ui、完善后台管理、引入swagger和优化了项目缓存</p>
+<p>…</p>
+
+<p>2024.3.8</p>
+<p>本次更新内容：</p>
+<p>优化项目结构、引入指定文章功能</p>
 <p>…</p>
 
 > 该项目为个人项目，仅在有空时进行更新完善，目前功能十分不完善，只满足了主要功能，欢迎各位提出宝贵意见。联系QQ：2273459453
