@@ -102,7 +102,7 @@ export default {
         if(res.code !== 200){
           return;
         }
-        this.total = res.data.total;
+        this.total = parseInt(res.data.total);
         this.tableData = res.data.records;
         this.inLoading = false;
       })
