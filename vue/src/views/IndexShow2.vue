@@ -154,7 +154,7 @@
                       if(res.code === 200){
                           this.t_data = res.data.records;
                           this.pages = res.data.pages;
-                          this.total = res.data.total;
+                          this.total = parseInt(res.data.total);
                           this.inLoading = false;
                       }
                 });
