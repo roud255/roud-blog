@@ -153,7 +153,7 @@
                     }}).then(res=>{
                       if(res.code === 200){
                           this.t_data = res.data.records;
-                          this.pages = res.data.pages;
+                          this.pages = parseInt(res.data.pages);
                           this.total = parseInt(res.data.total);
                           this.inLoading = false;
                       }
