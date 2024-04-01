@@ -53,10 +53,8 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     @Override
     public Integer addComment(Comment comment) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + comment.getArticleId() + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + comment.getArticleId() + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + comment.getArticleId() + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + comment.getArticleId() + "*");
 
         return articleAndCommentMapper.insertComment(comment);
     }
@@ -74,10 +72,8 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     @Override
     public Integer delById(Long articleId, Long id) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + articleId + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + articleId + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + articleId + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + articleId + "*");
 
         return articleAndCommentMapper.delById(id);
     }
@@ -85,10 +81,8 @@ public class ArticleAndCommentServiceImpl implements ArticleAndCommentService {
     @Override
     public Integer delByArticleId(Long articleId) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + articleId + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + articleId + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + articleId + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENTCOUNT + articleId + "*");
 
         return articleAndCommentMapper.delByArticleId(articleId);
     }

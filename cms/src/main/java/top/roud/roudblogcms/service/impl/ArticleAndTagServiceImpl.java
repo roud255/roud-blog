@@ -61,9 +61,7 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public void insertArticle(Article article) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
 
         articleAndTagMapper.insertArticle(article);
     }
@@ -422,11 +420,9 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public void delArticleWithTag(Long id) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + id + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + id + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + id + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_COMMENT_CACHE + id + "*");
 
         articleAndTagMapper.delArticleWithTag(id);
     }
@@ -434,10 +430,8 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public Integer updateArticleById(Article article) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + article.getId() + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + article.getId() + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
 
         return articleAndTagMapper.updateById(article);
     }
@@ -445,10 +439,9 @@ public class ArticleAndTagServiceImpl implements ArticleAndTagService {
     @Override
     public Integer updateViewsnumAndCommentsnumByArticleId(Long id, Integer...arr) {
         /*删除缓存*/
-        taskExecutePoolUtil.myTaskAsyncPool().execute(()->{
-            cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + id + "*");
-            cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
-        });
+        cacheUtil.delAllCacheByPattern(ARTICLE_CACHE + id + "*");
+        cacheUtil.delAllCacheByPattern(ARTICLE_TAG_FPWB_CONTACT + "*");
+
 
         if(arr.length == 1){
             return articleAndTagMapper.updateViewsnumByArticleId(id, arr[0]);
