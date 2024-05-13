@@ -14,6 +14,7 @@ import top.roud.roudblogcms.service.UserInformationService;
 import top.roud.roudblogcms.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -138,5 +139,19 @@ public class LoginService {
             return Result.failure(SYSTEM_ERROR);
         }
 
+    }
+
+    private boolean validatePassword(String passport, String secretText, String t){
+        User user = userService.findUserByPhonenumber(passport);
+        Optional<User> op = Optional.ofNullable(user);
+        if(!op.isPresent()){
+            return false;
+        }
+        String sysText = md5Util.md5(passport + user.getPassword() + t);
+        // 解码
+        byte[] decodedBytes = Base64.getDecoder().decode(secretText);
+        // 将解码后的字节转换回字符串
+        String userText = new String(decodedBytes);
+        return sysText.equals(userText);
     }
 }
