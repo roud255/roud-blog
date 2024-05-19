@@ -44,6 +44,8 @@
     import {ElMessage} from "element-plus";
     import request from "../utils/request";
     import md5 from 'js-md5';
+    import {Base64} from 'js-base64';
+
     export default {
         name: "Login",
 
@@ -52,6 +54,8 @@
                 imageUrl : '/api/login',
                 notice: false,
                 login_form : {
+                },
+                login_formData : {
                 },
                 flagCode : "",
                 rules: {
@@ -133,13 +137,22 @@
                });
                return uuid;
              },
-
+            getLoginData(passport, password, t){
+              let passwordMD5 = md5(password).toUpperCase();
+              return Base64.encode(md5(passport + passwordMD5 + t));
+            },
             onSubmit(){
-                this.login_form.flag = this.flagCode
+                this.login_form.flag = this.flagCode;
+                const timestamp = new Date().getTime();
+                this.login_formData.email = this.login_form.email;
+                this.login_formData.flag = this.login_form.flag;
+                this.login_formData.vertifycode = this.login_form.vertifycode;
+                this.login_formData.password = this.getLoginData(this.login_form.email, this.login_form.password, timestamp);
+                this.login_formData.t = timestamp;
                 this.$refs['login_form'].validate(valid => {
                     if (valid) {
                         if(this.notice){
-                            request.post("/login",this.login_form).then(res =>{
+                            request.post("/login",this.login_formData).then(res =>{
                                 if(res.code!="200"){
                                     this.showWarningMessage(res.msg);
                                 }else {
@@ -154,6 +167,10 @@
                     } else {
                         this.showFailMessage("提交失败，请正确填写各项信息");
                     }
+                }).catch(e=>{
+                  console.log(e);
+                  //页面滚动到没通过验证的字段
+                  this.$refs.form.scrollToField(Object.keys(e)[0])
                 });
             },
             loadImage(){

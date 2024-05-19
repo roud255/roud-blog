@@ -52,6 +52,7 @@ public class LoginService {
             String password = jsonObject.getString("password");
             String captcha = jsonObject.getString("vertifycode");
             String flag = jsonObject.getString("flag");
+            String t = jsonObject.getString("t");
             String key;
             if(StringUtils.isBlank(flag)){
                 String ip = ipUtil.getIpAddr(request);
@@ -66,30 +67,31 @@ public class LoginService {
             if(!StrUtil.equalsAnyIgnoreCase(captcha, captchaSys)){
                 return Result.failure(CAPTCHA_ERROR);
             }
-            User userByEmailAndPwd = userService.findUserByPhonenumberAndPassword(phonenumber, md5Util.md5(password));
-            Optional<User> op = Optional.ofNullable(userByEmailAndPwd);
-            Map<String, Object> map = new HashMap();
-            if(op.isPresent()){
-                UserInformation userInformation = userInformationService.selectByUserId(userByEmailAndPwd.getId());
-                userInformation.setRecentlyip(ipUtil.getIpAddr(request));
-                map.put("id",userByEmailAndPwd.getId());
-                map.put("name", userByEmailAndPwd.getNickname());
-                map.put("time", userByEmailAndPwd.getRegistertime());
-                map.put("phone", userByEmailAndPwd.getPhonenumber());
-                map.put("power", userByEmailAndPwd.getPower());
-                map.put("type", userByEmailAndPwd.getType());
-                map.put("imgurl",userInformation.getImgId()==null?"":String.valueOf(userInformation.getImgId()));
-                map.put("sex",userInformation.getSex());
-                map.put("motto",userInformation.getMotto()==null?"":userInformation.getMotto());
-                map.put("ip",userInformation.getRecentlyip());
-                String sign = tokenUtil.getOutToken(jwtUtil.sign(String.valueOf(userByEmailAndPwd.getId()), map));
-                tokenUtil.relevanceAuthorAndOutToken(String.valueOf(userByEmailAndPwd.getId()), sign);
-                userInformationService.updateByUserId(userInformation);
-                HashMap<String, String> tokenMap = new HashMap<>(1);
-                tokenMap.put("token", sign);
-                return Result.success(tokenMap);
+            //User userByEmailAndPwd = userService.findUserByPhonenumberAndPassword(phonenumber, md5Util.md5(password));
+            //Optional<User> op = Optional.ofNullable(userByEmailAndPwd);
+            User userByEmailAndPwd = validatePassword(phonenumber, password, t);
+            if(null == userByEmailAndPwd){
+                return Result.failure(USER_NOT_EXIST);
             }
-            return Result.failure(USER_NOT_EXIST);
+            Map<String, Object> map = new HashMap();
+            UserInformation userInformation = userInformationService.selectByUserId(userByEmailAndPwd.getId());
+            userInformation.setRecentlyip(ipUtil.getIpAddr(request));
+            map.put("id",userByEmailAndPwd.getId());
+            map.put("name", userByEmailAndPwd.getNickname());
+            map.put("time", userByEmailAndPwd.getRegistertime());
+            map.put("phone", userByEmailAndPwd.getPhonenumber());
+            map.put("power", userByEmailAndPwd.getPower());
+            map.put("type", userByEmailAndPwd.getType());
+            map.put("imgurl",userInformation.getImgId()==null?"":String.valueOf(userInformation.getImgId()));
+            map.put("sex",userInformation.getSex());
+            map.put("motto",userInformation.getMotto()==null?"":userInformation.getMotto());
+            map.put("ip",userInformation.getRecentlyip());
+            String sign = tokenUtil.getOutToken(jwtUtil.sign(String.valueOf(userByEmailAndPwd.getId()), map));
+            tokenUtil.relevanceAuthorAndOutToken(String.valueOf(userByEmailAndPwd.getId()), sign);
+            userInformationService.updateByUserId(userInformation);
+            HashMap<String, String> tokenMap = new HashMap<>(1);
+            tokenMap.put("token", sign);
+            return Result.success(tokenMap);
         }catch (Exception e){
             return Result.failure(SYSTEM_ERROR);
         }
@@ -141,17 +143,24 @@ public class LoginService {
 
     }
 
-    private boolean validatePassword(String passport, String secretText, String t){
-        User user = userService.findUserByPhonenumber(passport);
-        Optional<User> op = Optional.ofNullable(user);
-        if(!op.isPresent()){
-            return false;
+    private User validatePassword(String passport, String secretText, String t){
+        try{
+            User user = userService.findUserByPhonenumber(passport);
+            Optional<User> op = Optional.ofNullable(user);
+            if(!op.isPresent()){
+                return null;
+            }
+            String sysText = md5Util.md5(passport + user.getPassword() + t);
+            // 解码
+            byte[] decodedBytes = Base64.getDecoder().decode(secretText);
+            // 将解码后的字节转换回字符串
+            String userText = (new String(decodedBytes)).toUpperCase();
+            if(sysText.equals(userText)){
+                return user;
+            }
+            return null;
+        }catch (Exception e){
+            return null;
         }
-        String sysText = md5Util.md5(passport + user.getPassword() + t);
-        // 解码
-        byte[] decodedBytes = Base64.getDecoder().decode(secretText);
-        // 将解码后的字节转换回字符串
-        String userText = new String(decodedBytes);
-        return sysText.equals(userText);
     }
 }
