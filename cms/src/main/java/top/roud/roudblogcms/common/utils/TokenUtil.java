@@ -8,6 +8,7 @@ import top.roud.roudblogcms.common.config.RandomCodeUtil;
 import top.roud.roudblogcms.common.exception.ServiceException;
 import top.roud.roudblogcms.common.result.ResultCode;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.UUID;
@@ -65,7 +66,18 @@ public class TokenUtil {
     }
 
     public String getOutTokenByRequest(HttpServletRequest request){
-        String token = request.getHeader("token");
+        String token = "";
+        if (request.getCookies() != null) {
+            for (Cookie c : request.getCookies()) {
+                if (null != c && "TOKEN".equals(c.getName())) {
+                    token = c.getValue();
+                    break;
+                }
+            }
+        }
+        if (StringUtils.isBlank(token)) {
+            token = request.getHeader("token");
+        }
         return token;
     }
 

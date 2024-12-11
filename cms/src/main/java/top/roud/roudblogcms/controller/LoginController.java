@@ -42,8 +42,8 @@ public class LoginController {
     @NoRepeatRequest(seconds = 10, maxCount = 3)
     @AccessIPRecord
     @PostMapping
-    public Result login(HttpServletRequest request,@RequestBody String info){
-        return loginService.login(request, info);
+    public Result login(HttpServletRequest request,@RequestBody String info, HttpServletResponse response){
+        return loginService.login(request, info, response);
     }
 
     @ApiOperation("请求退出登录")
@@ -57,7 +57,7 @@ public class LoginController {
     @ApiOperation("更新token")
     @AccessIPRecord
     @GetMapping("/updatetoken")
-    public Result updateToken(HttpServletRequest request){
-        return loginService.updateToken(request);
+    public Result updateToken(HttpServletRequest request, HttpServletResponse response){
+        return loginService.updateToken(request, response);
     }
 }

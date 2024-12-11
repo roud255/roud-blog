@@ -13,7 +13,9 @@ import top.roud.roudblogcms.entity.UserInformation;
 import top.roud.roudblogcms.service.UserInformationService;
 import top.roud.roudblogcms.service.UserService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +47,7 @@ public class LoginService {
     @Autowired
     private UserInformationService userInformationService;
 
-    public Result login(HttpServletRequest request, String info){
+    public Result login(HttpServletRequest request, String info, HttpServletResponse response){
         try{
             JSONObject jsonObject = JSON.parseObject(info);
             String phonenumber = jsonObject.getString("email");
@@ -90,6 +92,8 @@ public class LoginService {
             tokenUtil.relevanceAuthorAndOutToken(String.valueOf(userByEmailAndPwd.getId()), sign);
             userInformationService.updateByUserId(userInformation);
             HashMap<String, String> tokenMap = new HashMap<>(1);
+            String cookieString = "TOKEN=" + sign + "; Domain=.roud.top; Path=/; SameSite=None; Secure; max-age=259200";
+            response.setHeader("Set-Cookie", cookieString);
             tokenMap.put("token", sign);
             return Result.success(tokenMap);
         }catch (Exception e){
@@ -111,7 +115,7 @@ public class LoginService {
         return Result.success();
     }
 
-    public Result updateToken(HttpServletRequest request){
+    public Result updateToken(HttpServletRequest request, HttpServletResponse response){
         try{
             Map<String, Object> info = tokenUtil.getUserInfoByRequest(request);
             Long u_id = (Long)info.get("id");
@@ -134,6 +138,8 @@ public class LoginService {
                 tokenUtil.relevanceAuthorAndOutToken(String.valueOf(userByEmailAndPwd.getId()), sign);
                 HashMap<String, String> tokenMap = new HashMap<>(1);
                 tokenMap.put("token", sign);
+                String cookieString = "TOKEN=" + sign + "; Domain=.roud.top; Path=/; SameSite=None; Secure; max-age=259200";
+                response.setHeader("Set-Cookie", cookieString);
                 return Result.success(tokenMap);
             }
             return Result.failure(USER_NOT_EXIST);
